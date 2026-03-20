@@ -1,0 +1,9 @@
+SOURCE: chapter11/jx/movies-store/charts/jx-movies-store/templates/NOTES.txt
+MIME: text/plain; charset=us-ascii
+----- BEGIN CONTENT -----
+
+Get the application URL by running these commands:
+
+kubectl get ingress {{ template "fullname" . }}
+
+----- END CONTENT -----

@@ -1,0 +1,13 @@
+package mx.com.endtoend.infrastructure.reports.sales.closingOperation.ferresamano;
+
+import mx.com.endtoend.infrastructure.reports.sales.closingOperation.common.repository.BaseClosingOperationReportRepository;
+import org.springframework.stereotype.Service;
+import mx.com.endtoend.infrastructure.reports.sales.closingOperation.ferresamano.repositories.CustomDSLClosingOperationFSamanoRepository;
+
+@Service
+public class ClosingOperationReportFSamanoRepository extends BaseClosingOperationReportRepository {
+
+	public ClosingOperationReportFSamanoRepository(CustomDSLClosingOperationFSamanoRepository customDSLClosingOperationFSamanoRepository){
+		super(ClosingOperationReportFSamanoRepository.class, customDSLClosingOperationFSamanoRepository);
+	}
+}

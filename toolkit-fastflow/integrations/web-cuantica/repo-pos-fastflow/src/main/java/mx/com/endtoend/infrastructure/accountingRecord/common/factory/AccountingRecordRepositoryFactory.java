@@ -1,0 +1,29 @@
+package mx.com.endtoend.infrastructure.accountingRecord.common.factory;
+
+import mx.com.endtoend.infrastructure.accountingRecord.common.repository.BaseAccountingRecordRepositoryFactory;
+import org.springframework.stereotype.Component;
+
+import mx.com.endtoend.infrastructure.accountingRecord.calzada.business.AccountingRecordCalRepository;
+import mx.com.endtoend.infrastructure.accountingRecord.calzada.fragua.business.AccountingRecordFraRepository;
+import mx.com.endtoend.infrastructure.accountingRecord.carredana.business.AccountingRecordFCarredanaRepository;
+import mx.com.endtoend.infrastructure.accountingRecord.ferresamano.business.AccountingRecordCFSamanoRepository;
+import mx.com.endtoend.infrastructure.accountingRecord.carredana.zapata.business.AccountingRecordZapataRepository;
+import mx.com.endtoend.infrastructure.accountingRecord.demo.business.AccountingRecordDemoBusinessRepository;
+
+@Component
+public class AccountingRecordRepositoryFactory extends BaseAccountingRecordRepositoryFactory {
+
+	public AccountingRecordRepositoryFactory(AccountingRecordCalRepository _accountingRecordCalRepository,
+	 AccountingRecordFraRepository _accountingRecordFraRepository,
+	 AccountingRecordFCarredanaRepository _accountingRecordFCarredanaRepository,
+	 AccountingRecordZapataRepository _accountingRecordZapataRepository,
+	 AccountingRecordCFSamanoRepository _accountingRecordCFSamanoRepository,
+	 AccountingRecordDemoBusinessRepository _accountingRecordDemoBusinessRepository) {
+		super(AccountingRecordRepositoryFactory.class,
+				_accountingRecordCalRepository,_accountingRecordFraRepository,
+				_accountingRecordFCarredanaRepository,
+				_accountingRecordZapataRepository,
+				_accountingRecordCFSamanoRepository,
+				_accountingRecordDemoBusinessRepository);
+	}
+}

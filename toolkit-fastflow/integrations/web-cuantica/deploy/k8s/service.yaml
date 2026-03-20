@@ -1,0 +1,20 @@
+# ------------------------------------------------------------------------------
+# Service: expone el servidor FastFlow (puerto 3000) dentro del cluster.
+# Aplicar después de deployment.yaml y namespace. Para acceso externo: Ingress o LoadBalancer.
+# ------------------------------------------------------------------------------
+apiVersion: v1
+kind: Service
+metadata:
+  name: fastflow-server
+  namespace: fastflow
+  labels:
+    app: fastflow-server
+spec:
+  type: ClusterIP
+  ports:
+    - port: 3000
+      targetPort: 3000
+      protocol: TCP
+      name: http
+  selector:
+    app: fastflow-server

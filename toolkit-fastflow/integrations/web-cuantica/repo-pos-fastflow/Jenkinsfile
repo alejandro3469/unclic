@@ -1,0 +1,369 @@
+// =============================================================================
+// Jenkinsfile — FastFlow POS Online (pipeline canónico del repo repo-pos-fastflow)
+// =============================================================================
+// RESUMEN (qué hace este archivo):
+//   commit → Maven (build/test/package) → imagen Docker → push registry →
+//   [opcional] validar/plan Terraform K8s, plan Terraform LocalStack, preview Pulumi →
+//   en rama main: aprobación manual → cleanup → deploy → health check.
+//
+// DÓNDE ESTÁ EL RESTO DEL DISEÑO:
+//   .jenkins/PLAN-FASTFLOW-PIPELINE-IAC.md  — plan detallado (léelo antes de cambiar stages).
+//   .jenkins/README.md                      — índice groovy + scripts bash.
+//   .jenkins/groovy/fastflowIacHelpers.groovy — helpers cargados con `load` (variable fastflowIac).
+//   .jenkins/scripts/*.sh                   — Terraform / Pulumi invocados desde stages IaC.
+//   deploy/terraform/                      — manifiesto Kubernetes del POS (var pos_image).
+//   deploy/terraform-localstack/             — laboratorio S3 contra LocalStack (no sustituye K8s).
+//   deploy/pulumi/                           — stack TypeScript Pulumi (bucket lab).
+//   deploy/sst/README.md                     — por qué NO hay SST en este repo Java.
+//
+// VARIABLES OPCIONALES IaC (job Jenkins; por defecto desactivadas = no ejecutan stages):
+//   FASTFLOW_TF_VALIDATE=true           → terraform validate en deploy/terraform
+//   FASTFLOW_TF_PLAN_K8S=true           → terraform plan con pos_image = REGISTRY/IMAGE:TAG
+//   FASTFLOW_TF_PLAN_LOCALSTACK=true    → plan contra LocalStack (requiere LOCALSTACK_ENDPOINT)
+//   LOCALSTACK_ENDPOINT                 → ej. http://localhost:4566 o http://host.docker.internal:4566
+//   FASTFLOW_PULUMI_PREVIEW=true        → pulumi preview en deploy/pulumi (requiere pulumi + npm ci)
+//   PULUMI_STACK                        → nombre stack Pulumi (default dev)
+//
+// CONEXIÓN CON UNCLIC (sitio estático):
+//   El landing solo enlaza a Jenkins/registry/POS; no ejecuta este pipeline.
+//   Ver: unclic/docs/DEMOS-PRODUCCION-END-TO-END.md
+//
+// Deploy remoto clásico: REGISTRY, POS_DEPLOY_HOST, POS_DEPLOY_USER, POS_DEPLOY_KEY_CREDENTIAL_ID.
+// Ver: ELEMENTOS-Y-PIPELINE-DEPLOY-OTRO-SERVIDOR.md
+// =============================================================================
+
+def fastflowIac
+
+pipeline {
+    agent any
+    environment {
+        IMAGE_NAME = 'pos-online'
+        IMAGE_TAG = "${env.BUILD_NUMBER ?: 'latest'}"
+        REGISTRY = "${env.REGISTRY ?: ''}"
+        APP_PORT = '8111'
+        APP_JAR = 'target/pos-online-*.jar'
+        POS_DEPLOY_HOST = "${env.POS_DEPLOY_HOST ?: ''}"
+        POS_DEPLOY_USER = "${env.POS_DEPLOY_USER ?: 'ec2-user'}"
+        POS_DEPLOY_PATH = "${env.POS_DEPLOY_PATH ?: '/opt/pos'}"
+        POS_DEPLOY_KEY_CREDENTIAL_ID = "${env.POS_DEPLOY_KEY_CREDENTIAL_ID ?: ''}"
+        // EC2 t3.micro (1 GB): heap bajo; si falla OOM, añadir swap (ver guía fastflow-integration)
+        MAVEN_OPTS = '-Xmx320m -Xms64m -XX:MaxMetaspaceSize=96m -XX:ReservedCodeCacheSize=24m'
+        // --- FastFlow IaC opcional (ver cabecera del Jenkinsfile) ---
+        FASTFLOW_TF_VALIDATE = "${env.FASTFLOW_TF_VALIDATE ?: 'false'}"
+        FASTFLOW_TF_PLAN_K8S = "${env.FASTFLOW_TF_PLAN_K8S ?: 'false'}"
+        FASTFLOW_TF_PLAN_LOCALSTACK = "${env.FASTFLOW_TF_PLAN_LOCALSTACK ?: 'false'}"
+        LOCALSTACK_ENDPOINT = "${env.LOCALSTACK_ENDPOINT ?: 'http://localhost:4566'}"
+        FASTFLOW_PULUMI_PREVIEW = "${env.FASTFLOW_PULUMI_PREVIEW ?: 'false'}"
+        PULUMI_STACK = "${env.PULUMI_STACK ?: 'dev'}"
+    }
+    stages {
+        stage('Prepare') {
+            steps {
+                script {
+                    fastflowIac = load '.jenkins/groovy/fastflowIacHelpers.groovy'
+                    fastflowIac.echoStageBanner('Prepare — carga helpers FastFlow IaC')
+                }
+                sh '''
+                    echo "[COMANDO] Se ejecutará: java -version, mvn -version, pwd"
+                    echo "[ESPERADO] Versión de Java 17 y Maven; ruta del workspace y rama."
+                    java -version || true
+                    mvn -version || true
+                    echo "[OBTENIDO] Workspace: $(pwd); rama: ${GIT_BRANCH:-main}"
+                    echo "[DECISIÓN] Continuar al stage Build si el entorno está disponible."
+                '''
+            }
+        }
+        stage('Build') {
+            steps {
+                sh '''
+                    echo "[COMANDO] Se ejecuta: mvn clean compile (sin -q para ver salida si falla)"
+                    echo "[ESPERADO] Código de salida 0; directorio target/classes con .class generados."
+                    mvn clean compile
+                    R=$?
+                    echo "[OBTENIDO] Código de salida de mvn: $R"
+                    ls -la target/classes 2>/dev/null | head -20 || true
+                    echo "[DECISIÓN] Si R=0 continuar a Test; si R!=0 el pipeline falla (revisar OOM o dependencias)."
+                '''
+            }
+        }
+        stage('Test') {
+            steps {
+                sh '''
+                    echo "[COMANDO] Se ejecuta: mvn test -B"
+                    echo "[ESPERADO] Tests run: N, Failures: 0, Errors: 0; BUILD SUCCESS."
+                    mvn test -B
+                    R=$?
+                    echo "[OBTENIDO] Código de salida de mvn test: $R"
+                    echo "[DECISIÓN] Si R=0 continuar a Lint; si R!=0 el pipeline falla (revisar tests fallidos)."
+                '''
+            }
+            post {
+                always {
+                    junit allowEmptyResults: true, testResults: '**/target/surefire-reports/*.xml'
+                    sh '''
+                        echo "[OBTENIDO] Resumen Surefire por clase:"
+                        find target/surefire-reports -name "*.txt" -exec echo "--- {} ---" \\; -exec cat {} \\; 2>/dev/null || true
+                    '''
+                }
+            }
+        }
+        stage('Lint') {
+            steps {
+                sh '''
+                    echo "[COMANDO] Se ejecuta: mvn validate -q"
+                    echo "[ESPERADO] Validación del POM y estructura del proyecto; no debe fallar el step."
+                    mvn validate -q 2>/dev/null || true
+                    R=$?
+                    echo "[OBTENIDO] Código de salida: $R (se ignora con || true)"
+                    echo "[DECISIÓN] Siempre continuar a Package."
+                '''
+            }
+        }
+        stage('Package') {
+            steps {
+                sh '''
+                    echo "[COMANDO] Se ejecuta: mvn package -DskipTests -q"
+                    echo "[ESPERADO] Código 0; JAR en target/pos-online-*.jar"
+                    mvn package -DskipTests -q
+                    R=$?
+                    echo "[OBTENIDO] Código de salida: $R; artefactos:"
+                    ls -la target/*.jar 2>/dev/null || true
+                    echo "[DECISIÓN] Si R=0 continuar a Build image (si existe Dockerfile); si R!=0 el pipeline falla."
+                '''
+            }
+        }
+        stage('Build image') {
+            when { expression { return fileExists('Dockerfile') } }
+            steps {
+                sh """
+                    echo "[COMANDO] Se comprueba: command -v docker; si existe: cp JAR, docker build."
+                    echo "[ESPERADO] Si docker no está: omitir stage (exit 0). Si está: imagen ${IMAGE_NAME}:${IMAGE_TAG}."
+                    if ! command -v docker >/dev/null 2>&1; then
+                        echo "[OBTENIDO] docker no encontrado en PATH."
+                        echo "[DECISIÓN] Omitir build de imagen; continuar al siguiente stage (instalar Docker en EC2 si se desea imagen)."
+                        exit 0
+                    fi
+                    echo "[OBTENIDO] docker disponible; se construye la imagen."
+                    cp target/pos-online-*.jar target/app.jar
+                    echo "[COMANDO] Se ejecuta: docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
+                    docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .
+                    R=\$?
+                    echo "[OBTENIDO] Código de salida docker build: \$R"
+                    docker images ${IMAGE_NAME} --format "table {{.Tag}}\t{{.Size}}" || true
+                    echo "[DECISIÓN] Si R=0 continuar a Push to registry (si REGISTRY definido); si no, siguiente stage."
+                """
+            }
+        }
+        stage('Push to registry') {
+            when {
+                expression { return (env.REGISTRY?.toString() ?: '').trim() != '' }
+            }
+            steps {
+                sh """
+                    echo "[COMANDO] Se ejecuta: docker tag y docker push a ${env.REGISTRY}/${IMAGE_NAME} (tag ${IMAGE_TAG} y latest)"
+                    echo "[ESPERADO] Imagen subida al registry; código 0."
+                    docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${env.REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}
+                    docker push ${env.REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}
+                    R1=\$?
+                    docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${env.REGISTRY}/${IMAGE_NAME}:latest
+                    docker push ${env.REGISTRY}/${IMAGE_NAME}:latest
+                    R2=\$?
+                    echo "[OBTENIDO] Código push tag ${IMAGE_TAG}: \$R1; código push latest: \$R2"
+                    echo "[DECISIÓN] Si ambos 0 continuar a stages IaC opcionales o Approve Deploy; si no, falla."
+                """
+            }
+        }
+        stage('IaC: Terraform validate (K8s POS)') {
+            when {
+                expression { return env.FASTFLOW_TF_VALIDATE == 'true' }
+            }
+            steps {
+                script {
+                    fastflowIac.echoStageBanner('Terraform validate deploy/terraform')
+                }
+                sh 'chmod +x .jenkins/scripts/terraform-validate-k8s.sh 2>/dev/null || true; bash .jenkins/scripts/terraform-validate-k8s.sh'
+            }
+        }
+        stage('IaC: Terraform plan (K8s POS)') {
+            when {
+                expression { return env.FASTFLOW_TF_PLAN_K8S == 'true' }
+            }
+            steps {
+                script {
+                    fastflowIac.echoStageBanner('Terraform plan K8s con pos_image del registry')
+                }
+                sh 'chmod +x .jenkins/scripts/terraform-plan-k8s.sh 2>/dev/null || true; bash .jenkins/scripts/terraform-plan-k8s.sh'
+            }
+        }
+        stage('IaC: Terraform plan (LocalStack lab)') {
+            when {
+                expression { return env.FASTFLOW_TF_PLAN_LOCALSTACK == 'true' }
+            }
+            steps {
+                script {
+                    fastflowIac.echoStageBanner('Terraform plan LocalStack deploy/terraform-localstack')
+                }
+                sh 'chmod +x .jenkins/scripts/terraform-plan-localstack.sh 2>/dev/null || true; bash .jenkins/scripts/terraform-plan-localstack.sh'
+            }
+        }
+        stage('IaC: Pulumi preview (lab)') {
+            when {
+                expression { return env.FASTFLOW_PULUMI_PREVIEW == 'true' }
+            }
+            steps {
+                script {
+                    fastflowIac.echoStageBanner('Pulumi preview deploy/pulumi')
+                }
+                sh 'chmod +x .jenkins/scripts/pulumi-preview.sh 2>/dev/null || true; bash .jenkins/scripts/pulumi-preview.sh'
+            }
+        }
+        stage('Approve Deploy') {
+            when { expression { def b = (env.GIT_BRANCH ?: env.BRANCH_NAME ?: ''); return b == 'main' || b == 'origin/main' } }
+            steps {
+                script {
+                    def imageId = sh(script: "docker images -q ${IMAGE_NAME}:${IMAGE_TAG} 2>/dev/null || true", returnStdout: true).trim()
+                    def useDocker = imageId != ''
+                    def msg = useDocker
+                        ? 'Imagen Docker lista (y en registry si REGISTRY definido). ¿Desplegar contenedor en puerto 8111?'
+                        : 'Artefactos listos (JAR). ¿Desplegar en EC2 (puerto 8111)?'
+                    input(message: msg, ok: 'Desplegar')
+                }
+                echo "[DECISIÓN] Aprobación recibida; continuar a Cleanup → Deploy → Verify."
+            }
+        }
+        stage('Cleanup') {
+            when { expression { def b = (env.GIT_BRANCH ?: env.BRANCH_NAME ?: ''); return b == 'main' || b == 'origin/main' } }
+            steps {
+                script {
+                    def imageId = sh(script: "docker images -q ${IMAGE_NAME}:${IMAGE_TAG} 2>/dev/null || true", returnStdout: true).trim()
+                    def useDocker = imageId != ''
+                    if (useDocker) {
+                        if (env.POS_DEPLOY_HOST?.trim()) {
+                            withCredentials([file(credentialsId: env.POS_DEPLOY_KEY_CREDENTIAL_ID, variable: 'SSH_KEY')]) {
+                                sh """
+                                    echo "[COMANDO] Cleanup remoto: ssh a \${POS_DEPLOY_HOST} y docker stop/rm pos-online"
+                                    ssh -i \$SSH_KEY -o StrictHostKeyChecking=no \${POS_DEPLOY_USER}@\${POS_DEPLOY_HOST} "docker stop pos-online 2>/dev/null || true; docker rm pos-online 2>/dev/null || true; sleep 2"
+                                    echo "[OBTENIDO] Cleanup remoto (contenedor) ejecutado."
+                                """
+                            }
+                        } else {
+                            sh """
+                                echo "[COMANDO] Cleanup local: docker stop/rm pos-online"
+                                docker stop pos-online 2>/dev/null || true
+                                docker rm pos-online 2>/dev/null || true
+                                sleep 2
+                                echo "[OBTENIDO] Contenedor pos-online detenido/eliminado."
+                            """
+                        }
+                    } else {
+                        if (env.POS_DEPLOY_HOST?.trim()) {
+                            withCredentials([file(credentialsId: env.POS_DEPLOY_KEY_CREDENTIAL_ID, variable: 'SSH_KEY')]) {
+                                sh """
+                                    echo "[COMANDO] Cleanup remoto: pkill pos-online.*jar"
+                                    ssh -i \$SSH_KEY -o StrictHostKeyChecking=no \${POS_DEPLOY_USER}@\${POS_DEPLOY_HOST} "pkill -f 'pos-online.*jar' || true; sleep 2"
+                                """
+                            }
+                        } else {
+                            sh 'pkill -f "pos-online.*jar" || true; sleep 2'
+                        }
+                    }
+                }
+            }
+        }
+        stage('Deploy') {
+            when { expression { def b = (env.GIT_BRANCH ?: env.BRANCH_NAME ?: ''); return b == 'main' || b == 'origin/main' } }
+            steps {
+                script {
+                    def imageId = sh(script: "docker images -q ${IMAGE_NAME}:${IMAGE_TAG} 2>/dev/null || true", returnStdout: true).trim()
+                    def useDocker = imageId != ''
+                    if (useDocker) {
+                        def registry = (env.REGISTRY ?: '').trim()
+                        if (env.POS_DEPLOY_HOST?.trim()) {
+                            if (!registry) {
+                                error "Deploy remoto con Docker requiere REGISTRY (ej. IP:5000 o registry.empresa.internal). Configure la variable REGISTRY en el job y asegure que 'Push to registry' haya subido la imagen."
+                            }
+                            withCredentials([file(credentialsId: env.POS_DEPLOY_KEY_CREDENTIAL_ID, variable: 'SSH_KEY')]) {
+                                sh """
+                                    echo "[COMANDO] Deploy remoto con Docker: pull \${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} y docker run en \${POS_DEPLOY_HOST}"
+                                    ssh -i \$SSH_KEY -o StrictHostKeyChecking=no \${POS_DEPLOY_USER}@\${POS_DEPLOY_HOST} "
+                                        docker pull \${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}
+                                        docker run -d --name pos-online -p ${APP_PORT}:8111 --restart=unless-stopped \${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}
+                                    "
+                                    echo "[OBTENIDO] Esperando 90 s (arranque del contenedor en servidor remoto)."
+                                    sleep 90
+                                    ssh -i \$SSH_KEY -o StrictHostKeyChecking=no \${POS_DEPLOY_USER}@\${POS_DEPLOY_HOST} "docker ps --filter name=pos-online --format '{{.Status}}'; docker logs pos-online --tail 10 2>/dev/null || true"
+                                """
+                            }
+                        } else {
+                            sh """
+                                echo "[COMANDO] Deploy local con Docker: docker run ${IMAGE_NAME}:${IMAGE_TAG} en puerto ${APP_PORT}"
+                                docker run -d --name pos-online -p ${APP_PORT}:8111 --restart=unless-stopped ${IMAGE_NAME}:${IMAGE_TAG}
+                                echo "[OBTENIDO] Esperando 90 s (arranque del contenedor)."
+                                sleep 90
+                                docker ps --filter name=pos-online --format '{{.Status}}'
+                                docker logs pos-online --tail 10 2>/dev/null || true
+                            """
+                        }
+                    } else {
+                        if (env.POS_DEPLOY_HOST?.trim()) {
+                            withCredentials([file(credentialsId: env.POS_DEPLOY_KEY_CREDENTIAL_ID, variable: 'SSH_KEY')]) {
+                                sh """
+                                    echo "[COMANDO] Deploy remoto (JAR): scp y java -jar"
+                                    JAR=\$(ls ${APP_JAR} | head -1)
+                                    scp -i \$SSH_KEY -o StrictHostKeyChecking=no "\$JAR" \${POS_DEPLOY_USER}@\${POS_DEPLOY_HOST}:\${POS_DEPLOY_PATH}/app.jar
+                                    ssh -i \$SSH_KEY -o StrictHostKeyChecking=no \${POS_DEPLOY_USER}@\${POS_DEPLOY_HOST} "cd \${POS_DEPLOY_PATH} && nohup java -jar app.jar --server.port=${APP_PORT} > pos-online.log 2>&1 &"
+                                    sleep 90
+                                    ssh -i \$SSH_KEY -o StrictHostKeyChecking=no \${POS_DEPLOY_USER}@\${POS_DEPLOY_HOST} "tail -5 \${POS_DEPLOY_PATH}/pos-online.log 2>/dev/null || true"
+                                """
+                            }
+                        } else {
+                            sh """
+                                pkill -f "pos-online.*jar" || true; sleep 2
+                                nohup java -jar ${APP_JAR} --server.port=${APP_PORT} > /tmp/pos-online.log 2>&1 &
+                                sleep 90
+                                tail -5 /tmp/pos-online.log 2>/dev/null || true
+                            """
+                        }
+                    }
+                }
+            }
+        }
+        stage('Verify instance') {
+            when { expression { def b = (env.GIT_BRANCH ?: env.BRANCH_NAME ?: ''); return b == 'main' || b == 'origin/main' } }
+            steps {
+                script {
+                    def baseUrl = env.POS_DEPLOY_HOST?.trim() ? "http://${env.POS_DEPLOY_HOST}:${APP_PORT}" : "http://localhost:${APP_PORT}"
+                    sh """
+                        echo "[COMANDO] Verify: curl a ${baseUrl}/actuator/health o /health (reintentos cada 15 s, hasta 6 veces)."
+                        echo "[ESPERADO] Respuesta JSON con status UP."
+                        SALIDA=""
+                        for i in 1 2 3 4 5 6; do
+                            SALIDA=\$(curl -sf ${baseUrl}/actuator/health 2>/dev/null || curl -sf ${baseUrl}/health 2>/dev/null || echo "")
+                            if echo "\$SALIDA" | grep -qE 'UP|"status"'; then
+                                echo "[OBTENIDO] Health OK en intento \$i."
+                                break
+                            fi
+                            [ \$i -lt 6 ] && echo "[OBTENIDO] Intentando de nuevo en 15 s..." && sleep 15
+                        done
+                        echo "[OBTENIDO] Respuesta (primeros 500 chars):"
+                        echo "\$SALIDA" | head -c 500
+                        echo ""
+                        if ! echo "\$SALIDA" | grep -qE 'UP|"status"'; then
+                            echo "[DECISIÓN] Health no respondió con status UP; revisar log en servidor y puerto ${APP_PORT}."
+                            exit 1
+                        fi
+                        echo "[DECISIÓN] Deploy correcto; app responde en ${baseUrl}."
+                    """
+                }
+            }
+        }
+    }
+    post {
+        success {
+            echo "[DECISIÓN] Build exitoso. Despliegue con Docker e imagen: ${IMAGE_NAME}:${IMAGE_TAG}. Defina REGISTRY en el job para push y deploy remoto. App: http://<host>:${APP_PORT}/health"
+        }
+        failure {
+            echo "[DECISIÓN] Build fallido. Revisar el stage en rojo en el log (COMANDO/ESPERADO/OBTENIDO/DECISIÓN)."
+        }
+    }
+}

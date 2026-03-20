@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastflow-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fastflow-app
+  template:
+    metadata:
+      labels:
+        app: fastflow-app
+    spec:
+      containers:
+      - name: app
+        image: your-registry/your-app:latest
+        ports:
+        - containerPort: 8080

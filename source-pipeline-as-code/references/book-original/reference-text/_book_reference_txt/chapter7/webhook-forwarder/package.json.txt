@@ -1,0 +1,16 @@
+SOURCE: chapter7/webhook-forwarder/package.json
+MIME: application/json; charset=us-ascii
+----- BEGIN CONTENT -----
+{
+    "name": "github-webhook",
+    "version": "1.0.0",
+    "description": "Lambda Github Webhook Triggered by API Gateway to send requests to Jenkins",
+    "main": "index.js",
+    "author": "Mohamed Labouardy",
+    "license": "Manning",
+    "dependencies": {
+      "request": "^2.88.0"
+    }
+  }
+  
+----- END CONTENT -----

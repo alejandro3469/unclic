@@ -1,0 +1,37 @@
+package mx.com.endtoend.infrastructure.services.jde.catalogue.demo.common.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import mx.com.endtoend.infrastructure.services.jde.catalogue.demo.common.entities.F0117;
+import mx.com.endtoend.infrastructure.services.jde.catalogue.demo.common.entities.F0117Id;
+
+@Repository
+public interface F0117FDemoRepository extends JpaRepository<F0117, F0117Id>, CustomDirectionFDemoRepository {
+
+	@Query(value = "select * from F0117 join F0118 on A8ADDZ = A7ADDZ where (trim(A8ADDZ)) = :cp ORDER BY A7ADD4", nativeQuery = true)
+	List<F0117> findByCp(@Param("cp") String cp);
+
+	// TODO: CAMBIAR CUANDO SE PASE A PRD - BUG
+	// @Query(value = "select * from PRODDTA.F0117 inner join PRODDTA.F0118 on
+	// A8ADDZ = A7ADDZ where (trim(A7ADD4)) = :colony and (trim(A8ADDZ)) = :cp",
+	// nativeQuery = true)
+	// List<F0117> findByColony(@Param("colony") String colony,@Param("cp") String
+	// cp);
+
+	@Query(value = "select * from DEMODTA.F0117 inner join DEMODTA.F0118 on A8ADDZ = A7ADDZ where (trim(A7ADD4)) = :colony and (trim(A8ADDZ)) = :cp", nativeQuery = true)
+	List<F0117> findByColony(@Param("colony") String colony, @Param("cp") String cp);
+
+	// TODO: CAMBIAR CUANDO SE PASE A PRD - BUG
+	// @Query(value = "select * from PRODDTA.F0117 inner join PRODDTA.F0118 on
+	// A8ADDZ = A7ADDZ where (trim(A8ADDS)) = :state", nativeQuery = true)
+	// List<F0117> findByState(@Param("state") String state);
+
+	@Query(value = "select * from DEMODTA.F0117 inner join DEMODTA.F0118 on A8ADDZ = A7ADDZ where (trim(A8ADDS)) = :state", nativeQuery = true)
+	List<F0117> findByState(@Param("state") String state);
+
+}

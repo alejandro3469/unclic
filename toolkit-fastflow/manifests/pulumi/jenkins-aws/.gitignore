@@ -1,0 +1,8 @@
+node_modules/
+bin/
+# Stack config (puede contener datos sensibles); usar Pulumi.dev.yaml.example como plantilla
+Pulumi.dev.yaml
+Pulumi.*.yaml
+!Pulumi.yaml
+!Pulumi.dev.yaml.example
+*.log

@@ -1,0 +1,155 @@
+// =============================================================================
+// Jenkinsfile.rollback — Job OPCIONAL: rollback POS por tag de imagen en registry
+// =============================================================================
+//
+// PROPÓSITO
+//   Volver a una versión ya publicada sin ejecutar Maven ni docker build.
+//   Hace: SSH al servidor POS → docker pull → stop/rm contenedor → run con el tag elegido.
+//
+// CÓMO CREAR EL JOB EN JENKINS
+//   New Item → Pipeline → nombre ej. "pos-online-rollback"
+//   Pipeline script from SCM → mismo repo Git que pos-online
+//   Script Path: Jenkinsfile.rollback   (no "Jenkinsfile")
+//
+// RELACIÓN CON Jenkinsfile (principal)
+//   El pipeline principal etiqueta la imagen con ${BUILD_NUMBER} y latest.
+//   Aquí introduces manualmente ROLLBACK_IMAGE_TAG = ese número (ej. 41).
+//
+// DOCUMENTACIÓN
+//   ROLLBACK-POS-DOCKER-REGISTRY.md (este repo)
+//   ELEMENTOS-Y-PIPELINE-DEPLOY-OTRO-SERVIDOR.md (variables REGISTRY, POS_DEPLOY_*)
+//
+// INSTANCIAS AWS (ejemplo de tu cuenta; ajusta POS_DEPLOY_HOST al ejecutar)
+//   fastflow-pos        → 3.129.247.127  (ec2 en us-east-2)
+//   fastflow-pos-demo   → 13.58.172.235  (DNS pos → esta IP en Namecheap)
+//
+// =============================================================================
+
+properties([
+    parameters([
+        string(
+            name: 'ROLLBACK_IMAGE_TAG',
+            defaultValue: '',
+            description: 'Tag de imagen existente en el registry (típicamente el BUILD_NUMBER del job principal), ej. 41'
+        ),
+        string(
+            name: 'REGISTRY',
+            defaultValue: '',
+            description: 'Mismo valor que en el job principal, ej. 10.0.0.50:5000 o registry.unclic.consulting:5000'
+        ),
+        string(
+            name: 'POS_DEPLOY_HOST',
+            defaultValue: '',
+            description: 'IP o hostname del servidor donde corre el contenedor pos-online, ej. 3.129.247.127 o pos.unclic.consulting'
+        ),
+        string(
+            name: 'POS_DEPLOY_USER',
+            defaultValue: 'ec2-user',
+            description: 'Usuario SSH (debe poder ejecutar docker sin contraseña o con sudo configurado)'
+        ),
+        string(
+            name: 'POS_DEPLOY_KEY_CREDENTIAL_ID',
+            defaultValue: '',
+            description: 'ID de credencial Jenkins "Secret file" con la clave .pem para SSH'
+        ),
+        string(
+            name: 'IMAGE_NAME',
+            defaultValue: 'pos-online',
+            description: 'Nombre de imagen (debe coincidir con el Jenkinsfile principal)'
+        ),
+        string(
+            name: 'APP_PORT',
+            defaultValue: '8111',
+            description: 'Puerto en el HOST mapeado al 8111 del contenedor'
+        ),
+    ])
+])
+
+pipeline {
+    agent any
+
+    stages {
+        stage('Validate parameters') {
+            steps {
+                script {
+                    // Sin estos valores no es seguro ejecutar: evitamos pull/run accidental.
+                    if (!params.ROLLBACK_IMAGE_TAG?.trim()) {
+                        error 'ROLLBACK_IMAGE_TAG es obligatorio (ej. número de build anterior).'
+                    }
+                    if (!params.REGISTRY?.trim()) {
+                        error 'REGISTRY es obligatorio (mismo registry que el pipeline principal).'
+                    }
+                    if (!params.POS_DEPLOY_HOST?.trim()) {
+                        error 'POS_DEPLOY_HOST es obligatorio (servidor POS).'
+                    }
+                    if (!params.POS_DEPLOY_KEY_CREDENTIAL_ID?.trim()) {
+                        error 'POS_DEPLOY_KEY_CREDENTIAL_ID es obligatorio (credencial SSH en Jenkins).'
+                    }
+                    echo "[rollback] Imagen objetivo: ${params.REGISTRY}/${params.IMAGE_NAME}:${params.ROLLBACK_IMAGE_TAG}"
+                    echo "[rollback] Destino SSH: ${params.POS_DEPLOY_USER}@${params.POS_DEPLOY_HOST}"
+                }
+            }
+        }
+
+        stage('Rollback container on POS host') {
+            steps {
+                script {
+                    def fullImage = "${params.REGISTRY.trim()}/${params.IMAGE_NAME.trim()}:${params.ROLLBACK_IMAGE_TAG.trim()}"
+                    def port = params.APP_PORT.trim()
+                    def user = params.POS_DEPLOY_USER.trim()
+                    def host = params.POS_DEPLOY_HOST.trim()
+                    def credId = params.POS_DEPLOY_KEY_CREDENTIAL_ID.trim()
+                    withCredentials([file(credentialsId: credId, variable: 'SSH_KEY')]) {
+                        sh """
+                            set -e
+                            echo "[rollback] SSH redeploy en ${user}@${host} imagen ${fullImage}"
+                            ssh -i \$SSH_KEY -o StrictHostKeyChecking=no ${user}@${host} "
+                                docker pull ${fullImage}
+                                (docker stop pos-online || true)
+                                (docker rm pos-online || true)
+                                docker run -d --name pos-online -p ${port}:8111 --restart=unless-stopped ${fullImage}
+                            "
+                            echo "[rollback] Esperando arranque (90 s) ..."
+                            sleep 90
+                            ssh -i \$SSH_KEY -o StrictHostKeyChecking=no ${user}@${host} \\
+                              "docker ps --filter name=pos-online --format '{{.Status}}'; docker logs pos-online --tail 15 2>/dev/null || true"
+                        """
+                    }
+                }
+            }
+        }
+
+        stage('Verify health') {
+            steps {
+                sh """
+                    set -e
+                    BASE="http://${params.POS_DEPLOY_HOST.trim()}:${params.APP_PORT.trim()}"
+                    echo "[rollback] Verificando \$BASE/health o actuator/health (desde el agente Jenkins) ..."
+                    for i in 1 2 3 4 5 6; do
+                      if curl -sf "\$BASE/actuator/health" | grep -qE 'UP|status' ; then
+                        echo "[rollback] Health OK (actuator)"
+                        exit 0
+                      fi
+                      if curl -sf "\$BASE/health" | grep -qE 'UP|status' ; then
+                        echo "[rollback] Health OK (/health)"
+                        exit 0
+                      fi
+                      echo "[rollback] reintento \$i ..."
+                      sleep 15
+                    done
+                    echo "[rollback] ERROR: health no respondió (¿SG abre ${params.APP_PORT} desde Jenkins? ¿Nginx solo en 443?)"
+                    exit 1
+                """
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "[rollback] Listo. POS ejecutando ${params.REGISTRY}/${params.IMAGE_NAME}:${params.ROLLBACK_IMAGE_TAG}"
+        }
+        failure {
+            echo "[rollback] Falló. Revisa consola, conectividad registry desde el POS, y tags existentes."
+        }
+    }
+}

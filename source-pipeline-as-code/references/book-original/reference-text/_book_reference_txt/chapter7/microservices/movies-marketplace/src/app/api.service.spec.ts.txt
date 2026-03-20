@@ -1,0 +1,17 @@
+SOURCE: chapter7/microservices/movies-marketplace/src/app/api.service.spec.ts
+MIME: text/x-java; charset=us-ascii
+----- BEGIN CONTENT -----
+import { TestBed } from '@angular/core/testing';
+
+import { ApiService } from './api.service';
+
+describe('ApiService', () => {
+  beforeEach(() => TestBed.configureTestingModule({}));
+
+  it('should be created', () => {
+    const service: ApiService = TestBed.get(ApiService);
+    expect(service).toBeTruthy();
+  });
+});
+
+----- END CONTENT -----

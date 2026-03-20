@@ -1,0 +1,93 @@
+package mx.com.endtoend.infrastructure.logs.orders.demo.business;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import mx.com.endtoend.domain.logs.orders.dto.OrderSummaryLogDto;
+import mx.com.endtoend.infrastructure.logs.orders.GenericOrderLogPersistenceInterface;
+import mx.com.endtoend.infrastructure.logs.orders.demo.repositories.OrderDetailFinalStateLogDemoRepository;
+import mx.com.endtoend.infrastructure.logs.orders.demo.repositories.OrderDetailPrevStateLogDemoRepository;
+import mx.com.endtoend.infrastructure.logs.orders.demo.repositories.OrderFinalStateLogDemoRepository;
+import mx.com.endtoend.infrastructure.logs.orders.demo.repositories.OrderLogDemoRepository;
+import mx.com.endtoend.infrastructure.logs.orders.demo.repositories.OrderPrevStateLogDemoRepository;
+import mx.com.endtoend.infrastructure.logs.orders.converters.OrderLogConverter;
+import mx.com.endtoend.infrastructure.logs.orders.entities.OrderDetailFinalStateEntity;
+import mx.com.endtoend.infrastructure.logs.orders.entities.OrderDetailPreviousStateEntity;
+import mx.com.endtoend.infrastructure.logs.orders.entities.OrderFinalStateEntity;
+import mx.com.endtoend.infrastructure.logs.orders.entities.OrderLogEntity;
+import mx.com.endtoend.infrastructure.logs.orders.entities.OrderPreviousStateEntity;
+
+@Service
+public class OrderLogDemoBusinessRepository implements GenericOrderLogPersistenceInterface {
+
+	@Autowired
+	private OrderLogConverter orderLogConverter;
+
+	@Autowired
+	private OrderLogDemoRepository orderLogRepository;
+
+	@Autowired
+	private OrderDetailFinalStateLogDemoRepository orderDetailFinalStateLogDemoRepository;
+
+	@Autowired
+	private OrderDetailPrevStateLogDemoRepository orderDetailPrevStateLogDemoRepository;
+
+	@Autowired
+	private OrderFinalStateLogDemoRepository orderFinalStateLogDemoRepository;
+
+	@Autowired
+	private OrderPrevStateLogDemoRepository orderPrevStateLogDemoRepository;
+
+	private final Logger LOG = LoggerFactory.getLogger(OrderLogDemoBusinessRepository.class);
+
+	@Override
+	public void saveOrderLog(OrderSummaryLogDto oderOrderSummaryLogDto) {
+		try {
+			LOG.info("INIT saveOrderLog() for DEMO");
+			
+			// Convertir y guardar log principal de la orden (usando la implementación real de Carredana)
+			OrderLogEntity orderLogEntity = orderLogConverter.orderSummaryToEntiy(oderOrderSummaryLogDto);
+			orderLogEntity = orderLogRepository.save(orderLogEntity);
+			Long orderSummaryId = orderLogEntity.getId();
+
+			// Convertir y guardar estado previo de la orden
+			OrderPreviousStateEntity orderPreviousStateEntity = orderLogConverter
+					.orderSavedToEntity(oderOrderSummaryLogDto.getOrderSaved(), orderSummaryId);
+			orderPreviousStateEntity = orderPrevStateLogDemoRepository.save(orderPreviousStateEntity);
+			Long orderPrevId = orderPreviousStateEntity.getOrderId();
+
+			// Convertir y guardar detalles del estado previo
+			List<OrderDetailPreviousStateEntity> orderDetailPrevStateList = oderOrderSummaryLogDto.getOrderSaved()
+					.getOrderDetail().stream()
+					.map(orderDetailDto -> orderLogConverter.orderDetailSavedToEntity(orderDetailDto, orderPrevId))
+					.collect(Collectors.toList());
+			orderDetailPrevStateLogDemoRepository.saveAll(orderDetailPrevStateList);
+
+			// Convertir y guardar estado final de la orden
+			OrderFinalStateEntity orderFinalStateEntity = orderLogConverter
+					.orderUpdatedToEntity(oderOrderSummaryLogDto.getOrderUpdated(), orderSummaryId);
+			orderFinalStateEntity = orderFinalStateLogDemoRepository.save(orderFinalStateEntity);
+			Long orderFinalId = orderFinalStateEntity.getOrderId();
+
+			// Convertir y guardar detalles del estado final
+			List<OrderDetailFinalStateEntity> orderDetailFinalStateList = oderOrderSummaryLogDto.getOrderUpdated()
+					.getOrderDetail().stream()
+					.map(orderDetailDto -> orderLogConverter.orderDetailUpdatedToEntity(orderDetailDto, orderFinalId))
+					.collect(Collectors.toList());
+			orderDetailFinalStateLogDemoRepository.saveAll(orderDetailFinalStateList);
+			
+			LOG.info("DEMO - Order log saved successfully");
+			LOG.info("RETURN saveOrderLog");
+			
+		} catch (Exception e) {
+			LOG.error("ERROR IN saveOrderLog() for DEMO. EXCEPTION: {}", e.getMessage());
+			e.printStackTrace();
+		}
+	}
+
+}

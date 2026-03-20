@@ -1,0 +1,6 @@
+SOURCE: chapter7/microservices/movies-loader/requirements.txt
+MIME: text/plain; charset=us-ascii
+----- BEGIN CONTENT -----
+boto3
+pytest
+----- END CONTENT -----

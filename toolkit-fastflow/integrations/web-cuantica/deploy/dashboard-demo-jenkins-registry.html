@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<!--
+  Dashboard CI/CD para pos-online (implementación FastFlow): Jenkins + Registry + App.
+  Enlaces a Jenkins (8080), registry (5000), aplicación pos-online (puerto según despliegue).
+-->
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demo CI/CD — Jenkins y Registry</title>
+  <link rel="stylesheet" href="shopify-style.css">
+  <style>
+    :root { --bg: #1a1d23; --card: #252830; --text: #e6e8ec; --accent: #4a9eff; --muted: #8b8f99; }
+    * { box-sizing: border-box; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 2rem; min-height: 100vh; }
+    h1 { font-size: 1.5rem; margin-bottom: 1.5rem; color: var(--text); }
+    .grid { display: grid; gap: 1rem; max-width: 640px; }
+    .card { background: var(--card); border-radius: 8px; padding: 1.25rem; border: 1px solid rgba(255,255,255,.06); }
+    .card h2 { font-size: 1rem; margin: 0 0 .75rem; color: var(--muted); font-weight: 600; }
+    .card a { color: var(--accent); text-decoration: none; display: inline-block; margin-bottom: .5rem; }
+    .card a:hover { text-decoration: underline; }
+    .card p { margin: 0; font-size: 0.9rem; color: var(--muted); }
+    .versions { font-size: 0.85rem; color: var(--muted); }
+    .versions ul { margin: .5rem 0 0; padding-left: 1.25rem; }
+  </style>
+</head>
+<body>
+  <header class="site-sticky-bar" id="shopify-section-mega-menu">
+    <div class="bar-inner">
+      <a href="dashboard-demo-jenkins-registry.html">FastFlow pos-online</a>
+      <a href="dashboard-demo-jenkins-registry.html">Dashboard</a>
+      <a href="config-ui.html">Config</a>
+      <a href="control-center-flujo-aws.html">Control center</a>
+      <a href="interfaz-central-flujo-aws.html">Interfaz central</a>
+    </div>
+  </header>
+  <h1>Demo CI/CD — Jenkins y Registry</h1>
+  <p style="color: var(--muted); margin-bottom: 1.5rem;">UI mínima para acceder a Jenkins y al registry desde local. <strong><a href="interfaz-central-flujo-aws.html" style="color: var(--accent);">Interfaz central (echar a andar POS + Jenkins)</a></strong> — la única parte manual es el commit; el resto se observa desde ahí. <a href="config-ui.html" style="color: var(--accent);">Ver y administrar todas las configuraciones</a>.</p>
+
+  <div class="grid">
+    <div class="card" style="border-color: var(--accent);">
+      <h2>Interfaz central — arrancar todo y flujo AWS</h2>
+      <a href="interfaz-central-flujo-aws.html" target="_blank" rel="noopener">Abrir interfaz central</a>
+      <p>Ejecuta <code>./scripts/start-flujo-pos-jenkins.sh</code> para arrancar POS y abrir esta interfaz. Jenkins en AWS ya corre en la EC2. La única parte manual es el commit.</p>
+    </div>
+    <div class="card">
+      <h2>Control center (otra vista)</h2>
+      <a href="control-center-flujo-aws.html" target="_blank" rel="noopener">Control center (POS, Jenkins, flujo)</a>
+      <p>Misma idea: URLs configurables, flujo con commit manual.</p>
+    </div>
+    <div class="card">
+      <h2>Jenkins</h2>
+      <a href="http://localhost:8080" target="_blank" rel="noopener">Abrir Jenkins (localhost:8080)</a>
+      <p>Pipeline, permisos, ejecutar builds por rama.</p>
+    </div>
+    <div class="card">
+      <h2>Registry</h2>
+      <a href="http://localhost:5000/v2/_catalog" target="_blank" rel="noopener">Registry local — catálogo (localhost:5000)</a>
+      <p>Si usas registry local <code>registry:2</code>. Para Docker Hub o GitLab, cambia la URL en este HTML.</p>
+    </div>
+    <div class="card">
+      <h2>Versiones / Tags</h2>
+      <p class="versions">Listado de imágenes y tags según el registry:</p>
+      <ul class="versions">
+        <li>Registry local: <a href="http://localhost:5000/v2/_catalog" target="_blank" rel="noopener">/_catalog</a> y luego /v2/&lt;nombre&gt;/tags/list</li>
+        <li>Docker Hub / GitLab: usar la UI del registry o su API.</li>
+      </ul>
+      <p style="margin-top: .75rem;">Persistencia: documentar política de retención (ej. últimas 30 imágenes o 90 días) en el README del repo.</p>
+    </div>
+    <div class="card">
+      <h2>Aplicación</h2>
+      <a href="http://localhost:3000" target="_blank" rel="noopener">App desplegada (localhost:3000)</a>
+      <p>pos-online: puerto del JAR o URL según despliegue (health/actuator si aplica).</p>
+    </div>
+    <div class="card">
+      <h2>Logs y consola</h2>
+      <a href="http://localhost:8080" target="_blank" rel="noopener">Jenkins → último build → Console Output</a>
+      <p>Para ver logs por fase (Test, Build image, Push, Deploy).</p>
+    </div>
+  </div>
+
+  <p style="margin-top: 2rem; font-size: 0.8rem; color: var(--muted);">
+    Implementación FastFlow para pos-online. Config central: <strong>config/fastflow-config.json</strong>. UI de config: <a href="config-ui.html" style="color: var(--accent);">config-ui.html</a>.
+  </p>
+</body>
+</html>

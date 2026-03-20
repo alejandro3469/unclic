@@ -1,0 +1,17 @@
+SOURCE: chapter11/deployment/helm/watchlist/templates/movies-marketplace/service.yaml
+MIME: text/plain; charset=us-ascii
+----- BEGIN CONTENT -----
+apiVersion: v1
+kind: Service
+metadata:
+  name: movies-marketplace
+  namespace: {{ .Values.namespace }}
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+  type: LoadBalancer
+  selector:
+    app: movies-marketplace
+----- END CONTENT -----

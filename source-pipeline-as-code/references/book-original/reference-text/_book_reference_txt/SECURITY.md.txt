@@ -1,0 +1,13 @@
+SOURCE: SECURITY.md
+MIME: text/plain; charset=us-ascii
+----- BEGIN CONTENT -----
+# Security Policy
+
+## Supported Versions
+
+| Version | Supported          |
+| ------- | ------------------ |
+| 1.0.0   | :white_check_mark: |
+
+
+----- END CONTENT -----

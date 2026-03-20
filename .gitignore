@@ -1,0 +1,13 @@
+# OS
+.DS_Store
+
+# Vídeos pesados (no subir al repo)
+**/*.mov
+**/knj_materiales-*/
+
+# Terraform
+**/.terraform/
+**/.terraform.lock.hcl
+
+# Dependencias y builds (opcional; cada subproyecto puede tener el suyo)
+**/node_modules/

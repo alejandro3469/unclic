@@ -1,0 +1,13 @@
+SOURCE: chapter6/gcp/packer/master/scripts/csrf-protection.groovy
+MIME: text/plain; charset=us-ascii
+----- BEGIN CONTENT -----
+#!groovy
+
+import hudson.security.csrf.DefaultCrumbIssuer
+import jenkins.model.Jenkins
+
+println "--> enabling CSRF protection"
+def instance = Jenkins.instance
+instance.setCrumbIssuer(new DefaultCrumbIssuer(true))
+instance.save()
+----- END CONTENT -----

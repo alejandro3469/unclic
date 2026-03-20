@@ -1,0 +1,9 @@
+# Solo producto FastFlow; excluir otras landings y dev
+node_modules
+.git
+*.log
+.env
+.env.local
+server/.env
+.cursor
+.idea

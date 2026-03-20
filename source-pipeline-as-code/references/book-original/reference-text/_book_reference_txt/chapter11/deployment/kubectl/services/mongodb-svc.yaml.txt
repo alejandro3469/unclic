@@ -1,0 +1,16 @@
+SOURCE: chapter11/deployment/kubectl/services/mongodb-svc.yaml
+MIME: text/plain; charset=us-ascii
+----- BEGIN CONTENT -----
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb
+  namespace: watchlist
+spec:
+  ports:
+    - port: 27017
+  selector:
+    app: mongodb
+    tier: mongodb
+  clusterIP: None
+----- END CONTENT -----

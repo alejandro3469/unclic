@@ -1,0 +1,80 @@
+// Pipeline landing UnClic: build Next.js export estático y despliegue a EC2 (Nginx).
+// IMPORTANTE: Tras cambiar este archivo, haz commit y push a Gitea (nucleic) para que el próximo build lo use.
+// Repo en Gitea; Jenkins clona, hace npm ci + npm run build, copia out/ por SSH a la EC2 del subdominio landing.
+//
+// OPCIÓN A (recomendada): Agente Docker con Node.js — evita "npm: command not found".
+//   Requiere que el nodo Jenkins tenga Docker instalado y el usuario de Jenkins pueda usar Docker.
+//
+// OPCIÓN B: Si Docker no está disponible, usar agente "any" y herramienta Node.js de Jenkins:
+//   - En Jenkins: Manage Jenkins → Global Tool Configuration → NodeJS → Add "NodeJS" (ej. 20.x).
+//   - En este Jenkinsfile: cambiar "agent { docker { ... } }" por "agent any" y añadir en Install/Build:
+//     env.NODEJS_HOME = "${tool 'NodeJS'}"  (o el nombre que le hayas puesto)
+//     env.PATH = "${env.NODEJS_HOME}/bin:${env.PATH}"
+//   O usar el wrapper: wrap([$class: 'NodeJSInstallation', nodeJSInstallationName: 'NodeJS']) { ... }
+//
+// Configurar en Jenkins: credenciales Gitea; credenciales SSH para DEPLOY_HOST.
+// Variables del job: DEPLOY_HOST, DEPLOY_USER, DEPLOY_PATH (ej. /usr/share/nginx/landing).
+// Si el job clona solo unclic (raíz = unclic), cambiar APP_DIR a '.'.
+
+def APP_DIR = 'toolkit-fastflow/integrations/web-cuantica/unclic'
+
+pipeline {
+    agent {
+        docker {
+            image 'node:20-alpine'
+            reuseNode true
+        }
+    }
+    environment {
+        DEPLOY_PATH = "${env.DEPLOY_PATH ?: '/usr/share/nginx/landing'}"
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+                sh "echo 'Rama: ${GIT_BRANCH:-main}'; git rev-parse --short HEAD"
+            }
+        }
+        stage('Install') {
+            steps {
+                dir(APP_DIR) {
+                    sh 'npm ci'
+                }
+            }
+        }
+        stage('Build') {
+            steps {
+                dir(APP_DIR) {
+                    sh 'npm run build'
+                    sh 'ls -la out/ | head -20'
+                }
+            }
+        }
+        stage('Deploy') {
+            when { branch 'main' }
+            steps {
+                script {
+                    def host = env.DEPLOY_HOST ?: ''
+                    def user = env.DEPLOY_USER ?: 'ec2-user'
+                    if (!host.trim()) {
+                        echo 'DEPLOY_HOST no configurado: omitiendo Deploy. Configurar en job o global.'
+                        return
+                    }
+                    def outPath = "${APP_DIR}/out"
+                    sh """
+                        echo "Desplegando ${outPath}/ a ${user}@${host}:${DEPLOY_PATH}"
+                        rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" ${outPath}/ ${user}@${host}:${DEPLOY_PATH}/
+                    """
+                }
+            }
+        }
+    }
+    post {
+        success {
+            echo "Build y despliegue completados. Landing actualizado en el subdominio configurado."
+        }
+        failure {
+            echo "Pipeline falló. Revisar logs de Install, Build o Deploy."
+        }
+    }
+}

@@ -1,0 +1,12 @@
+SOURCE: chapter14/library/vars/commitAuthor.groovy
+MIME: text/plain; charset=us-ascii
+----- BEGIN CONTENT -----
+#!/usr/bin/env groovy
+
+def call() {
+  sh 'git show -s --pretty=%an > .git/commitAuthor'
+  def commitAuthor = readFile('.git/commitAuthor').trim()
+  sh 'rm .git/commitAuthor'
+  commitAuthor
+}
+----- END CONTENT -----

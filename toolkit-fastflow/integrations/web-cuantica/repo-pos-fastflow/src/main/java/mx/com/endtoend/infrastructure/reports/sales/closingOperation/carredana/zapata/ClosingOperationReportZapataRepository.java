@@ -1,0 +1,13 @@
+package mx.com.endtoend.infrastructure.reports.sales.closingOperation.carredana.zapata;
+
+import mx.com.endtoend.infrastructure.reports.sales.closingOperation.common.repository.BaseClosingOperationReportRepository;
+import org.springframework.stereotype.Service;
+import mx.com.endtoend.infrastructure.reports.sales.closingOperation.carredana.zapata.repositories.CustomDSLClosingOperationZapataRepository;
+
+@Service
+public class ClosingOperationReportZapataRepository extends BaseClosingOperationReportRepository {
+
+	public ClosingOperationReportZapataRepository(CustomDSLClosingOperationZapataRepository customDSLClosingOperationZapataRepository){
+		super(ClosingOperationReportZapataRepository.class,customDSLClosingOperationZapataRepository);
+	}
+}

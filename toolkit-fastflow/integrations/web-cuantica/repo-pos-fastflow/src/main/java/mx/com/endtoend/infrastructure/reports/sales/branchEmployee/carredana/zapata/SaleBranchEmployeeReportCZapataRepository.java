@@ -1,0 +1,13 @@
+package mx.com.endtoend.infrastructure.reports.sales.branchEmployee.carredana.zapata;
+
+import mx.com.endtoend.infrastructure.reports.sales.branchEmployee.common.repository.BaseSaleBranchEmployeeReportRepository;
+import org.springframework.stereotype.Service;
+import mx.com.endtoend.infrastructure.reports.sales.branchEmployee.carredana.zapata.repositories.CustomDSLPaymentBranchEmployeeFCZapataRepository;
+
+@Service
+public class SaleBranchEmployeeReportCZapataRepository extends BaseSaleBranchEmployeeReportRepository {
+
+	public SaleBranchEmployeeReportCZapataRepository(CustomDSLPaymentBranchEmployeeFCZapataRepository customDSLPaymentBranchEmployeeFCarredanaRepository){
+		super(SaleBranchEmployeeReportCZapataRepository.class, customDSLPaymentBranchEmployeeFCarredanaRepository);
+	}
+}

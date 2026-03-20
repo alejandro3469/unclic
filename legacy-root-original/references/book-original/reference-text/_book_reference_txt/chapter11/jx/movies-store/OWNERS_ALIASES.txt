@@ -1,0 +1,11 @@
+SOURCE: chapter11/jx/movies-store/OWNERS_ALIASES
+MIME: text/plain; charset=us-ascii
+----- BEGIN CONTENT -----
+aliases:
+- mlabouardy
+best-approvers:
+- mlabouardy
+best-reviewers:
+- mlabouardy
+
+----- END CONTENT -----

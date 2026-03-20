@@ -1,0 +1,39 @@
+SOURCE: chapter11/jx/watchlist-production/Jenkinsfile
+MIME: text/plain; charset=us-ascii
+----- BEGIN CONTENT -----
+pipeline {
+  options {
+    disableConcurrentBuilds()
+  }
+  agent {
+    label "jenkins-maven"
+  }
+  environment {
+    DEPLOY_NAMESPACE = "jx-production"
+  }
+  stages {
+    stage('Validate Environment') {
+      steps {
+        container('maven') {
+          dir('env') {
+            sh 'jx step helm build'
+          }
+        }
+      }
+    }
+    stage('Update Environment') {
+      when {
+        branch 'master'
+      }
+      steps {
+        container('maven') {
+          dir('env') {
+            sh 'jx step helm apply'
+          }
+        }
+      }
+    }
+  }
+}
+
+----- END CONTENT -----

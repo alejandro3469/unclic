@@ -1,0 +1,40 @@
+# Codex admin-enforced policy template (requirements.toml)
+# Deploy path:
+# - Unix: /etc/codex/requirements.toml
+# - macOS MDM key: com.openai.codex -> requirements_toml_base64
+#
+# This file defines constraints users cannot override.
+
+# Optional: enforce data residency for supported plans/regions.
+enforce_residency = "us"
+
+# Allow only explicit user approvals before privileged actions.
+allowed_approval_policies = ["on-request"]
+
+# Disallow full-access sandboxes.
+allowed_sandbox_modes = ["read-only", "workspace-write"]
+
+# Allow only cached search mode (and implicit disabled); disallow live search.
+allowed_web_search_modes = ["cached"]
+
+# Optional feature pins. Omit keys you do not want to enforce.
+[features]
+personality = true
+unified_exec = true
+
+# Restrictive command guardrails merged with .rules.
+[rules]
+prefix_rules = [
+  { pattern = [{ token = "rm" }], decision = "forbidden", justification = "Destructive delete is blocked by policy." },
+  { pattern = [{ token = "git" }, { any_of = ["commit", "push"] }], decision = "prompt", justification = "Require explicit review before changing shared history." },
+  { pattern = [{ any_of = ["bash", "sh", "zsh"] }], decision = "prompt", justification = "Require explicit approval for shell entrypoints." },
+]
+
+# Optional MCP allowlist examples.
+# If you define [mcp_servers] and leave it empty, all MCP servers are disabled.
+#
+# [mcp_servers.docs]
+# identity = { command = "codex-mcp" }
+#
+# [mcp_servers.remote]
+# identity = { url = "https://example.com/mcp" }

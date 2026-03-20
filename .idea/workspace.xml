@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="d2b752bd-37af-4450-96a3-cdaddc83784e" name="Changes" comment="commit">
+      <change afterPath="$PROJECT_DIR$/toolkit-fastflow/integrations/kings-joers/vantive/public/knj_materiales-oxiris_2026-03-12_2349/VIDEOS/oxiris 1.mov" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/toolkit-fastflow/integrations/kings-joers/vantive/public/knj_materiales-oxiris_2026-03-12_2349/VIDEOS/oxiris 2.mov" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/toolkit-fastflow/integrations/kings-joers/vantive/public/knj_materiales-oxiris_2026-03-12_2349/VIDEOS/oxiris 3.mov" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/toolkit-fastflow/integrations/kings-joers/vantive/public/knj_materiales-oxiris_2026-03-12_2349/VIDEOS/oxiris 4.mov" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/toolkit-fastflow/integrations/kings-joers/vantive/public/knj_materiales-oxiris_2026-03-12_2349/VIDEOS/oxiris 5.mov" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/toolkit-fastflow/integrations/kings-joers/vantive/public/knj_materiales-oxiris_2026-03-12_2349/VIDEOS/oxiris 6.mov" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/toolkit-fastflow/integrations/kings-joers/vantive/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/toolkit-fastflow/integrations/kings-joers/vantive/app/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/toolkit-fastflow/integrations/kings-joers/vantive/app/productos/set-oxiris/paciente-objetivo/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/toolkit-fastflow/integrations/kings-joers/vantive/app/productos/set-oxiris/paciente-objetivo/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/toolkit-fastflow/integrations/kings-joers/vantive/app/productos/set-oxiris/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/toolkit-fastflow/integrations/kings-joers/vantive/app/productos/set-oxiris/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/toolkit-fastflow/integrations/kings-joers/vantive/components/nav-centro.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/toolkit-fastflow/integrations/kings-joers/vantive/components/nav-centro.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/toolkit-fastflow/integrations/kings-joers/vantive/components/oxiris-audio-player.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/toolkit-fastflow/integrations/kings-joers/vantive/components/oxiris-audio-player.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/toolkit-fastflow/integrations/kings-joers/vantive/docs/CALIDAD-REFERENCIA-PLAN-GRANULAR.md" beforeDir="false" afterPath="$PROJECT_DIR$/toolkit-fastflow/integrations/kings-joers/vantive/docs/CALIDAD-REFERENCIA-PLAN-GRANULAR.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/toolkit-fastflow/integrations/kings-joers/vantive/docs/probar/COMO-PROBAR.md" beforeDir="false" afterPath="$PROJECT_DIR$/toolkit-fastflow/integrations/kings-joers/vantive/docs/probar/COMO-PROBAR.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/toolkit-fastflow/integrations/kings-joers/vantive/tailwind.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/toolkit-fastflow/integrations/kings-joers/vantive/tailwind.config.ts" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="3AiFCZuTCDwY5zVREqa2Cg4rYiE" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;handoff/george-web-cuantica-front&quot;,
+    &quot;javascript.preferred.runtime.type.id&quot;: &quot;node&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/wallfacer/Downloads/pipeline-as-code-with-jenkins-master&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/wallfacer/Downloads/pipeline-as-code-with-jenkins-master/toolkit-fastflow/integrations/kings-joers/vantive/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/toolkit-fastflow/integrations/kings-joers/vantive/public/images" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.25410.109" />
+        <option value="bundled-js-predefined-d6986cc7102b-6a121458b545-JavaScript-IU-251.25410.109" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="d2b752bd-37af-4450-96a3-cdaddc83784e" name="Changes" comment="" />
+      <created>1773067356765</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1773067356765</updated>
+      <workItem from="1773067357987" duration="7306000" />
+      <workItem from="1773152833005" duration="12939000" />
+      <workItem from="1773236898619" duration="601000" />
+      <workItem from="1773358242970" duration="3601000" />
+      <workItem from="1773371787586" duration="23233000" />
+      <workItem from="1773429355989" duration="598000" />
+      <workItem from="1773443898558" duration="35000" />
+      <workItem from="1773443948924" duration="2130000" />
+    </task>
+    <task id="LOCAL-00001" summary="commit">
+      <option name="closed" value="true" />
+      <created>1773152855035</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1773152855035</updated>
+    </task>
+    <task id="LOCAL-00002" summary="commit">
+      <option name="closed" value="true" />
+      <created>1773154103725</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1773154103725</updated>
+    </task>
+    <task id="LOCAL-00003" summary="commit">
+      <option name="closed" value="true" />
+      <created>1773155447508</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1773155447508</updated>
+    </task>
+    <task id="LOCAL-00004" summary="commit">
+      <option name="closed" value="true" />
+      <created>1773158232761</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1773158232761</updated>
+    </task>
+    <task id="LOCAL-00005" summary="commit">
+      <option name="closed" value="true" />
+      <created>1773158992053</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1773158992053</updated>
+    </task>
+    <task id="LOCAL-00006" summary="commit">
+      <option name="closed" value="true" />
+      <created>1773160680954</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1773160680954</updated>
+    </task>
+    <task id="LOCAL-00007" summary="commit">
+      <option name="closed" value="true" />
+      <created>1773161504930</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1773161504930</updated>
+    </task>
+    <task id="LOCAL-00008" summary="commit">
+      <option name="closed" value="true" />
+      <created>1773161719314</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1773161719314</updated>
+    </task>
+    <task id="LOCAL-00009" summary="commit">
+      <option name="closed" value="true" />
+      <created>1773162376258</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1773162376258</updated>
+    </task>
+    <task id="LOCAL-00010" summary="commit">
+      <option name="closed" value="true" />
+      <created>1773164153432</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1773164153432</updated>
+    </task>
+    <task id="LOCAL-00011" summary="commit">
+      <option name="closed" value="true" />
+      <created>1773185338241</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1773185338241</updated>
+    </task>
+    <task id="LOCAL-00012" summary="commit">
+      <option name="closed" value="true" />
+      <created>1773187774393</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1773187774393</updated>
+    </task>
+    <task id="LOCAL-00013" summary="commit">
+      <option name="closed" value="true" />
+      <created>1773192308263</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1773192308263</updated>
+    </task>
+    <task id="LOCAL-00014" summary="commit">
+      <option name="closed" value="true" />
+      <created>1773192764403</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1773192764403</updated>
+    </task>
+    <task id="LOCAL-00015" summary="commit">
+      <option name="closed" value="true" />
+      <created>1773193577981</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1773193577981</updated>
+    </task>
+    <task id="LOCAL-00016" summary="commit">
+      <option name="closed" value="true" />
+      <created>1773199327638</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1773199327638</updated>
+    </task>
+    <task id="LOCAL-00017" summary="commit">
+      <option name="closed" value="true" />
+      <created>1773261854007</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1773261854007</updated>
+    </task>
+    <task id="LOCAL-00018" summary="commit">
+      <option name="closed" value="true" />
+      <created>1773263617474</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1773263617474</updated>
+    </task>
+    <task id="LOCAL-00019" summary="commit">
+      <option name="closed" value="true" />
+      <created>1773279767746</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1773279767746</updated>
+    </task>
+    <task id="LOCAL-00020" summary="commit">
+      <option name="closed" value="true" />
+      <created>1773359805159</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1773359805159</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="commit" />
+  </component>
+</project>

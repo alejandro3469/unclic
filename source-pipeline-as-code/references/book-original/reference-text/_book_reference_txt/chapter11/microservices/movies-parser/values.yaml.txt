@@ -1,0 +1,24 @@
+SOURCE: chapter11/microservices/movies-parser/values.yaml
+MIME: text/plain; charset=us-ascii
+----- BEGIN CONTENT -----
+namespace: 'movies-parser'
+
+metadata: 
+  git:
+    commitId: none
+  jenkins:
+    buildTag: none
+
+services:
+  aws:
+    account: ''
+    region: ''
+  registry:
+    uri: 'ID.dkr.ecr.REGION.amazonaws.com'
+    secret: ''
+
+deployment:
+  tag: 'develop'
+  workers:
+    replicas: 2
+----- END CONTENT -----

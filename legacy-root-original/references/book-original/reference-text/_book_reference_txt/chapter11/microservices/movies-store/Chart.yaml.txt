@@ -1,0 +1,10 @@
+SOURCE: chapter11/microservices/movies-store/Chart.yaml
+MIME: text/plain; charset=us-ascii
+----- BEGIN CONTENT -----
+apiVersion: v2
+name: movies-store
+description: Movies store RESTful API
+type: application
+version: 1.0.0
+appVersion: 1.0.0
+----- END CONTENT -----

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>motus — Weight Loss &amp; Increased Energy | Tonum</title>
+  <link rel="stylesheet" href="shopify-style.css">
+  <style>
+    .skip-link { position: absolute; left: -9999px; z-index: 999; padding: 8px 16px; background: var(--c-rust); color: #fff; }
+    .skip-link:focus { left: 50%; transform: translateX(-50%); top: 8px; }
+    .product-page { max-width: 1100px; margin: 0 auto; padding: 32px 20px 60px; }
+    .product-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; margin-bottom: 48px; }
+    @media (max-width: 768px) { .product-layout { grid-template-columns: 1fr; } }
+    .product-media { text-align: center; }
+    .product-media .img-placeholder { width: 100%; max-width: 320px; aspect-ratio: 1; margin: 0 auto; background: var(--c-cream); border-radius: 16px; }
+    .product-info h1 { font-size: 1.75rem; margin: 0 0 8px; font-weight: 600; }
+    .product-price { font-size: 1.5rem; font-weight: 600; margin-bottom: 8px; }
+    .product-badge { display: inline-block; font-size: 0.85rem; color: var(--c-rust); margin-bottom: 16px; }
+    .product-desc { font-size: 1rem; line-height: 1.6; margin-bottom: 20px; color: var(--colorTextBody); }
+    .product-benefits { list-style: none; padding: 0; margin: 0 0 20px; }
+    .product-benefits li { padding: 6px 0 6px 24px; position: relative; }
+    .product-benefits li::before { content: ""; position: absolute; left: 0; top: 12px; width: 8px; height: 8px; background: var(--c-rust); border-radius: 50%; }
+    .product-cta-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 16px; }
+    .product-cta-row a { font-size: 0.9rem; color: var(--c-rust); text-decoration: underline; }
+    .variant-group { margin-bottom: 20px; }
+    .variant-group label { display: block; font-size: 0.9rem; font-weight: 500; margin-bottom: 8px; }
+    .variant-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .variant-option { padding: 10px 18px; border: 1px solid var(--c-slate-grey); border-radius: var(--c-radius-pill); background: transparent; cursor: pointer; font-size: 0.9rem; }
+    .variant-option:hover { border-color: var(--c-rust); }
+    .variant-option.selected { background: var(--c-slate-grey); color: #fff; border-color: var(--c-slate-grey); }
+    .qty-row { margin-bottom: 24px; }
+    .qty-row label { display: block; font-size: 0.9rem; font-weight: 500; margin-bottom: 8px; }
+    .qty-row input { width: 80px; padding: 10px 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; }
+    .share-row { display: flex; align-items: center; gap: 12px; font-size: 0.9rem; color: #666; }
+    .share-row button, .share-row a { background: none; border: none; cursor: pointer; color: inherit; text-decoration: underline; padding: 0; }
+    .section-heading { font-size: 1.35rem; margin: 48px 0 24px; font-weight: 600; text-align: center; }
+    .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 900px; margin: 0 auto 48px; }
+    @media (max-width: 768px) { .steps-grid { grid-template-columns: 1fr; } }
+    .step-card { text-align: center; padding: 24px 16px; background: var(--c-cream); border-radius: 16px; }
+    .step-card h3 { font-size: 1rem; margin: 0 0 8px; font-weight: 600; text-transform: lowercase; }
+    .step-card p { font-size: 0.9rem; margin: 0; line-height: 1.5; color: var(--colorTextBody); }
+    .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 1000px; margin: 0 auto 48px; }
+    @media (max-width: 768px) { .testimonials-grid { grid-template-columns: repeat(2, 1fr); } }
+    .testimonial-card { text-align: center; padding: 20px; background: #fff; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,.06); }
+    .testimonial-card .name { font-weight: 600; margin-bottom: 8px; }
+    .testimonial-card .before { font-size: 0.85rem; color: #666; }
+    .testimonial-card .after { font-size: 1rem; font-weight: 600; color: var(--c-rust); margin-top: 4px; }
+    .site-footer { padding: 40px 20px 24px; border-top: 1px solid rgba(0,0,0,.08); }
+    .site-footer .footer-grid { display: flex; flex-wrap: wrap; gap: 24px 32px; justify-content: center; margin-bottom: 24px; }
+    .site-footer a { color: var(--colorTextBody); text-decoration: none; }
+    .site-footer a:hover { text-decoration: underline; }
+    .site-footer .copyright { font-size: 0.85rem; color: #666; text-align: center; }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <section class="c-announcement-bar">
+    <a href="#" class="c-announcement-bar__link">
+      <p class="c-announcement-bar__text">Why science matters in weight and brain health</p>
+      <span class="c-announcement-bar__button" style="display:inline-flex;align-items:center;justify-content:center;background:#fff;color:var(--colorAnnouncementBg);font-size:14px;padding:2px 24px;border-radius:20px;margin-top:8px;">SHOP NOW</span>
+    </a>
+  </section>
+
+  <header class="site-sticky-bar">
+    <div class="bar-inner">
+      <a href="#">Tonum</a>
+      <a href="#">shop</a>
+      <a href="#">about</a>
+      <a href="#">learn</a>
+    </div>
+  </header>
+
+  <main id="main" class="product-page">
+    <div class="product-layout">
+      <div class="product-media">
+        <div class="img-placeholder" aria-hidden="true"></div>
+        <p style="font-size:0.85rem;color:#666;margin-top:8px;">Product Icon</p>
+      </div>
+      <div class="product-info">
+        <h1>motus</h1>
+        <p class="product-price">Regular price $180.00</p>
+        <span class="product-badge">3 month supply (free shipping)</span>
+        <p class="product-desc">Motus is a powerful, scientifically proven formula to burn fat not muscle, and make healthy progress on your weight loss journey - naturally.</p>
+        <p style="font-weight:500;margin-bottom:8px;">Our natural supplement, Motus, is known to:</p>
+        <ul class="product-benefits">
+          <li>Reduce fat while maintaining muscle mass</li>
+          <li>Increase energy levels &amp; support healthy metabolism</li>
+          <li>Support healthy cholesterol levels &amp; liver function</li>
+        </ul>
+        <div class="product-cta-row">
+          <span>HSA/FSA eligible</span>
+          <span>Save an average of 30%</span>
+          <a href="#">Learn more</a>
+        </div>
+
+        <div class="variant-group">
+          <label>Supply</label>
+          <div class="variant-options">
+            <button type="button" class="variant-option">1 month supply</button>
+            <button type="button" class="variant-option selected">3 month supply (free shipping)</button>
+            <button type="button" class="variant-option">6 month supply (10% off &amp; free shipping)</button>
+          </div>
+        </div>
+        <div class="qty-row">
+          <label>QUANTITY</label>
+          <input type="number" value="1" min="1" max="99" aria-label="Quantity">
+        </div>
+        <div class="share-row">
+          <span>Share</span>
+          <button type="button">Share on Facebook</button>
+          <button type="button">Share Tweet on X</button>
+          <button type="button">Pin it Pin on Pinterest</button>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="section-heading">how to get the most out of motus</h2>
+    <div class="steps-grid">
+      <div class="step-card">
+        <h3>begin your regimen</h3>
+        <p>Take 4 capsules daily: morning, afternoon, or night</p>
+      </div>
+      <div class="step-card">
+        <h3>build healthy habits</h3>
+        <p>Develop positive routines to accelerate your journey</p>
+      </div>
+      <div class="step-card">
+        <h3>track your progress</h3>
+        <p>Record your journey in a personal journal, or in a diet &amp; exercise tracking app like MyNetDiary</p>
+      </div>
+    </div>
+
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <p class="name">John</p>
+        <p class="before">weight before Motus: 230 lbs</p>
+        <p class="after">weight after Motus: 218 lbs</p>
+      </div>
+      <div class="testimonial-card">
+        <p class="name">Emma</p>
+        <p class="before">weight before Motus: 140 lbs</p>
+        <p class="after">weight after Motus: 116 lbs</p>
+      </div>
+      <div class="testimonial-card">
+        <p class="name">Scott</p>
+        <p class="before">weight before Motus: 303 lbs</p>
+        <p class="after">weight after Motus: 271 lbs</p>
+      </div>
+      <div class="testimonial-card">
+        <p class="name">Shawna</p>
+        <p class="before">weight before Motus: 238 lbs</p>
+        <p class="after">weight after Motus: 203.6 lbs</p>
+      </div>
+      <div class="testimonial-card">
+        <p class="name">Dave</p>
+        <p class="before">weight before Motus: 231 lbs</p>
+        <p class="after">weight after Motus: 192 lbs</p>
+      </div>
+      <div class="testimonial-card">
+        <p class="name">Bill</p>
+        <p class="before">weight before Motus: 222 lbs</p>
+        <p class="after">weight after Motus: 182 lbs</p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <a href="#">shop</a>
+      <a href="#">faq</a>
+      <a href="#">contact</a>
+      <a href="#">affiliates</a>
+      <a href="#">partnerships</a>
+      <a href="#">press room</a>
+      <a href="#">privacy policy</a>
+      <a href="#">refund policy</a>
+      <a href="#">terms of service</a>
+    </div>
+    <p class="copyright">© 2026 Tonum, a division of Prostatis, LLC. All rights reserved.<br>These statements have not been evaluated by the Food and Drug Administration. These products are not intended to diagnose, treat, cure or prevent any disease.</p>
+  </footer>
+</body>
+</html>

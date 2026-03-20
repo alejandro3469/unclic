@@ -1,0 +1,4 @@
+# Equipos
+
+## Contenido
+- [`GUIA-REESTRUCTURA-EQUIPOS.md`](./GUIA-REESTRUCTURA-EQUIPOS.md)

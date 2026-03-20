@@ -1,0 +1,6 @@
+SOURCE: chapter10/discovery/requirements.txt
+MIME: text/plain; charset=us-ascii
+----- BEGIN CONTENT -----
+boto3
+docker
+----- END CONTENT -----

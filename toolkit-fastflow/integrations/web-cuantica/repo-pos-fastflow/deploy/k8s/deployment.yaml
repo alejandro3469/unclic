@@ -1,0 +1,37 @@
+# POS Online — despliegue desde imagen (registry). Aplicar tras: Jenkins build → push registry.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pos-online
+  namespace: pos-online
+  labels:
+    app: pos-online
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pos-online
+  template:
+    metadata:
+      labels:
+        app: pos-online
+    spec:
+      containers:
+        - name: pos-online
+          image: pos-online:latest   # Reemplazar por <REGISTRY>/pos-online:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8111
+              name: http
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8111
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8111
+            initialDelaySeconds: 5
+            periodSeconds: 10

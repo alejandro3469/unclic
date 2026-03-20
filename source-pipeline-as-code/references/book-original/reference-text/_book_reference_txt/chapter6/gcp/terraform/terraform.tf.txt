@@ -1,0 +1,15 @@
+SOURCE: chapter6/gcp/terraform/terraform.tf
+MIME: text/plain; charset=us-ascii
+----- BEGIN CONTENT -----
+provider "google" {
+  credentials = file(var.credentials_path)
+  project     = var.project
+  region      = var.region
+}
+
+provider "google-beta" {
+  credentials = file(var.credentials_path)
+  project     = var.project
+  region      = var.region
+}
+----- END CONTENT -----

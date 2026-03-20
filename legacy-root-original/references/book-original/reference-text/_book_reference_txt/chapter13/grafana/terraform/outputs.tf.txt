@@ -1,0 +1,7 @@
+SOURCE: chapter13/grafana/terraform/outputs.tf
+MIME: text/plain; charset=us-ascii
+----- BEGIN CONTENT -----
+output "grafana" {
+  value = "https://${aws_route53_record.grafana.name}"
+}
+----- END CONTENT -----

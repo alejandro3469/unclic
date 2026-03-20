@@ -1,0 +1,164 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Nord theme — Arctic, north-bluish palette.
+ * Polar Night (nord0–3), Snow Storm (nord4–6), Frost (nord7–10), Aurora (nord11–15).
+ * Typography: Roboto + Space Mono (Google Fonts pairing).
+ * Enterprise: section spacing, content width, typography scale, card radius.
+ * Structure base: sequoia.com (eyebrow → H1 → lead → metrics → CTA; nav/footer hierarchy).
+ */
+@layer base {
+  :root {
+    /* Nord palette (hex reference) — nord0 #2E3440 … nord15 #B48EAD */
+    --nord0: 220 16% 22%;   /* Polar Night */
+    --nord1: 218 19% 27%;
+    --nord2: 218 20% 33%;
+    --nord3: 218 17% 40%;
+    --nord4: 218 27% 88%;   /* Snow Storm */
+    --nord5: 218 27% 92%;
+    --nord6: 218 27% 96%;
+    --nord7: 178 25% 65%;   /* Frost */
+    --nord8: 193 43% 65%;
+    --nord9: 213 32% 63%;
+    --nord10: 213 33% 52%;
+    --nord11: 354 42% 56%;  /* Aurora */
+    --nord12: 14 51% 63%;
+    --nord13: 40 71% 73%;
+    --nord14: 92 28% 63%;
+    --nord15: 311 20% 60%;
+
+    --font-sans: var(--font-roboto), ui-sans-serif, system-ui, sans-serif;
+    --font-serif: var(--font-space-mono), ui-monospace, monospace;
+
+    /* Light theme: Snow Storm bg, Polar Night text, Frost primary */
+    --background: var(--nord6);
+    --foreground: var(--nord0);
+    --card: var(--nord6);
+    --card-foreground: var(--nord0);
+    --primary: var(--nord10);
+    --primary-foreground: var(--nord6);
+    --muted: var(--nord5);
+    --muted-foreground: var(--nord3);
+    --border: var(--nord4);
+    --input: var(--nord4);
+    --ring: var(--nord10);
+    --radius: 0.5rem;
+    --radius-card: 1.5rem;   /* 24px — enterprise card style */
+    --accent: var(--nord8);
+    --accent-foreground: var(--nord0);
+    /* Shadcn Blocks compatibility */
+    --popover: var(--nord6);
+    --popover-foreground: var(--nord0);
+    --secondary: var(--nord5);
+    --secondary-foreground: var(--nord0);
+    --destructive: var(--nord11);
+    --destructive-foreground: var(--nord6);
+
+    /* Enterprise layout */
+    --content-max: 72rem;      /* 1152px, align with max-w-6xl */
+    --content-wide: 80rem;     /* 1280px */
+    --section-padding-y: 4rem; /* 64px base */
+    --section-padding-y-md: 5rem;
+    --section-padding-y-lg: 6rem;
+  }
+
+  .dark {
+    /* Dark theme: Polar Night bg, Snow Storm text, Frost primary */
+    --background: var(--nord0);
+    --foreground: var(--nord4);
+    --card: var(--nord1);
+    --card-foreground: var(--nord4);
+    --primary: var(--nord8);
+    --primary-foreground: var(--nord0);
+    --muted: var(--nord1);
+    --muted-foreground: var(--nord4);
+    --border: var(--nord2);
+    --input: var(--nord2);
+    --ring: var(--nord8);
+    --accent: var(--nord2);
+    --accent-foreground: var(--nord4);
+    --popover: var(--nord1);
+    --popover-foreground: var(--nord4);
+    --secondary: var(--nord2);
+    --secondary-foreground: var(--nord4);
+    --destructive: var(--nord11);
+    --destructive-foreground: var(--nord4);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background font-sans text-foreground antialiased;
+    font-size: 1rem;
+    line-height: 1.6;
+    letter-spacing: 0.01em;
+  }
+  /* Enterprise body text — slightly larger for readability (Sequoia-style ~19px) */
+  @media (min-width: 768px) {
+    body {
+      font-size: 1.1875rem; /* 19px */
+    }
+  }
+  /* Space Mono for headings — pairing with Roboto body */
+  h1, h2, h3 {
+    @apply font-serif;
+  }
+  h1 {
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+  h2 {
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    line-height: 1.2;
+  }
+  h3 {
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  /* h4–h6 stay sans (Roboto) unless overridden */
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Hash links: leave space for sticky header so target is not hidden */
+[id] {
+  scroll-margin-top: 5.5rem;
+}
+
+/* Contenedor estándar del sitio */
+.site-container {
+  @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
+}
+
+/* Enterprise section padding — consistent vertical rhythm */
+@layer utilities {
+  .section-padding {
+    padding-top: var(--section-padding-y);
+    padding-bottom: var(--section-padding-y);
+  }
+  @media (min-width: 768px) {
+    .section-padding {
+      padding-top: var(--section-padding-y-md);
+      padding-bottom: var(--section-padding-y-md);
+    }
+  }
+  @media (min-width: 1024px) {
+    .section-padding {
+      padding-top: var(--section-padding-y-lg);
+      padding-bottom: var(--section-padding-y-lg);
+    }
+  }
+  /* Glass / backdrop for nav and cards */
+  .glass-subtle {
+    @apply bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/70;
+  }
+}

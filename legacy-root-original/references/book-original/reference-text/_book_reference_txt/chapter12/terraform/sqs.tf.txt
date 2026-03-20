@@ -1,0 +1,10 @@
+SOURCE: chapter12/terraform/sqs.tf
+MIME: text/plain; charset=us-ascii
+----- BEGIN CONTENT -----
+resource "aws_sqs_queue" "queue" {
+  name = "movies_to_parse"
+  tags = {
+    Stack = "Watchlist"
+  }
+}
+----- END CONTENT -----

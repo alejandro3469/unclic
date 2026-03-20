@@ -1,0 +1,22 @@
+# Copiar a Pulumi.localstack.yaml en un proyecto Pulumi (p. ej. manifests/pulumi/jenkins-aws)
+# y usar: pulumi stack select localstack
+# Para guardar estado local: export PULUMI_BACKEND_URL=file://$(pwd)/.pulumi-local
+# Nota: el stack jenkins-aws crea VPC/EC2; LocalStack tiene limitaciones con EC2.
+# Para pruebas locales puras usa un programa que solo use S3, Lambda, DynamoDB, SQS.
+config:
+  aws:accessKey: test
+  aws:secretKey: test
+  aws:region: us-east-1
+  aws:skipCredentialsValidation: "true"
+  aws:skipRequestingAccountId: "true"
+  aws:s3UsePathStyle: "true"
+  aws:endpoints:
+    - ec2: http://localhost:4566
+    - ecr: http://localhost:4566
+    - ecs: http://localhost:4566
+    - iam: http://localhost:4566
+    - s3: http://localhost:4566
+    - lambda: http://localhost:4566
+    - dynamodb: http://localhost:4566
+    - sqs: http://localhost:4566
+    - sts: http://localhost:4566

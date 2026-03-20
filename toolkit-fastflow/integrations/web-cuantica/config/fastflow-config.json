@@ -1,0 +1,51 @@
+{
+  "app": {
+    "name": "pos-online",
+    "description": "POS Online — implementación FastFlow",
+    "port": 8080,
+    "healthPath": "/actuator/health",
+    "baseUrl": "http://localhost:8080"
+  },
+  "pipeline": {
+    "imageName": "pos-online",
+    "imageTag": "latest",
+    "registry": "",
+    "mavenGoals": "clean test package -DskipTests -q",
+    "dockerfilePath": "Dockerfile"
+  },
+  "jenkins": {
+    "url": "http://localhost:8080",
+    "port": 8080,
+    "jobName": "pos-online-pipeline",
+    "credentialsIdRegistry": "registry-credentials",
+    "workspace": "."
+  },
+  "registry": {
+    "url": "http://localhost:5000",
+    "port": 5000,
+    "catalogPath": "/v2/_catalog",
+    "imageName": "pos-online",
+    "defaultTag": "latest",
+    "retentionDays": 30
+  },
+  "terraform": {
+    "namespace": "fastflow",
+    "image": "pos-online:latest",
+    "baseUrl": "http://localhost:8080",
+    "configDir": "deploy/terraform"
+  },
+  "kubernetes": {
+    "namespace": "fastflow",
+    "image": "pos-online:latest",
+    "baseUrl": "http://localhost:8080",
+    "servicePort": 8080,
+    "configMapName": "fastflow-config",
+    "deploymentName": "pos-online"
+  },
+  "dashboard": {
+    "jenkinsUrl": "http://localhost:8080",
+    "registryUrl": "http://localhost:5000/v2/_catalog",
+    "appUrl": "http://localhost:8111",
+    "repoUrl": ""
+  }
+}

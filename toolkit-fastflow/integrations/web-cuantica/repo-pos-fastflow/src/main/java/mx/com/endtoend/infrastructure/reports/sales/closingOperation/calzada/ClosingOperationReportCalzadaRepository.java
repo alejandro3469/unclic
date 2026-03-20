@@ -1,0 +1,13 @@
+package mx.com.endtoend.infrastructure.reports.sales.closingOperation.calzada;
+
+import mx.com.endtoend.infrastructure.reports.sales.closingOperation.common.repository.BaseClosingOperationReportRepository;
+import org.springframework.stereotype.Service;
+import mx.com.endtoend.infrastructure.reports.sales.closingOperation.calzada.repositories.CustomDSLClosingOperationCalzadaRepository;
+
+@Service
+public class ClosingOperationReportCalzadaRepository extends BaseClosingOperationReportRepository {
+
+	public ClosingOperationReportCalzadaRepository(CustomDSLClosingOperationCalzadaRepository customDSLClosingOperationCalzadaRepository){
+		super(ClosingOperationReportCalzadaRepository.class, customDSLClosingOperationCalzadaRepository);
+	}
+}

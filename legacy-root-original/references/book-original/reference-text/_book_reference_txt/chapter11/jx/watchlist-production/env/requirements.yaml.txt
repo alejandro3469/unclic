@@ -1,0 +1,17 @@
+SOURCE: chapter11/jx/watchlist-production/env/requirements.yaml
+MIME: text/plain; charset=us-ascii
+----- BEGIN CONTENT -----
+dependencies:
+- alias: expose
+  name: exposecontroller
+  repository: http://chartmuseum.jenkins-x.io
+  version: 2.3.118
+- alias: cleanup
+  name: exposecontroller
+  repository: http://chartmuseum.jenkins-x.io
+  version: 2.3.118
+- name: jx-movies-store
+  repository: http://jenkins-x-chartmuseum:8080
+  version: 0.0.3
+
+----- END CONTENT -----

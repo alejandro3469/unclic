@@ -1,0 +1,40 @@
+# CI unclic: tests del monolito FastFlow y validación de subdominios listos para deploy.
+# Cada push/PR en ramas principales asegura que tests pasen antes de deploy manual o automático.
+name: CI unclic
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'toolkit-fastflow/integrations/web-cuantica/**'
+  pull_request:
+    branches: [main, master]
+    paths:
+      - 'toolkit-fastflow/integrations/web-cuantica/**'
+
+defaults:
+  run:
+    working-directory: toolkit-fastflow/integrations/web-cuantica/server
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        env:
+          NODE_ENV: test
+          BASE_URL: http://test
+          ADMIN_EMAIL: admin-test@unclic.com
+          ADMIN_PASSWORD: admin-test-secret
+          SESSION_SECRET: test-secret
+        run: npm test

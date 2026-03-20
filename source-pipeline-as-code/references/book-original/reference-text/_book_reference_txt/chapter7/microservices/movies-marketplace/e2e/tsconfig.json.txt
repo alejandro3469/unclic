@@ -1,0 +1,18 @@
+SOURCE: chapter7/microservices/movies-marketplace/e2e/tsconfig.json
+MIME: application/json; charset=us-ascii
+----- BEGIN CONTENT -----
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../out-tsc/e2e",
+    "module": "commonjs",
+    "target": "es5",
+    "types": [
+      "jasmine",
+      "jasminewd2",
+      "node"
+    ]
+  }
+}
+
+----- END CONTENT -----

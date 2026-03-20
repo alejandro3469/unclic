@@ -1,0 +1,25 @@
+SOURCE: chapter12/terraform/variables.tf
+MIME: text/plain; charset=us-ascii
+----- BEGIN CONTENT -----
+// Provided at runtime
+
+variable "region" {
+  type = string
+  description = "AWS region"
+}
+
+variable "shared_credentials_file" {
+  type = string
+  description = "AWS credentials file path"
+}
+
+variable "aws_profile" {
+  type = string
+  description = "AWS profile"
+}
+
+variable "domain_name" {
+  type = string
+  description = "S3 bucket suffix"
+}
+----- END CONTENT -----

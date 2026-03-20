@@ -1,0 +1,5 @@
+SOURCE: chapter9/nexus/packer/nexus.rc
+MIME: text/plain; charset=us-ascii
+----- BEGIN CONTENT -----
+run_as_user="nexus"
+----- END CONTENT -----

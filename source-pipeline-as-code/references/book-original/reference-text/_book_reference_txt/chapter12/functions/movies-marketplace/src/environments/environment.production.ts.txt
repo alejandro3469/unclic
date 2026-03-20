@@ -1,0 +1,10 @@
+SOURCE: chapter12/functions/movies-marketplace/src/environments/environment.production.ts
+MIME: text/plain; charset=us-ascii
+----- BEGIN CONTENT -----
+export const environment = {
+  production: true,
+  name: 'production',
+  apiURL: 'https://rth65vizrb.execute-api.eu-west-3.amazonaws.com/production',
+};
+
+----- END CONTENT -----

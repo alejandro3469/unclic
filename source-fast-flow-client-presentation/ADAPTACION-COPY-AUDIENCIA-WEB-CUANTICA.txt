@@ -1,0 +1,102 @@
+ADAPTACION DE COPY PARA AUDIENCIA WEB CUANTICA
+Guia practica para hablar con claridad, tacto y conviccion
+
+Objetivo
+
+Que el cliente entienda rapido, confie en la propuesta y vea una ruta practica de implementacion.
+Que el discurso suene humano, no acartonado.
+Que cada seccion conecte de forma natural con la siguiente.
+
+PRINCIPIOS DE COMUNICACION APLICADOS
+
+1) Buena introduccion
+Abre con una pregunta real de negocio, no con herramientas.
+Ejemplo:
+"Cuanto valor se pierde cuando un release se retrasa por miedo o friccion operativa?"
+
+2) Naturalidad
+Habla con frases cortas y verbos directos.
+Evita lenguaje inflado.
+No digas:
+"sinergias operativas de alto impacto"
+Di:
+"menos friccion para entregar mas rapido"
+
+3) Preguntas con tacto
+Las preguntas deben abrir reflexion, no presionar.
+Ejemplos:
+- "Hoy, que parte del release les genera mas riesgo?"
+- "Cuando hay una falla, cuanto tardan en recuperar servicio estable?"
+- "Que parte depende hoy de una sola persona?"
+
+4) Informacion exacta y convincente
+No exagerar cifras ni prometer magia.
+Sostener cada afirmacion con:
+- ejemplos del libro y su codigo,
+- MDS del proyecto,
+- arquitectura concreta en repositorio.
+
+5) Explicacion simple de conceptos
+Registry:
+"biblioteca de versiones"
+Pipeline:
+"lista automatica de verificacion"
+Rollback:
+"volver al tag estable anterior en minutos"
+
+6) Ejemplos cercanos
+Explica conceptos tecnicos con situaciones operativas que el cliente ya conoce:
+- release fallido,
+- rollback urgente,
+- trazabilidad de version,
+- dependencia de personas clave.
+
+7) Ayudas visuales utiles
+Cada slide responde una pregunta.
+Cada slide muestra una sola idea fuerte.
+Checklist:
+- se entiende en 5 segundos,
+- se explica en 30-60 segundos,
+- conecta con la siguiente.
+
+8) Valor practico visible
+Siempre aterrizar en impacto:
+- menor riesgo por despliegue,
+- mayor velocidad,
+- mayor autonomia del equipo,
+- menor tiempo de recuperacion.
+
+9) Puntos principales bien marcados
+Estructura recomendada por bloque:
+1. Que pasa hoy
+2. Que proponemos
+3. Que gana el cliente
+
+10) Cierre claro y accionable
+Nunca cerrar ambiguo.
+Cierre recomendado:
+"Proponemos un piloto con KPIs definidos. Si funciona, escalamos. Si no, ajustamos con evidencia."
+
+CADENCIA DE NARRACION RECOMENDADA
+
+Inicio
+Problema real + pregunta clave.
+
+Desarrollo
+Dualidad actual vs propuesto.
+Tesis central.
+Big Idea.
+Mecanismo tecnico simple.
+Evidencia.
+Oferta por pilares.
+
+Cierre
+Decision, piloto, KPIs y siguiente paso.
+
+RESUMEN DE ESTILO
+
+Claro antes que complejo.
+Humano antes que rigido.
+Especifico antes que general.
+Evidencia antes que opinion.
+Continuidad narrativa antes que secciones aisladas.

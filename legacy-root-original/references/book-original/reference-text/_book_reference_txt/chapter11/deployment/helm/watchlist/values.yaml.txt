@@ -1,0 +1,35 @@
+SOURCE: chapter11/deployment/helm/watchlist/values.yaml
+MIME: text/plain; charset=us-ascii
+----- BEGIN CONTENT -----
+namespace: 'watchlist'
+environment: ''
+
+metadata: 
+  git:
+    commitId: none
+  jenkins:
+    buildTag: none
+
+mongodb:
+  fullnameOverride: 'mongodb'
+  mongodbRootPassword: ''
+  mongodbUsername: ''
+  mongodbDatabase: 'watchlist'
+
+services:
+  aws:
+    account: ''
+    region: ''
+  mongodb:
+    uri: ''
+  registry:
+    uri: ''
+    secret: ''
+
+deployment:
+  tag: ''
+  workers:
+    replicas: 2
+  https:
+    ssl: ''
+----- END CONTENT -----

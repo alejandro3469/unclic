@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.0.final using JasperReports Library version 6.21.0-4f56c4f36cd19e17675219a9ac4692d5f0f13b06  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RechargeTicket" pageWidth="223" pageHeight="480" columnWidth="223" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="f7abf1da-31c8-4f91-8eae-64c235db1704">
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="branchName" class="java.lang.String"/>
+	<field name="branchCP" class="java.lang.String"/>
+	<field name="branchStreet" class="java.lang.String"/>
+	<field name="branchPhone" class="java.lang.String"/>
+	<field name="branchExternalNumber" class="java.lang.String"/>
+	<field name="dateTime" class="java.lang.String"/>
+	<field name="orderNumber" class="java.lang.String"/>
+	<field name="companyPhone" class="java.lang.String"/>
+	<field name="phoneNumber" class="java.lang.String"/>
+	<field name="amount" class="java.math.BigDecimal"/>
+	<field name="authCode" class="java.lang.String"/>
+	<field name="reference" class="java.lang.String"/>
+	<field name="branchColony" class="java.lang.String"/>
+	<detail>
+		<band height="223" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="10" width="223" height="10" uuid="519986c7-650a-4243-ad0a-6181ca0ed350">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[FERRETERIAS CALZADA]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="20" width="111" height="10" uuid="bd85da3c-b092-473f-98da-a4f2a503d99e">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{branchStreet}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="111" y="20" width="112" height="10" uuid="d2831f0c-1dac-4e72-bcad-6e0532388244"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{branchExternalNumber}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="30" width="111" height="10" uuid="066e3f3b-5251-454c-be4b-de0a1fb06d69"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[col.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="111" y="30" width="112" height="10" uuid="011d3e62-a830-4930-8396-554ace6033b5"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{branchColony}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="50" width="223" height="10" uuid="b7678dcf-91f8-4df0-b482-8d98196e1907">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{branchName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="70" width="30" height="10" uuid="4ba8c59d-6fda-4cba-872d-2a241bf6564d"/>
+				<box leftPadding="3"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[FECHA: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="80" width="30" height="10" uuid="706ee1be-0323-4d65-89b1-b5431079103d"/>
+				<box leftPadding="3"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[TICKET:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="30" y="70" width="70" height="10" uuid="cfb27bd6-9f52-4b8b-938a-323146043c4f"/>
+				<box leftPadding="2"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dateTime}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="30" y="80" width="70" height="10" uuid="d161c17a-6002-4141-b3fc-f7cfb713f6ae"/>
+				<box leftPadding="2"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{orderNumber}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="100" width="223" height="10" uuid="743ab307-a7c0-49aa-99e7-d4b81609592b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{companyPhone}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="120" width="73" height="10" uuid="e8542a29-a917-4151-85ba-f42a48714be3">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box leftPadding="3"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[NÚMERO CELULAR: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="130" width="40" height="10" uuid="2291980d-6e75-4acb-9717-2968e6272f9f">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box leftPadding="3"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[IMPORTE:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="73" y="120" width="127" height="10" uuid="57a38739-263b-43d1-b5dd-a8be0a516e08"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{phoneNumber}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="40" y="130" width="160" height="10" uuid="196c8deb-de8e-46b7-9679-dfbb1a7f62c4"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{amount}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="150" width="93" height="10" uuid="e0a945f6-24a3-45e3-acc7-0522bb377f54">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box leftPadding="3"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[AUTORIZACIÓN CARRIER: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="160" width="52" height="10" uuid="4549a5d1-d1d5-4615-a2c9-142d76f9d34e">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box leftPadding="3"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[REFERENCIA:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="93" y="150" width="107" height="10" uuid="05ffbc29-562c-4d00-bc46-f2c186f85160"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{authCode}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="52" y="160" width="148" height="10" uuid="e46206f7-7a97-4824-b936-e87ae5923551"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{reference}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="180" width="223" height="30" uuid="fd768648-e1da-4860-a14a-888c9fe965c9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[PARA ACLARACIONES MARQUE SIN COSTO *MAS PARA CONSULTA DE SALDO MARQUE * SALDO O AL 01800-200-9333, CDMX 10-18-3333]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

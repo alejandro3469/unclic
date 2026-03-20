@@ -1,0 +1,13 @@
+SOURCE: chapter11/jx/watchlist-staging/jenkins-x.yml
+MIME: text/plain; charset=us-ascii
+----- BEGIN CONTENT -----
+env:
+- name: DEPLOY_NAMESPACE
+  value: jx-staging
+pipelineConfig:
+  env:
+  - name: DEPLOY_NAMESPACE
+    value: jx-staging
+  pipelines: {}
+
+----- END CONTENT -----

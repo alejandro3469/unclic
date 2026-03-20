@@ -1,0 +1,28 @@
+SOURCE: chapter8/declarative/Jenkinsfile.docker
+MIME: text/plain; charset=us-ascii
+----- BEGIN CONTENT -----
+pipeline{
+    agent{
+        docker { 
+            image 'python:3.7.3'
+        }
+    }
+
+    stages{
+        stage('Checkout'){
+            steps{
+                checkout scm
+            }
+        }
+
+        stage('Unit Tests'){
+            steps{
+                script {
+                    sh 'pip install unittest-xml-reporting'
+                    sh 'python test_main.py'
+                }
+            }
+        }
+    }
+}
+----- END CONTENT -----

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<!--
+  Interfaz centralizada: flujo POS → Jenkins para despliegue gratuito AWS.
+  La única parte manual es hacer el commit; el resto se observa desde aquí (Jenkins, Registry, App).
+-->
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flujo POS → Jenkins — Despliegue gratuito AWS</title>
+  <link rel="stylesheet" href="shopify-style.css">
+  <style>
+    :root {
+      --bg: #0d0e12;
+      --card: #16181d;
+      --text: #e8eaef;
+      --accent: #3b82f6;
+      --accent2: #22c55e;
+      --muted: #71717a;
+      --border: rgba(255,255,255,.08);
+      --manual: #f59e0b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 1.5rem;
+      min-height: 100vh;
+    }
+    .wrap { max-width: 960px; margin: 0 auto; }
+    h1 { font-size: 1.5rem; margin: 0 0 0.25rem; font-weight: 600; }
+    .sub { color: var(--muted); font-size: 0.9rem; margin-bottom: 1.5rem; }
+    .sub a { color: var(--accent); text-decoration: none; }
+    .sub a:hover { text-decoration: underline; }
+
+    /* Acciones rápidas: arrancar / abrir */
+    .actions-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+      padding: 1rem;
+      background: var(--card);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+    .actions-bar .label { font-size: 0.8rem; color: var(--muted); margin-right: 0.5rem; align-self: center; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.5rem 1rem;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .btn:hover { filter: brightness(1.1); }
+    .btn.secondary { background: var(--card); color: var(--accent); border: 1px solid var(--border); }
+    .btn.manual { background: var(--manual); color: #0d0e12; }
+
+    /* Flujo visual */
+    .flow-title { font-size: 1rem; color: var(--muted); margin: 1.5rem 0 0.75rem; font-weight: 600; }
+    .flow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: stretch;
+      margin-bottom: 1rem;
+    }
+    .step {
+      flex: 1;
+      min-width: 120px;
+      max-width: 180px;
+      background: var(--card);
+      border-radius: 10px;
+      padding: 1rem;
+      border: 1px solid var(--border);
+      position: relative;
+      transition: border-color .2s;
+    }
+    .step:hover { border-color: var(--accent); }
+    .step.manual { border-left: 3px solid var(--manual); }
+    .step .num { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.25rem; }
+    .step .name { font-weight: 600; font-size: 0.95rem; margin-bottom: 0.35rem; }
+    .step .desc { font-size: 0.8rem; color: var(--muted); margin-bottom: 0.75rem; line-height: 1.35; }
+    .step .link {
+      display: inline-block;
+      font-size: 0.8rem;
+      color: var(--accent);
+      text-decoration: none;
+      margin-top: 0.25rem;
+    }
+    .step .link:hover { text-decoration: underline; }
+    .step .link.disabled { color: var(--muted); pointer-events: none; }
+    .arrow { align-self: center; color: var(--muted); font-size: 1.25rem; flex-shrink: 0; }
+    @media (max-width: 640px) { .arrow { display: none; } }
+
+    /* Estado app (health) */
+    .status { font-size: 0.8rem; margin-top: 0.5rem; padding: 0.35rem 0.5rem; border-radius: 6px; background: rgba(255,255,255,.05); }
+    .status.ok { color: var(--accent2); }
+    .status.err { color: #ef4444; }
+    .status.pending { color: var(--muted); }
+
+    /* Instrucciones AWS */
+    .info-box {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      background: rgba(59, 130, 246, 0.08);
+      border: 1px solid rgba(59, 130, 246, 0.25);
+      border-radius: 10px;
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .info-box strong { color: var(--text); }
+    .info-box a { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <header class="site-sticky-bar" id="shopify-section-mega-menu">
+    <div class="bar-inner">
+      <a href="dashboard-demo-jenkins-registry.html">FastFlow pos-online</a>
+      <a href="dashboard-demo-jenkins-registry.html">Dashboard</a>
+      <a href="config-ui.html">Config</a>
+      <a href="control-center-flujo-aws.html">Control center</a>
+      <a href="interfaz-central-flujo-aws.html">Interfaz central</a>
+    </div>
+  </header>
+  <div class="wrap">
+    <h1>Flujo POS → Jenkins</h1>
+    <p class="sub">Interfaz centralizada para el despliegue gratuito en AWS. La <strong>única parte manual</strong> es hacer el commit; el resto se observa desde aquí. <a href="config-ui.html">Editar URLs (config)</a> · <a href="dashboard-demo-jenkins-registry.html">Dashboard clásico</a></p>
+
+    <!-- Acciones: arrancar POS (instrucción o enlace), abrir Jenkins, Registry, App -->
+    <section class="actions-bar">
+      <span class="label">Acciones:</span>
+      <a id="btnJenkins" class="btn" href="#" target="_blank" rel="noopener">Abrir Jenkins</a>
+      <a id="btnApp" class="btn secondary" href="#" target="_blank" rel="noopener">Abrir aplicación POS</a>
+      <a id="btnRegistry" class="btn secondary" href="#" target="_blank" rel="noopener">Abrir Registry</a>
+      <a id="btnConfig" class="btn secondary" href="config-ui.html">Configurar URLs</a>
+    </section>
+
+    <!-- Flujo: manual = commit; automático = build, test, Jenkins, registry, app -->
+    <p class="flow-title">Flujo del pipeline (solo el paso 1 es manual)</p>
+    <div class="flow">
+      <div class="step manual">
+        <div class="num">Paso 1 — Manual</div>
+        <div class="name">Hacer commit</div>
+        <div class="desc">En tu repo pos-online: <code>git add . && git commit -m "..." && git push</code>. El resto lo dispara Jenkins.</div>
+        <a class="link" href="#" id="linkRepo">Abrir repo (configurable)</a>
+      </div>
+      <span class="arrow" aria-hidden="true">→</span>
+      <div class="step">
+        <div class="num">Paso 2</div>
+        <div class="name">Build y tests</div>
+        <div class="desc">Maven: compile, test, package. Se ejecuta en Jenkins tras el commit.</div>
+        <a class="link" id="linkJenkinsConsole" href="#">Ver en Jenkins → Console Output</a>
+      </div>
+      <span class="arrow" aria-hidden="true">→</span>
+      <div class="step">
+        <div class="num">Paso 3</div>
+        <div class="name">Imagen y Registry</div>
+        <div class="desc">Build de imagen Docker y push al registry (si está configurado).</div>
+        <a class="link" id="linkRegistryCatalog" href="#">Abrir catálogo Registry</a>
+      </div>
+      <span class="arrow" aria-hidden="true">→</span>
+      <div class="step">
+        <div class="num">Paso 4</div>
+        <div class="name">Aplicación POS</div>
+        <div class="desc">App desplegada (local o en AWS). Comprueba health aquí.</div>
+        <a class="link" id="linkAppHealth" href="#">Abrir aplicación</a>
+        <div id="appStatus" class="status pending">Comprobando estado…</div>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <strong>Despliegue gratuito AWS:</strong> Tras <code>terraform apply</code>, pon en <a href="config-ui.html">config</a> la URL de Jenkins (ej. <code>http://&lt;IP_PUBLICA_EC2&gt;:8080</code>) y la URL de la app. Esta misma interfaz sirve para observar el flujo: haz commit y abre los enlaces para ver builds, registry y app.
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      const DEFAULT = {
+        dashboard: {
+          jenkinsUrl: 'http://localhost:8080',
+          registryUrl: 'http://localhost:5000/v2/_catalog',
+          appUrl: 'http://localhost:8111',
+          repoUrl: ''
+        },
+        app: { baseUrl: 'http://localhost:8111', healthPath: '/actuator/health' },
+        jenkins: { url: 'http://localhost:8080', jobName: 'pos-online-pipeline' },
+        registry: { url: 'http://localhost:5000', catalogPath: '/v2/_catalog' }
+      };
+
+      let cfg = {
+        dashboard: { ...DEFAULT.dashboard },
+        app: { ...DEFAULT.app },
+        jenkins: { ...DEFAULT.jenkins },
+        registry: { ...DEFAULT.registry }
+      };
+
+      function applyConfig(data) {
+        if (data.dashboard) Object.assign(cfg.dashboard, data.dashboard);
+        if (data.app) Object.assign(cfg.app, data.app);
+        if (data.jenkins) Object.assign(cfg.jenkins, data.jenkins);
+        if (data.registry) Object.assign(cfg.registry, data.registry);
+      }
+
+      function urls() {
+        const jenkins = cfg.dashboard.jenkinsUrl || cfg.jenkins.url || DEFAULT.dashboard.jenkinsUrl;
+        const app = cfg.dashboard.appUrl || cfg.app.baseUrl || DEFAULT.app.baseUrl;
+        const registry = cfg.dashboard.registryUrl || (cfg.registry.url + (cfg.registry.catalogPath || '/v2/_catalog')) || DEFAULT.dashboard.registryUrl;
+        const jobName = (cfg.jenkins && cfg.jenkins.jobName) ? cfg.jenkins.jobName : 'pos-online-pipeline';
+        const consolePath = '/job/' + encodeURIComponent(jobName) + '/lastBuild/console';
+        return { jenkins, app, registry, jenkinsConsole: jenkins.replace(/\/$/, '') + consolePath, repoUrl: cfg.dashboard.repoUrl || '' };
+      }
+
+      function render() {
+        const u = urls();
+        document.getElementById('btnJenkins').href = u.jenkins;
+        document.getElementById('btnApp').href = u.app;
+        document.getElementById('btnRegistry').href = u.registry;
+        document.getElementById('linkJenkinsConsole').href = u.jenkinsConsole;
+        document.getElementById('linkRegistryCatalog').href = u.registry;
+        document.getElementById('linkAppHealth').href = u.app;
+        if (u.repoUrl) {
+          document.getElementById('linkRepo').href = u.repoUrl;
+          document.getElementById('linkRepo').classList.remove('disabled');
+        } else {
+          document.getElementById('linkRepo').href = '#';
+          document.getElementById('linkRepo').classList.add('disabled');
+          document.getElementById('linkRepo').textContent = 'Configurar repoUrl en config';
+        }
+      }
+
+      function checkHealth() {
+        const u = urls();
+        const healthUrl = u.app.replace(/\/$/, '') + (cfg.app.healthPath || '/actuator/health');
+        const el = document.getElementById('appStatus');
+        el.textContent = 'Comprobando…';
+        el.className = 'status pending';
+        fetch(healthUrl, { mode: 'cors', credentials: 'omit' })
+          .then(r => r.json())
+          .then(() => { el.textContent = 'App respondiendo'; el.className = 'status ok'; })
+          .catch(() => {
+            el.textContent = 'No se pudo comprobar (CORS o app no levantada). Abre la app en otra pestaña.';
+            el.className = 'status err';
+          });
+      }
+
+      // Cargar config desde repo (si se sirve desde deploy/)
+      fetch('../config/fastflow-config.json')
+        .then(r => r.ok ? r.json() : Promise.reject())
+        .then(data => { applyConfig(data); render(); checkHealth(); })
+        .catch(() => { render(); checkHealth(); });
+    })();
+  </script>
+</body>
+</html>

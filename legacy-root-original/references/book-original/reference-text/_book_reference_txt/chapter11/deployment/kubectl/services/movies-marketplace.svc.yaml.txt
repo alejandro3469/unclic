@@ -1,0 +1,16 @@
+SOURCE: chapter11/deployment/kubectl/services/movies-marketplace.svc.yaml
+MIME: text/plain; charset=us-ascii
+----- BEGIN CONTENT -----
+apiVersion: v1
+kind: Service
+metadata:
+  name: movies-marketplace
+  namespace: watchlist
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    app: movies-marketplace
+  type: LoadBalancer
+----- END CONTENT -----

@@ -1,0 +1,9 @@
+SOURCE: chapter7/microservices/movies-marketplace/src/environments/environment.sandbox.ts
+MIME: text/plain; charset=us-ascii
+----- BEGIN CONTENT -----
+export const environment = {
+  production: false,
+  apiURL: 'http://localhost:3000',
+};
+
+----- END CONTENT -----

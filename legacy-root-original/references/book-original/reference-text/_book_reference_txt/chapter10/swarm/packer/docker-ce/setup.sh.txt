@@ -1,0 +1,11 @@
+SOURCE: chapter10/swarm/packer/docker-ce/setup.sh
+MIME: text/x-shellscript; charset=us-ascii
+----- BEGIN CONTENT -----
+#!/bin/bash
+
+echo "Install Docker engine"
+yum update -y
+yum install docker -y
+usermod -aG docker ec2-user
+systemctl enable docker
+----- END CONTENT -----

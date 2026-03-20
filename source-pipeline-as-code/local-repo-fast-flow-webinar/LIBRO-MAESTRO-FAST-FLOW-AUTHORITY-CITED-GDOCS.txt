@@ -1,0 +1,812 @@
+PORTADA
+
+FAST FLOW ENTERPRISE
+Master Webinar Guide (Authority-Cited Edition)
+Ready for Grammarly, Google Docs, and PDF
+
+Version: 1.0 authority-cited
+Date: 2026-03-09
+Audience: final users, engineering teams, technical leadership, business stakeholders
+
+Core promise:
+Move from manual release operations to reliable, measurable, scalable delivery using Jenkins, Registry practices, Kubernetes/Helm, and Terraform, while adapting to each product stage (manual -> monolith -> microservices -> cloud own/fully-managed).
+
+Core positioning:
+We do not ask for blind trust.
+We show mechanism + evidence + transferability.
+
+=== PAGE BREAK ===
+
+TABLE OF CONTENTS
+
+01. How to use this document
+02. One-hour webinar map
+03. Authority model and evidence rules
+04. Problem and desired outcome (business + operations)
+05. The mechanism (Jenkins + Registry + Kubernetes + Terraform)
+06. Stage-based adoption model
+07. Jenkins pipeline as code (official + book evidence)
+08. Container image and registry governance
+09. Kubernetes and Helm deployment control
+10. Terraform and infrastructure reproducibility
+11. Security, reliability, and operational readiness
+12. Chain of beliefs for enterprise decision-making
+13. Offer architecture for enterprise handoff
+14. 30-60-90 implementation playbook
+15. KPI model and decision scorecards
+16. Objections and evidence-based responses
+17. Closing script for conversion with integrity
+18. Source index (official docs + local book paths)
+
+=== PAGE BREAK ===
+
+01. HOW TO USE THIS DOCUMENT
+
+Practical objective
+
+This edition is designed to be copied into Grammarly, then Google Docs, then PDF, while preserving:
+- webinar flow,
+- technical credibility,
+- sales clarity,
+- source traceability.
+
+Format rules used
+
+- Plain text only.
+- Section numbering for easy navigation.
+- Page markers: === PAGE BREAK ===
+- Citation tags inline:
+  - [BOOK-x] for local book/repo evidence
+  - [DOC-x] for official internet documentation
+
+Editing rules before client use
+
+- Keep mechanism intact.
+- Do not remove citations.
+- You may adapt examples by client stack.
+- If you add a claim, add a source.
+
+=== PAGE BREAK ===
+
+02. ONE-HOUR WEBINAR MAP
+
+Block A (0-8 min): The real bottleneck
+
+Goal:
+Align everyone around the actual constraint: delivery flow reliability.
+
+Opening line:
+Money matters. Time matters. But energy is the hidden multiplier. Teams lose energy when delivery is chaotic.
+
+Key question:
+How much business value is delayed each week because release is slow or risky?
+
+Outcome:
+Audience recognizes problem without blame.
+
+
+Block B (8-18 min): New opportunity and thesis
+
+Thesis:
+Reliable fast flow is the key to enterprise scaling, and it is achieved through a system:
+pipeline + image/version control + controlled deploy + observable operations.
+
+Outcome:
+Audience accepts that this is a system problem, not a heroics problem.
+
+
+Block C (18-30 min): Mechanism in plain language
+
+- Pipeline: automated validation sequence.
+- Registry discipline: traceable, rollback-ready image versions.
+- Kubernetes + Helm: declarative rollout and controlled change.
+- Terraform: repeatable infrastructure definitions.
+
+Outcome:
+Mixed audiences (business + technical) share a common model.
+
+
+Block D (30-42 min): Proof and authority
+
+Show:
+- local Jenkinsfile stages,
+- container packaging pattern,
+- Helm-based deploy pipeline,
+- Terraform provider/resource patterns.
+
+Outcome:
+Confidence shifts from promise to evidence.
+
+
+Block E (42-52 min): Offer and pilot architecture
+
+Present pillars:
+- technical platform,
+- knowledge base,
+- accountability,
+- scalability.
+
+Outcome:
+Audience sees transferability and handoff potential.
+
+
+Block F (52-60 min): Urgency, decision, and next step
+
+Close with:
+- pilot scope,
+- KPI baseline,
+- review date,
+- go/no-go criteria.
+
+Outcome:
+Decision path is concrete.
+
+=== PAGE BREAK ===
+
+03. AUTHORITY MODEL AND EVIDENCE RULES
+
+Authority principle
+
+Authority is not "we say so."
+Authority is demonstrated by:
+- clear mechanism,
+- reproducible code artifacts,
+- official documentation alignment,
+- practical handoff ability.
+
+Evidence policy used in this document
+
+Every major claim is backed by either:
+1) local book/repo artifacts, or
+2) official docs from Jenkins, Docker, Kubernetes, Helm, Terraform.
+
+Examples:
+- Jenkins Pipeline as Code requires Jenkinsfile in repo and supports branch-aware automation [DOC-1].
+- Declarative syntax and agent/stage patterns are documented officially [DOC-2][DOC-3].
+- Deployment controller behavior is declarative in Kubernetes [DOC-7].
+- Helm upgrade supports values layering and overrides [DOC-10].
+- Terraform provider configuration and apply workflow are documented officially [DOC-11][DOC-12].
+
+=== PAGE BREAK ===
+
+04. PROBLEM AND DESIRED OUTCOME (BUSINESS + OPERATIONS)
+
+Observed enterprise pattern
+
+Most teams can build software.
+Fewer teams can reliably ship value to production at a repeatable cadence.
+
+Common symptoms
+
+- Manual release checklists with inconsistent execution.
+- Environment drift between build/test/prod.
+- Unclear artifact-to-release traceability.
+- Slow rollback under incident pressure.
+- Team fatigue caused by reactive operations.
+
+Why this matters beyond engineering
+
+- Business cycle time slows.
+- Product learning loops are delayed.
+- Risk accumulates in each release window.
+- Team energy drops due to repetitive fire-fighting.
+
+Desired outcome (shared by technical and business stakeholders)
+
+- Faster controlled releases.
+- Lower change failure impact.
+- Clear audit trail from commit to runtime.
+- Higher operational autonomy with current resources.
+
+=== PAGE BREAK ===
+
+05. THE MECHANISM (JENKINS + REGISTRY + KUBERNETES + TERRAFORM)
+
+Mechanism statement
+
+Fast flow is not one tool.
+It is an integrated operating model.
+
+Layer 1: Jenkins pipeline orchestration
+
+Purpose:
+Standardize validation and promotion stages in code.
+
+Authoritative basis:
+Pipeline as Code and Jenkinsfile model [DOC-1][DOC-3].
+
+Book/local basis:
+- chapter2 Jenkins declarative example [BOOK-1]
+- chapter7 microservice Jenkinsfile [BOOK-2]
+- pos-online production Jenkinsfile [BOOK-8]
+
+
+Layer 2: Image versioning and registry discipline
+
+Purpose:
+Ensure immutable-like release references and rollback capability.
+
+Authoritative basis:
+Image references and tags [DOC-4], image build best practices [DOC-5], immutable tags option in Docker Hub [DOC-6].
+
+Book/local basis:
+- chapter7 Dockerfile and pipeline push patterns [BOOK-2][BOOK-3]
+- local production Dockerfile usage pattern [BOOK-9]
+
+
+Layer 3: Controlled deploy on Kubernetes with Helm
+
+Purpose:
+Use declarative desired state and controlled rollout with traceable values.
+
+Authoritative basis:
+Deployment controller model [DOC-7], rollout status tracking [DOC-9], helm upgrade semantics [DOC-10].
+
+Book/local basis:
+- chapter11 Jenkins EKS deployment with helm [BOOK-4]
+- chapter11 values file structure [BOOK-5]
+
+
+Layer 4: Infrastructure reproducibility with Terraform
+
+Purpose:
+Define and evolve infra through versioned code.
+
+Authoritative basis:
+Provider configuration [DOC-11], provider ecosystem guidance [DOC-13], apply behavior [DOC-12].
+
+Book/local basis:
+- chapter5 provider and VPC resources [BOOK-6]
+
+=== PAGE BREAK ===
+
+06. STAGE-BASED ADOPTION MODEL
+
+This model adapts to where the software is today.
+
+Stage A: Manual/Paper process
+
+Target:
+Get a minimal reliable pipeline and repeatable package path.
+
+Minimum deliverables:
+- source-controlled pipeline definition,
+- basic build/test/lint gates,
+- first reproducible release artifact.
+
+
+Stage B: Monolith under growth
+
+Target:
+Stabilize release control before architecture expansion.
+
+Minimum deliverables:
+- deterministic artifact tags,
+- registry push and promotion policy,
+- controlled deploy + rollback procedure.
+
+
+Stage C: Microservices evolution
+
+Target:
+Scale release frequency without chaos.
+
+Minimum deliverables:
+- template-based service pipelines,
+- environment values strategy,
+- rollout status and readiness checks.
+
+
+Stage D: Cloud-own or fully cloud
+
+Target:
+Scale infrastructure and governance while preserving delivery speed.
+
+Minimum deliverables:
+- Terraform-managed infra change workflow,
+- policy-backed deploy model,
+- KPI-driven operation reviews.
+
+=== PAGE BREAK ===
+
+07. JENKINS PIPELINE AS CODE (OFFICIAL + BOOK EVIDENCE)
+
+What official docs establish
+
+- Jenkins can manage pipeline jobs from repository code via Jenkinsfile [DOC-1].
+- Declarative Pipeline syntax defines agent/stages/steps patterns [DOC-2].
+- Jenkinsfile is the canonical file for pipeline logic in source control [DOC-3].
+
+Why this matters for enterprise handoff
+
+- Release logic is reviewable via pull request.
+- Branch-aware behavior supports environment policy.
+- Changes in process can be versioned alongside application code.
+
+Local-book and local-repo proof
+
+Snippet pattern from local production pipeline (pos-online):
+
+```groovy
+stage('Test') {
+  steps {
+    unstash 'build-output'
+    script {
+      def test = load '.jenkins/build/test.groovy'
+      test.run(this)
+    }
+    junit allowEmptyResults: true, testResults: 'target/surefire-reports/*.xml'
+  }
+}
+```
+
+```groovy
+stage('Deploy') {
+  when { anyOf { branch 'main'; expression { env.GIT_BRANCH == 'origin/main' || env.GIT_BRANCH == 'main' } } }
+  steps {
+    script {
+      env.DEPLOY_ENV = params.DEPLOY_ENV ?: 'envPrd'
+      input message: "Deploy en servidor (${env.DEPLOY_ENV}). ¿Ejecutar?", ok: 'Sí, ejecutar Deploy'
+      def deploy = load '.jenkins/deploy/deploy.groovy'
+      deploy.run(this)
+    }
+  }
+}
+```
+
+What this proves
+
+- Test reports are codified in pipeline.
+- Production-sensitive steps use explicit approvals.
+- Branch policy is encoded, not tribal knowledge.
+
+Citations:
+[BOOK-8][DOC-1][DOC-2][DOC-3]
+
+=== PAGE BREAK ===
+
+08. CONTAINER IMAGE AND REGISTRY GOVERNANCE
+
+Official baseline
+
+- Image references include host/namespace/repository/tag structure [DOC-4].
+- Tag defaults and naming implications affect traceability [DOC-4].
+- Docker build best practices emphasize small base images and regular rebuilds [DOC-5].
+- Immutable tags (where supported) reduce overwrite risk [DOC-6].
+
+Operational policy derived from docs + field practice
+
+- Use commit SHA tags for hard traceability.
+- Avoid relying on mutable tags alone for production promotion.
+- Keep release tags tied to deploy manifests and audit logs.
+
+Local proof
+
+Dockerfile example from local production app:
+
+```dockerfile
+FROM openjdk:11-ea-11-jdk-slim
+COPY "./target/pos-online-0.0.1-SNAPSHOT.jar" "pos-online-dev.jar"
+ENV TZ="America/Mexico_City"
+EXPOSE 3000
+ENTRYPOINT [ "java","-Duser.timezone=UTC-7", "-Xmx4096m", "-jar", "pos-online-dev.jar"]
+```
+
+Jenkins declarative registry login pattern from local book assets:
+
+```groovy
+environment {
+  REGISTRY_CREDENTIALS = credentials('DOCKER_REGISTRY')
+  REGISTRY_URL = 'https://registry.domain.com'
+}
+stage('Push') {
+  steps {
+    sh 'docker login $REGISTRY_URL --username $REGISTRY_CREDENTIALS_USR --password $REGISTRY_CREDENTIALS_PSW'
+  }
+}
+```
+
+Citations:
+[BOOK-1][BOOK-9][DOC-4][DOC-5][DOC-6]
+
+=== PAGE BREAK ===
+
+09. KUBERNETES AND HELM DEPLOYMENT CONTROL
+
+Official baseline
+
+- Deployments provide declarative updates and controlled rollout behavior [DOC-7].
+- Rollout status can be watched/pinned in kubectl [DOC-9].
+- Liveness/readiness/startup probes define health and traffic readiness semantics [DOC-8].
+- Helm upgrade supports layered values and explicit overrides [DOC-10].
+
+Operational implications
+
+- Use deployment manifests to control desired state transitions.
+- Use readiness/liveness/startup probes to reduce false-success rollouts.
+- Use helm values files for environment-specific behavior.
+
+Local-book proof
+
+Helm upgrade from Jenkins (book chapter11):
+
+```groovy
+stage('Deploy') {
+  sh """
+    helm upgrade --install watchlist ./watchlist -f values.override.yaml \
+      --set metadata.jenkins.buildTag=${env.BUILD_TAG} \
+      --set metadata.git.commitId=${getCommitId()}
+  """
+}
+```
+
+Values structure with metadata and deployment tag:
+
+```yaml
+metadata:
+  git:
+    commitId: none
+  jenkins:
+    buildTag: none
+services:
+  registry:
+    uri: ''
+    secret: ''
+deployment:
+  tag: ''
+```
+
+Citations:
+[BOOK-4][BOOK-5][DOC-7][DOC-8][DOC-9][DOC-10]
+
+=== PAGE BREAK ===
+
+10. TERRAFORM AND INFRASTRUCTURE REPRODUCIBILITY
+
+Official baseline
+
+- Terraform provider blocks configure provider behavior and should be explicit [DOC-11].
+- Provider ecosystem and versioning are managed independently of Terraform core [DOC-13].
+- `terraform apply` executes planned operations and has approval/auto-approve behavior [DOC-12].
+
+Operational implications
+
+- Infra changes should be reviewed as code.
+- Plan/apply flow should be controlled and auditable.
+- Environment drift is reduced through codified definitions.
+
+Local-book proof
+
+Provider + resource pattern from chapter5:
+
+```hcl
+provider "aws" {
+  region                  = var.region
+  shared_credentials_file = var.shared_credentials_file
+  profile                 = var.aws_profile
+}
+
+resource "aws_vpc" "management" {
+  cidr_block           = var.cidr_block
+  enable_dns_hostnames = true
+}
+```
+
+Citations:
+[BOOK-6][DOC-11][DOC-12][DOC-13]
+
+=== PAGE BREAK ===
+
+11. SECURITY, RELIABILITY, AND OPERATIONAL READINESS
+
+Security principles used
+
+- Credentials managed through pipeline credential systems, not hardcoded secrets.
+- Release traceability through build metadata and tagged artifacts.
+- Access control and least privilege in cluster operations.
+
+Reliability principles used
+
+- Health probes drive traffic and restart behavior [DOC-8].
+- Rollout status monitored explicitly [DOC-9].
+- Rollback path tied to known image tags.
+
+Operational readiness principles used
+
+- Runbook per service (deploy, verify, rollback, escalation).
+- Observable post-deploy checks (health + rollout status).
+- Weekly KPI review to prevent silent degradation.
+
+Local-book proof for cluster access object:
+
+```yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: eks-admin
+  namespace: kube-system
+---
+kind: ClusterRoleBinding
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin
+```
+
+Note:
+Use least-privilege adaptations for production governance; avoid broad admin bindings unless strictly needed.
+
+Citations:
+[BOOK-7][DOC-8][DOC-9]
+
+=== PAGE BREAK ===
+
+12. CHAIN OF BELIEFS FOR ENTERPRISE DECISION-MAKING
+
+Belief 1
+Our core delivery risk is process/system design, not lack of effort.
+
+Belief 2
+The current model cannot scale quality and speed together.
+
+Belief 3
+An integrated mechanism exists and is implementable now.
+
+Belief 4
+The mechanism is evidence-backed by local code and official docs.
+
+Belief 5
+The model adapts to current software maturity stage.
+
+Belief 6
+Risk is bounded via gates, approvals, rollout checks, and KPIs.
+
+Belief 7
+Starting with a pilot is lower-risk than continuing unmanaged friction.
+
+How to use this chain in presentation
+
+For each slide, answer:
+- Which belief are we moving?
+- What evidence supports it?
+- What action should the client take next?
+
+=== PAGE BREAK ===
+
+13. OFFER ARCHITECTURE FOR ENTERPRISE HANDOFF
+
+Pillar 1: Technical platform
+
+- Pipeline definitions.
+- Build/test/lint gates.
+- Registry-integrated release path.
+- Controlled deploy sequence.
+
+Pillar 2: Knowledge base
+
+- Architecture reading guide.
+- Runbooks and command sheets.
+- Stage-based implementation notes.
+- Source-mapped references.
+
+Pillar 3: Accountability model
+
+- Milestones and acceptance criteria.
+- Stakeholder checkpoint cadence.
+- Evidence-based change log.
+
+Pillar 4: Scalability model
+
+- Reusable templates.
+- Multi-stack adaptation rules.
+- Multi-client delivery factory readiness.
+
+Handoff commitment
+
+- source code delivery,
+- operational documentation delivery,
+- optional long-term support (consulting, live sessions, coaching).
+
+=== PAGE BREAK ===
+
+14. 30-60-90 IMPLEMENTATION PLAYBOOK
+
+Days 0-30: Foundation
+
+- baseline KPIs captured,
+- Jenkins pipeline codified,
+- initial artifact traceability enabled.
+
+Success markers:
+- repeatable build/test/lint,
+- first controlled deployment path defined.
+
+
+Days 31-60: Controlled promotion
+
+- registry tagging policy enforced,
+- environment promotion strategy documented,
+- rollback drill performed.
+
+Success markers:
+- commit-to-tag traceability,
+- approved release flow under load.
+
+
+Days 61-90: Operational maturity
+
+- reliability checks standardized,
+- runbooks validated,
+- KPI review loop institutionalized.
+
+Success markers:
+- reduced release anxiety,
+- faster recovery,
+- clearer ownership.
+
+=== PAGE BREAK ===
+
+15. KPI MODEL AND DECISION SCORECARDS
+
+Primary KPIs
+
+- Lead Time
+- Deployment Frequency
+- Change Failure Rate
+- MTTR
+
+Measurement rule
+
+- Baseline for 4 weeks.
+- Weekly trend tracking.
+- Action log per KPI movement.
+
+Decision rule
+
+Continue/scale only when:
+- KPI trend is positive,
+- reliability events are controlled,
+- handoff ownership is stable.
+
+=== PAGE BREAK ===
+
+16. OBJECTIONS AND EVIDENCE-BASED RESPONSES
+
+Objection: We cannot afford it now.
+
+Response:
+The model starts with a bounded pilot.
+Cost of inaction includes delayed value, team energy loss, and avoidable incident risk.
+
+
+Objection: Our stack is different.
+
+Response:
+The architecture is stack-agnostic at process level.
+Implementation details adapt by language/framework.
+
+
+Objection: We run on our own Linux servers.
+
+Response:
+This model explicitly supports own-infra operation and does not require immediate cloud migration.
+
+
+Objection: Automation may increase risk.
+
+Response:
+Uncontrolled automation increases risk.
+Controlled automation with gates, approvals, and observability reduces risk.
+
+=== PAGE BREAK ===
+
+17. CLOSING SCRIPT FOR CONVERSION WITH INTEGRITY
+
+Suggested closing (speaker-ready)
+
+We are not asking you to trust a promise.
+We are offering a mechanism with evidence.
+
+We can adapt to your current stage:
+manual, monolith, microservices, or cloud-scale.
+
+Our commitment is practical:
+- deliver source,
+- deliver process,
+- deliver transfer,
+- support your team in real operation.
+
+If we can reduce delivery friction and operational stress in a pilot window,
+then waiting is not conservative, it is expensive.
+
+Today, we can define:
+- pilot service,
+- KPI baseline,
+- owners,
+- start date,
+- executive review date.
+
+From there, your operation moves from uncertainty to repeatability.
+
+=== PAGE BREAK ===
+
+18. SOURCE INDEX (OFFICIAL DOCS + LOCAL BOOK PATHS)
+
+Official docs (internet)
+
+[DOC-1] Jenkins Pipeline as Code
+https://www.jenkins.io/doc/book/pipeline/pipeline-as-code/
+
+[DOC-2] Jenkins Pipeline Syntax
+https://www.jenkins.io/doc/book/pipeline/syntax/
+
+[DOC-3] Using a Jenkinsfile
+https://www.jenkins.io/doc/book/pipeline/jenkinsfile/
+
+[DOC-4] Docker image tag reference
+https://docs.docker.com/reference/cli/docker/image/tag/
+
+[DOC-5] Docker build best practices
+https://docs.docker.com/build/building/best-practices/
+
+[DOC-6] Docker Hub immutable tags
+https://docs.docker.com/docker-hub/repos/manage/hub-images/immutable-tags/
+
+[DOC-7] Kubernetes Deployments
+https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+
+[DOC-8] Kubernetes liveness/readiness/startup probes
+https://kubernetes.io/docs/concepts/configuration/liveness-readiness-startup-probes/
+
+[DOC-9] kubectl rollout status
+https://kubernetes.io/docs/reference/kubectl/generated/kubectl_rollout/kubectl_rollout_status/
+
+[DOC-10] Helm upgrade command
+https://helm.sh/docs/helm/helm_upgrade/
+
+[DOC-11] Terraform provider block reference
+https://developer.hashicorp.com/terraform/language/block/provider
+
+[DOC-12] terraform apply command
+https://developer.hashicorp.com/terraform/cli/commands/apply
+
+[DOC-13] Terraform providers overview
+https://developer.hashicorp.com/terraform/language/providers
+
+
+Local book/repo evidence (authoritative local assets)
+
+[BOOK-1]
+/Users/wallfacer/Downloads/pipeline-as-code-with-jenkins-master/references/book-original/reference-text/_book_reference_txt/chapter2/Jenkinsfile.declarative.txt
+
+[BOOK-2]
+/Users/wallfacer/Downloads/pipeline-as-code-with-jenkins-master/references/book-original/chapters/chapter7/microservices/movies-loader/Jenkinsfile
+
+[BOOK-3]
+/Users/wallfacer/Downloads/pipeline-as-code-with-jenkins-master/references/book-original/chapters/chapter7/microservices/movies-loader/Dockerfile
+
+[BOOK-4]
+/Users/wallfacer/Downloads/pipeline-as-code-with-jenkins-master/references/book-original/reference-text/_book_reference_txt/chapter11/Jenkinsfile.eks.txt
+
+[BOOK-5]
+/Users/wallfacer/Downloads/pipeline-as-code-with-jenkins-master/references/book-original/reference-text/_book_reference_txt/chapter11/deployment/helm/watchlist/values.yaml.txt
+
+[BOOK-6]
+/Users/wallfacer/Downloads/pipeline-as-code-with-jenkins-master/references/book-original/chapters/chapter5/terraform.tf
+/Users/wallfacer/Downloads/pipeline-as-code-with-jenkins-master/references/book-original/chapters/chapter5/vpc.tf
+
+[BOOK-7]
+/Users/wallfacer/Downloads/pipeline-as-code-with-jenkins-master/references/book-original/chapters/chapter11/k8s-dashboard/eks-admin.yaml
+
+[BOOK-8]
+/Users/wallfacer/proyectos-gitlab/pos-online/Jenkinsfile
+
+[BOOK-9]
+/Users/wallfacer/proyectos-gitlab/pos-online/Dockerfile
+
+[BOOK-10]
+/Users/wallfacer/proyectos-gitlab/pos-online/run-jenkins-pipeline-local.sh
+
+[BOOK-11]
+/Users/wallfacer/Documents/modularstack-app/Jenkinsfile
+
+End of authority-cited edition.

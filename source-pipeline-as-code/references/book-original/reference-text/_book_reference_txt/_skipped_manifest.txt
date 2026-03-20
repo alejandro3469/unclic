@@ -1,0 +1,5 @@
+chapter12/terraform/deployment.zip | application/zip; charset=binary
+chapter12/functions/movies-marketplace/src/favicon.ico | image/png; charset=binary
+chapter12/functions/movies-marketplace/src/assets/images/logo.png | image/png; charset=binary
+chapter7/microservices/movies-marketplace/src/assets/images/logo.png | image/png; charset=binary
+chapter7/microservices/movies-marketplace/src/favicon.ico | image/png; charset=binary

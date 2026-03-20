@@ -1,0 +1,13 @@
+---
+description: unclic DevOps — tests, subdominios, delivery (toolkit-fastflow/integrations/web-cuantica)
+globs: ["toolkit-fastflow/integrations/web-cuantica/**"]
+---
+
+# unclic — DevOps y delivery
+
+Al trabajar en **unclic** (web-cuantica, FastFlow, subdominios):
+
+1. **Tests:** ejecutar `cd toolkit-fastflow/integrations/web-cuantica/server && npm test` antes de proponer cambios; añadir tests en `server/test/` si cambias lógica.
+2. **Subdominios:** lista maestra en `deploy/subdominios-lista.js`; mantener alineados proxy y hosts; el test `subdominios-listos-deploy` debe pasar.
+3. **Deploy/delivery:** seguir `DEVOPS-ESTRATEGIA-UNCLIC.md` y `CICD-DELIVERY-RUNBOOK.md` (ruta relativa a web-cuantica).
+4. **Agentes:** ver `AGENTS.md` en web-cuantica para contexto y archivos clave.

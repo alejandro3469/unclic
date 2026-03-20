@@ -1,0 +1,18 @@
+SOURCE: chapter3/Jenkinsfile
+MIME: text/plain; charset=us-ascii
+----- BEGIN CONTENT -----
+pipeline{
+    agent{
+        label 'workers'
+    }
+    stages{
+       stage('Checkout'){}
+    }
+}
+
+// 
+
+node('workers'){
+    stage('Checkout'){}
+}
+----- END CONTENT -----

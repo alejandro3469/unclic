@@ -1,0 +1,37 @@
+# Free Tier / demo: 1 EC2 Jenkins en subred pública, 0 workers.
+# Copiar a terraform.tfvars y rellenar AMIs (no subir terraform.tfvars a Git).
+
+aws_region = "us-east-1"
+name_prefix = "fastflow"
+author      = "fastflow"
+
+vpc_cidr             = "10.0.0.0/16"
+availability_zones   = ["us-east-1a", "us-east-1b"]
+public_subnet_count  = 2
+private_subnet_count = 2
+
+# Jenkins en subred pública → IP pública → http://<IP>:8080 (solo para demo)
+jenkins_in_public_subnet = true
+
+# AMI: Amazon Linux 2 en tu región. Ejemplo us-east-1:
+# aws ec2 describe-images --owners amazon --region us-east-1 \
+#   --filters "Name=name,Values=amzn2-ami-hvm-*-x86_64-gp2" \
+#   --query 'Images | sort_by(@, &CreationDate) | [-1].ImageId' --output text
+jenkins_controller_ami_id = "ami-xxxxxxxxxxxxxxxxx"
+jenkins_worker_ami_id      = "ami-xxxxxxxxxxxxxxxxx"
+
+# Free Tier: t2.micro o t3.micro (según región); 750 h/mes gratis primer año
+jenkins_instance_type        = "t3.micro"
+jenkins_worker_instance_type = "t3.micro"
+
+# 0 workers = solo 1 instancia (Jenkins controller) para no salir de Free Tier
+workers_desired_capacity = 0
+workers_min_size         = 0
+workers_max_size         = 0
+
+# Gitea y POS (misma AMI que Jenkins para Free Tier)
+gitea_ami_id = "ami-xxxxxxxxxxxxxxxxx"
+pos_ami_id   = "ami-xxxxxxxxxxxxxxxxx"
+gitea_instance_type = "t3.micro"
+pos_instance_type   = "t3.micro"
+# enable_registry = false

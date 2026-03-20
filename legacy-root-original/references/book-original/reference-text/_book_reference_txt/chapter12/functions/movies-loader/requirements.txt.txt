@@ -1,0 +1,6 @@
+SOURCE: chapter12/functions/movies-loader/requirements.txt
+MIME: text/plain; charset=us-ascii
+----- BEGIN CONTENT -----
+boto3
+unittest-xml-reporting
+----- END CONTENT -----

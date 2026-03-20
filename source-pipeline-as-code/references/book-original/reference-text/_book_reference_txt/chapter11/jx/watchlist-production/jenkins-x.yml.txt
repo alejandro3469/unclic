@@ -1,0 +1,13 @@
+SOURCE: chapter11/jx/watchlist-production/jenkins-x.yml
+MIME: text/plain; charset=us-ascii
+----- BEGIN CONTENT -----
+env:
+- name: DEPLOY_NAMESPACE
+  value: jx-production
+pipelineConfig:
+  env:
+  - name: DEPLOY_NAMESPACE
+    value: jx-production
+  pipelines: {}
+
+----- END CONTENT -----

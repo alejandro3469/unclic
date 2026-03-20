@@ -1,0 +1,13 @@
+SOURCE: chapter4/distributed/master/scripts/skip-jenkins-setup.groovy
+MIME: text/plain; charset=us-ascii
+----- BEGIN CONTENT -----
+#!groovy
+
+import jenkins.model.*
+import hudson.util.*;
+import jenkins.install.*;
+
+def instance = Jenkins.getInstance()
+
+instance.setInstallState(InstallState.INITIAL_SETUP_COMPLETED)
+----- END CONTENT -----

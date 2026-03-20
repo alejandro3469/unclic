@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<!--
+  Interfaz central: echar a andar POS y Jenkins; observar todo el flujo desde aquí.
+  Deploy gratuito AWS. La única parte manual es hacer el commit; el resto se observa desde esta página.
+-->
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interfaz central — POS, Jenkins, flujo AWS</title>
+  <link rel="stylesheet" href="shopify-style.css">
+  <style>
+    :root {
+      --bg: #0c0e12;
+      --card: #151820;
+      --text: #e8eaef;
+      --accent: #4a9eff;
+      --accent2: #5dd9a0;
+      --manual: #f0b429;
+      --muted: #7c8290;
+      --border: rgba(255,255,255,.07);
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 1.25rem;
+      min-height: 100vh;
+      line-height: 1.45;
+    }
+    .wrap { max-width: 920px; margin: 0 auto; }
+
+    h1 { font-size: 1.6rem; margin: 0 0 0.2rem; font-weight: 600; }
+    .sub { color: var(--muted); font-size: 0.9rem; margin-bottom: 1.5rem; }
+    .sub a { color: var(--accent); text-decoration: none; }
+    .sub a:hover { text-decoration: underline; }
+
+    .nav { margin-bottom: 1.5rem; }
+    .nav a { color: var(--accent); text-decoration: none; margin-right: 1rem; font-size: 0.9rem; }
+    .nav a:hover { text-decoration: underline; }
+
+    .section { margin-bottom: 1.75rem; }
+    .section h2 { font-size: 1.05rem; color: var(--accent); margin: 0 0 0.6rem; font-weight: 600; }
+
+    /* Arrancar todo */
+    .start-box {
+      background: linear-gradient(135deg, rgba(74,158,255,.12) 0%, rgba(93,217,160,.08) 100%);
+      border: 1px solid rgba(74,158,255,.25);
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .start-box h2 { color: var(--accent2); margin-top: 0; }
+    .start-box .cmd {
+      background: rgba(0,0,0,.4);
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      font-family: ui-monospace, 'SF Mono', monospace;
+      font-size: 0.85rem;
+      word-break: break-all;
+      margin: 0.5rem 0;
+      border: 1px solid var(--border);
+    }
+    .start-box .cmd small { color: var(--muted); font-size: 0.8rem; }
+    .start-box p { margin: 0.5rem 0 0; font-size: 0.85rem; color: var(--muted); }
+
+    /* URLs */
+    .url-form { background: var(--card); border-radius: 10px; padding: 1rem; border: 1px solid var(--border); }
+    .url-form .row { margin-bottom: 0.75rem; }
+    .url-form label { display: block; font-size: 0.8rem; color: var(--muted); margin-bottom: 0.2rem; }
+    .url-form input {
+      width: 100%; max-width: 420px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.45rem 0.65rem;
+      border-radius: 6px;
+      font-size: 0.9rem;
+    }
+    .url-form input:focus { outline: none; border-color: var(--accent); }
+    .url-form .hint { font-size: 0.75rem; color: var(--muted); margin-top: 0.2rem; }
+    .url-form button {
+      padding: 0.45rem 0.9rem;
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      margin-top: 0.25rem;
+    }
+    .url-form button:hover { opacity: 0.92; }
+    .url-saved { font-size: 0.85rem; color: var(--accent2); margin-left: 0.5rem; }
+
+    /* Flujo */
+    .flow {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem;
+      margin: 0.75rem 0;
+    }
+    .flow-step {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.9rem 1rem;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex: 1;
+      min-width: 140px;
+      max-width: 200px;
+    }
+    .flow-step.manual {
+      border-color: var(--manual);
+      background: rgba(240,180,41,.1);
+    }
+    .flow-step .num {
+      width: 1.6rem;
+      height: 1.6rem;
+      border-radius: 50%;
+      background: var(--accent);
+      color: var(--bg);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.75rem;
+      flex-shrink: 0;
+    }
+    .flow-step.manual .num { background: var(--manual); color: var(--bg); }
+    .flow-step .txt { flex: 1; }
+    .flow-step .txt strong { display: block; margin-bottom: 0.15rem; }
+    .flow-step a { color: var(--accent); text-decoration: none; font-size: 0.8rem; display: inline-block; margin-top: 0.25rem; }
+    .flow-step a:hover { text-decoration: underline; }
+    .flow-arrow { color: var(--muted); font-size: 1.1rem; flex-shrink: 0; }
+
+    /* Botones rápidos */
+    .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.75rem; }
+    .card {
+      background: var(--card);
+      border-radius: 10px;
+      padding: 1rem;
+      border: 1px solid var(--border);
+    }
+    .card h3 { font-size: 0.95rem; margin: 0 0 0.5rem; }
+    .card .btn {
+      display: inline-block;
+      padding: 0.4rem 0.8rem;
+      background: var(--accent);
+      color: var(--bg);
+      text-decoration: none;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      margin-right: 0.35rem;
+      margin-top: 0.25rem;
+    }
+    .card .btn:hover { opacity: 0.9; }
+    .card .btn.sec { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+
+    .footer { font-size: 0.8rem; color: var(--muted); margin-top: 2rem; }
+    .footer a { color: var(--accent); }
+
+    /* Estado del flujo */
+    .status-row { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; margin: 0.5rem 0; }
+    .status-item {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.35rem 0.65rem; border-radius: 8px;
+      font-size: 0.85rem; background: var(--card); border: 1px solid var(--border);
+    }
+    .status-item .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
+    .status-item.ok .dot { background: var(--accent2); }
+    .status-item.fail .dot { background: #e05c5c; }
+    .status-item.pending .dot { background: var(--manual); }
+    .status-section { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 1rem; margin-bottom: 1rem; }
+    .status-section h3 { margin: 0 0 0.5rem; font-size: 0.95rem; }
+    .status-section button { padding: 0.4rem 0.8rem; background: var(--accent); color: var(--bg); border: none; border-radius: 6px; cursor: pointer; font-size: 0.85rem; margin-right: 0.5rem; }
+    .status-section button:hover { opacity: 0.9; }
+    .status-section button:disabled { opacity: 0.6; cursor: not-allowed; }
+  </style>
+</head>
+<body>
+  <header class="site-sticky-bar" id="shopify-section-mega-menu">
+    <div class="bar-inner">
+      <a href="dashboard-demo-jenkins-registry.html">FastFlow pos-online</a>
+      <a href="dashboard-demo-jenkins-registry.html">Dashboard</a>
+      <a href="config-ui.html">Config</a>
+      <a href="control-center-flujo-aws.html">Control center</a>
+      <a href="interfaz-central-flujo-aws.html">Interfaz central</a>
+    </div>
+  </header>
+  <div class="wrap">
+    <h1>Interfaz central — POS, Jenkins, flujo AWS</h1>
+    <p class="sub">Arranca primero <strong>POS</strong>, luego <strong>Jenkins</strong> (en AWS ya está en la EC2). Desde esta página observas todo el flujo; <strong>la única parte manual es hacer el commit</strong>. Deploy gratuito en AWS. <a href="config-ui.html">Configurar URLs</a> · <a href="dashboard-demo-jenkins-registry.html">Dashboard</a></p>
+
+    <div class="nav">
+      <a href="dashboard-demo-jenkins-registry.html">Dashboard Jenkins y Registry</a>
+      <a href="config-ui.html">Config (JSON)</a>
+    </div>
+
+    <!-- Arrancar todo: POS → Jenkins → esta interfaz -->
+    <div class="section start-box">
+      <h2>Echar a andar todo (para deploy gratuito AWS)</h2>
+      <p><strong>Orden:</strong> 1) POS Online → 2) Jenkins → 3) Esta interfaz. La única parte manual del flujo después es <strong>hacer el commit</strong>; el resto se observa desde aquí.</p>
+      <p style="margin-top: 0.75rem;"><strong>Opción A — Un solo comando (recomendado):</strong></p>
+      <div class="cmd">
+        ./scripts/start-flujo-pos-jenkins.sh
+        <br><small>Desde la raíz del toolkit: arranca POS en segundo plano y abre esta interfaz. Jenkins en AWS ya corre en la EC2 (pon su URL abajo).</small>
+      </div>
+      <p style="margin-top: 0.75rem;"><strong>Opción B — Paso a paso:</strong></p>
+      <ol style="margin: 0.5rem 0 0 1.2rem; padding: 0; color: var(--muted); font-size: 0.9rem; line-height: 1.6;">
+        <li><strong>POS:</strong> En el repo <code>pos-online</code>: <code>mvn spring-boot:run -Dspring-boot.run.profiles=local</code> (puerto 8111).</li>
+        <li><strong>Jenkins:</strong> En AWS, ya está en la EC2 (<code>http://&lt;IP_PUBLICA&gt;:8080</code>). En local, levanta Jenkins (puerto 8080) y configura el job Pipeline.</li>
+        <li><strong>Esta interfaz:</strong> Abre este HTML (file:// o sirve <code>deploy/</code> con <code>python3 -m http.server 9000</code> → <code>http://localhost:9000/deploy/interfaz-central-flujo-aws.html</code>).</li>
+      </ol>
+    </div>
+
+    <!-- Estado: ver si POS y Jenkins responden -->
+    <div class="section status-section">
+      <h3>Estado del flujo (observar desde aquí)</h3>
+      <p style="color: var(--muted); font-size: 0.85rem; margin: 0 0 0.5rem;">Comprueba que POS y Jenkins estén en marcha antes de hacer commit. Si abriste esta página como <code>file://</code>, CORS puede bloquear la comprobación; sirve la carpeta (ej. <code>python3 -m http.server 9000</code>) y abre <code>http://localhost:9000/deploy/interfaz-central-flujo-aws.html</code>.</p>
+      <div class="status-row">
+        <span class="status-item pending" id="statusPos"><span class="dot"></span> POS: —</span>
+        <span class="status-item pending" id="statusJenkins"><span class="dot"></span> Jenkins: —</span>
+        <button type="button" id="btnCheckStatus">Comprobar estado</button>
+      </div>
+    </div>
+
+    <!-- URLs (local o AWS) -->
+    <div class="section">
+      <h2>URLs (local o AWS)</h2>
+      <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 0.5rem;">Para deploy gratuito AWS, pon la IP pública de tu EC2 (ej. <code>http://54.123.45.67:8080</code>).</p>
+      <div class="url-form">
+        <div class="row">
+          <label>Jenkins</label>
+          <input type="text" id="urlJenkins" placeholder="http://localhost:8080" />
+          <p class="hint">Tras terraform apply: http://&lt;jenkins_public_ip&gt;:8080</p>
+        </div>
+        <div class="row">
+          <label>POS / App</label>
+          <input type="text" id="urlApp" placeholder="http://localhost:8111" />
+          <p class="hint">Spring Boot suele usar 8111</p>
+        </div>
+        <div class="row">
+          <label>Registry (opcional)</label>
+          <input type="text" id="urlRegistry" placeholder="http://localhost:5000" />
+        </div>
+        <div class="row">
+          <label>URL del repo (opcional, para enlace "Abrir repo")</label>
+          <input type="text" id="urlRepo" placeholder="https://gitlab.com/tu-org/pos-online" />
+        </div>
+        <button type="button" id="btnSaveUrls">Guardar URLs</button>
+        <span id="urlSavedMsg" class="url-saved"></span>
+      </div>
+    </div>
+
+    <!-- Flujo: solo manual = commit -->
+    <div class="section">
+      <h2>Flujo del pipeline — solo el paso 1 es manual (commit); el resto se observa aquí</h2>
+      <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 0.5rem;">Haz commit y push en pos-online; Jenkins construye, prueba y empaqueta. Abre cada enlace para ver el estado.</p>
+      <div class="flow">
+        <div class="flow-step manual">
+          <span class="num">1</span>
+          <div class="txt">
+            <strong>Commit (manual)</strong>
+            Haz commit y push en tu repo pos-online.
+            <a id="flowLinkRepo" href="#" target="_blank" rel="noopener">Abrir repo</a>
+          </div>
+        </div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step">
+          <span class="num">2</span>
+          <div class="txt">
+            <strong>Jenkins</strong>
+            Detecta el push y ejecuta el pipeline.
+            <a id="flowLinkJenkins" href="http://localhost:8080" target="_blank" rel="noopener">Abrir Jenkins</a>
+          </div>
+        </div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step">
+          <span class="num">3</span>
+          <div class="txt">
+            <strong>Build, test, package</strong>
+            Maven en Jenkins.
+            <a id="flowLinkConsole" href="http://localhost:8080/job/pos-online-pipeline/lastBuild/console" target="_blank" rel="noopener">Console Output</a>
+          </div>
+        </div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step">
+          <span class="num">4</span>
+          <div class="txt">
+            <strong>Imagen / Registry</strong>
+            Docker build y push (si está configurado).
+            <a id="flowLinkRegistry" href="http://localhost:5000/v2/_catalog" target="_blank" rel="noopener">Catálogo</a>
+          </div>
+        </div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step">
+          <span class="num">5</span>
+          <div class="txt">
+            <strong>App en AWS</strong>
+            Aplicación desplegada (EC2 o local).
+            <a id="flowLinkApp" href="http://localhost:8111" target="_blank" rel="noopener">Abrir app</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Accesos rápidos -->
+    <div class="section">
+      <h2>Accesos rápidos</h2>
+      <div class="cards">
+        <div class="card">
+          <h3>Jenkins</h3>
+          <a class="btn" id="quickJenkins" href="http://localhost:8080" target="_blank" rel="noopener">Abrir Jenkins</a>
+          <a class="btn sec" id="quickJob" href="http://localhost:8080/job/pos-online-pipeline/" target="_blank" rel="noopener">Job pipeline</a>
+        </div>
+        <div class="card">
+          <h3>POS Online</h3>
+          <a class="btn" id="quickApp" href="http://localhost:8111" target="_blank" rel="noopener">Abrir app</a>
+          <a class="btn sec" id="quickHealth" href="http://localhost:8111/actuator/health" target="_blank" rel="noopener">Health</a>
+        </div>
+        <div class="card">
+          <h3>H2 (local)</h3>
+          <a class="btn sec" id="quickH2" href="http://localhost:8111/h2-console" target="_blank" rel="noopener">H2 Console</a>
+        </div>
+      </div>
+    </div>
+
+    <p class="footer">
+      Deploy gratuito AWS: <a href="../docs/PASO-A-PASO-AWS-GRATIS-Y-AGENTES.md">PASO-A-PASO-AWS-GRATIS-Y-AGENTES.md</a>. Config: <a href="config-ui.html">config-ui.html</a>.
+    </p>
+  </div>
+
+  <script>
+    (function() {
+      var STORAGE_JENKINS = 'interfazCentral_jenkinsUrl';
+      var STORAGE_APP = 'interfazCentral_appUrl';
+      var STORAGE_REGISTRY = 'interfazCentral_registryUrl';
+      var STORAGE_REPO = 'interfazCentral_repoUrl';
+
+      function getJenkins() { return localStorage.getItem(STORAGE_JENKINS) || 'http://localhost:8080'; }
+      function getApp() { return localStorage.getItem(STORAGE_APP) || 'http://localhost:8111'; }
+      function getRegistry() {
+        var r = localStorage.getItem(STORAGE_REGISTRY) || 'http://localhost:5000';
+        return r.replace(/\/$/, '') + '/v2/_catalog';
+      }
+      function getRepo() { return localStorage.getItem(STORAGE_REPO) || ''; }
+
+      function loadInputs() {
+        document.getElementById('urlJenkins').value = getJenkins();
+        document.getElementById('urlApp').value = getApp();
+        document.getElementById('urlRegistry').value = (localStorage.getItem(STORAGE_REGISTRY) || 'http://localhost:5000').replace(/\/v2\/_catalog$/, '').replace(/\/$/, '');
+        document.getElementById('urlRepo').value = getRepo();
+      }
+
+      function applyUrls() {
+        var jenkins = getJenkins().replace(/\/$/, '');
+        var app = getApp().replace(/\/$/, '');
+        var registry = getRegistry();
+        var repo = getRepo();
+        var jobPath = '/job/pos-online-pipeline/';
+        var consolePath = '/job/pos-online-pipeline/lastBuild/console';
+
+        document.getElementById('flowLinkJenkins').href = jenkins;
+        document.getElementById('flowLinkConsole').href = jenkins + consolePath;
+        document.getElementById('flowLinkRegistry').href = registry;
+        document.getElementById('flowLinkApp').href = app;
+        document.getElementById('flowLinkRepo').href = repo || '#';
+        document.getElementById('flowLinkRepo').textContent = repo ? 'Abrir repo' : 'Configurar repo (URL abajo)';
+        document.getElementById('quickJenkins').href = jenkins;
+        document.getElementById('quickJob').href = jenkins + jobPath;
+        document.getElementById('quickApp').href = app;
+        document.getElementById('quickHealth').href = app + '/actuator/health';
+        document.getElementById('quickH2').href = app + '/h2-console';
+      }
+
+
+      document.getElementById('btnSaveUrls').addEventListener('click', function() {
+        var jenkins = (document.getElementById('urlJenkins').value || 'http://localhost:8080').trim().replace(/\/$/, '');
+        var app = (document.getElementById('urlApp').value || 'http://localhost:8111').trim().replace(/\/$/, '');
+        var reg = (document.getElementById('urlRegistry').value || 'http://localhost:5000').trim().replace(/\/$/, '');
+        localStorage.setItem(STORAGE_JENKINS, jenkins);
+        localStorage.setItem(STORAGE_APP, app);
+        localStorage.setItem(STORAGE_REGISTRY, reg);
+        var repo = (document.getElementById('urlRepo').value || '').trim();
+        localStorage.setItem(STORAGE_REPO, repo);
+        applyUrls();
+        var msg = document.getElementById('urlSavedMsg');
+        msg.textContent = 'Guardado.';
+        setTimeout(function() { msg.textContent = ''; }, 2500);
+      });
+
+      function checkStatus() {
+        var jenkins = getJenkins().replace(/\/$/, '');
+        var app = getApp().replace(/\/$/, '');
+        var elPos = document.getElementById('statusPos');
+        var elJenkins = document.getElementById('statusJenkins');
+        var btn = document.getElementById('btnCheckStatus');
+        elPos.className = 'status-item pending';
+        elPos.innerHTML = '<span class="dot"></span> POS: comprobando…';
+        elJenkins.className = 'status-item pending'; elJenkins.innerHTML = '<span class="dot"></span> Jenkins: comprobando…';
+        btn.disabled = true;
+
+        function setPos(ok, msg) {
+          elPos.className = 'status-item ' + (ok ? 'ok' : 'fail');
+          elPos.innerHTML = '<span class="dot"></span> POS: ' + (msg || (ok ? 'OK' : 'sin respuesta'));
+        }
+        function setJenkins(ok, msg) {
+          elJenkins.className = 'status-item ' + (ok ? 'ok' : 'fail');
+          elJenkins.innerHTML = '<span class="dot"></span> Jenkins: ' + (msg || (ok ? 'OK' : 'sin respuesta'));
+        }
+
+        fetch(app + '/actuator/health', { method: 'GET', mode: 'cors' }).then(function(r) { setPos(r.ok); }).catch(function() { setPos(false); });
+        fetch(jenkins + '/api/json?tree=nodeName', { method: 'GET', mode: 'cors' }).then(function(r) { setJenkins(r.ok); }).catch(function() { setJenkins(false); });
+
+        setTimeout(function() {
+          btn.disabled = false;
+          if (elPos.classList.contains('pending')) setPos(false, 'timeout');
+          if (elJenkins.classList.contains('pending')) setJenkins(false, 'timeout');
+        }, 6000);
+      }
+
+      document.getElementById('btnCheckStatus').addEventListener('click', checkStatus);
+
+      loadInputs();
+      applyUrls();
+      checkStatus();
+    })();
+  </script>
+</body>
+</html>

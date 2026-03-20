@@ -1,0 +1,16 @@
+SOURCE: chapter7/microservices/movies-marketplace/e2e/src/app.po.ts
+MIME: text/x-java; charset=us-ascii
+----- BEGIN CONTENT -----
+import { browser, by, element } from 'protractor';
+
+export class AppPage {
+  navigateTo() {
+    return browser.get(browser.baseUrl) as Promise<any>;
+  }
+
+  getTitleText() {
+    return element(by.css('app-root .content span')).getText() as Promise<string>;
+  }
+}
+
+----- END CONTENT -----

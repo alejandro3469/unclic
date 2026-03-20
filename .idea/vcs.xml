@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/legacy-root-original/local-repo-fast-flow-webinar" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/toolkit-fastflow/integrations/kings-joers/vantive" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/toolkit-fastflow/integrations/web-cuantica/delivery/fastflow-integration" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/toolkit-fastflow/integrations/web-cuantica/delivery/pos-online" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/toolkit-fastflow/integrations/web-cuantica/delivery/smartbussiness-generic-model" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/toolkit-fastflow/integrations/web-cuantica/repo-pos-fastflow" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/toolkit-fastflow/integrations/web-cuantica/smartbussiness-generic-model" vcs="Git" />
+  </component>
+</project>

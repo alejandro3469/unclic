@@ -1,0 +1,8 @@
+SOURCE: chapter11/deployment/helm/watchlist/templates/namespace.yaml
+MIME: text/plain; charset=us-ascii
+----- BEGIN CONTENT -----
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ .Values.namespace }}
+----- END CONTENT -----

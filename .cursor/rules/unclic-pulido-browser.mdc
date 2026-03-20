@@ -1,0 +1,51 @@
+---
+description: unclic — Pulido visual Vantive + Fastflow con Cursor Browser (URLs, archivos, accesibilidad)
+globs: ["toolkit-fastflow/integrations/web-cuantica/**"]
+---
+
+# Pulido visual (Vantive + Fastflow) y uso del Browser
+
+**Regla en raíz del repo:** `.cursor/rules/unclic-pulido-browser.mdc`. Cuando el objetivo sea **pulir** la landing Vantive o la página/producto Fastflow:
+
+## Dos frentes (no mezclar en el mismo hilo sin aclarar)
+
+1. **Vantive** — Landing estática:
+   - **Ubicación:** `toolkit-fastflow/integrations/web-cuantica/deploy/landings/vantive/` (HTML/CSS/JS estático).
+   - Si la carpeta no existe, crearla al estilo de `landings/baxter/`; para servir por subdominio usar en `subdominios-lista.js` `puerto: 'landing:vantive'` y proxy en 8080.
+   - **Archivos clave:** `index.html`, CSS y assets dentro de `deploy/landings/vantive/`.
+
+2. **Fastflow / Web Cuántica** — Producto (servidor + API + front):
+   - **Ubicación:** servidor en `toolkit-fastflow/integrations/web-cuantica/server/` (Express, puerto 3000), rutas, vistas, estáticos y API.
+   - **Archivos clave:** `server/index.js`, `server/config.js`, plantillas/vistas y assets que sirva el backend; panel admin y rutas en el mismo servidor.
+
+En una misma conversación, **indicar explícitamente** si se trabaja en Vantive o en Fastflow para no mezclar cambios de un frente con el otro.
+
+## Browser de Cursor (design sidebar + Apply)
+
+1. **Servir en local** el sitio que se va a pulir:
+   - **Vantive (estático):** por ejemplo `npx serve toolkit-fastflow/integrations/web-cuantica/deploy/landings/vantive` (puerto por defecto 3000; si el servidor Fastflow ya usa 3000, usar otro puerto con `-l 5000`) o, con proxy y `landing:vantive`, abrir la URL del proxy.
+   - **Fastflow:** `cd toolkit-fastflow/integrations/web-cuantica/server && npm start` (puerto 3000). Con proxy: `node toolkit-fastflow/integrations/web-cuantica/deploy/proxy-local.js` (8080) y hosts de `deploy/hosts-local-unclic.txt` en `/etc/hosts`.
+
+2. **Abrir la URL en la pestaña Browser** de Cursor (p. ej. `http://localhost:3000` o `http://webcuantica.fastflow.unclic.consulting:8080`).
+
+3. Usar el **design sidebar** para ajustar estilos en vivo (espaciado, colores, tipografía, modales, responsive).
+
+4. **Apply** para bajar los cambios al código (evitar editar a ciegas; el Browser permite ver el resultado y luego persistir).
+
+## URLs de prueba (con proxy en 8080 y hosts configurados)
+
+- **Hub:** `http://unclic.consulting:8080`
+- **Fastflow (sitio + admin):** `http://webcuantica.fastflow.unclic.consulting:8080` (backend en 3000)
+- **Vantive:** `http://vantive.unclic.consulting:8080` (backend en 3001 o landing estática si está `landing:vantive`)
+- **Baxter (landing estática):** `http://baxter.unclic.consulting:8080`
+- **Web Cuántica:** `http://webcuantica.unclic.consulting:8080` (backend en 3003)
+
+Ver `deploy/README-PROXY-LOCAL.md`, `PROBAR-LOCAL.md` y `deploy/hosts-local-unclic.txt` para arrancar proxy y hosts.
+
+## Accesibilidad
+
+Al pulir estilos, mantener o mejorar: contraste, focus visible, tamaños de click/touch, y estructura semántica (encabezados, landmarks). No depender solo de color para información crítica.
+
+## Regla rápida
+
+No mezclar en el mismo hilo cambios de Vantive (landing estática) y de Fastflow sin aclarar explícitamente el frente; así se termina Vantive y se pule Fastflow/Web Cuántica sin mezclar cambios y se aprovecha el Browser para retoques visuales.

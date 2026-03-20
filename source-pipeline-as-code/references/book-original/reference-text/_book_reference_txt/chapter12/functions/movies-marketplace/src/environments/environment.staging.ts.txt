@@ -1,0 +1,10 @@
+SOURCE: chapter12/functions/movies-marketplace/src/environments/environment.staging.ts
+MIME: text/plain; charset=us-ascii
+----- BEGIN CONTENT -----
+export const environment = {
+    production: false,
+    name: 'staging',
+    apiURL: 'https://rth65vizrb.execute-api.eu-west-3.amazonaws.com/staging',
+};
+
+----- END CONTENT -----

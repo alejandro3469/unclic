@@ -1,0 +1,13 @@
+package mx.com.endtoend.infrastructure.reports.sales.branchEmployee.ferresamano;
+
+import mx.com.endtoend.infrastructure.reports.sales.branchEmployee.common.repository.BaseSaleBranchEmployeeReportRepository;
+import org.springframework.stereotype.Service;
+import mx.com.endtoend.infrastructure.reports.sales.branchEmployee.ferresamano.repositories.CustomDSLPaymentBranchEmployeeFSamanoRepository;
+
+@Service
+public class SaleBranchEmployeeReportCFSamanoRepository extends BaseSaleBranchEmployeeReportRepository {
+
+	public SaleBranchEmployeeReportCFSamanoRepository(CustomDSLPaymentBranchEmployeeFSamanoRepository customDSLPaymentBranchEmployeeFCarredanaRepository){
+		super(SaleBranchEmployeeReportCFSamanoRepository.class,customDSLPaymentBranchEmployeeFCarredanaRepository);
+	}
+}

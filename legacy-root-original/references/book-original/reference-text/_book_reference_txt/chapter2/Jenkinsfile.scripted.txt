@@ -1,0 +1,27 @@
+SOURCE: chapter2/Jenkinsfile.scripted
+MIME: text/plain; charset=us-ascii
+----- BEGIN CONTENT -----
+def imageName = 'example'
+
+pipeline{
+    agent{
+        label 'workers'
+    }
+
+    stages{
+        stage('Checkout'){
+            steps{
+                checkout scm
+            }
+        }
+
+        stage('Build'){
+            docker.build(imageName)
+        }
+
+        stage('Deploy'){
+            echo "Deploying ..."
+        }
+    }
+}
+----- END CONTENT -----

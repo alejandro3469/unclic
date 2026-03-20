@@ -1,0 +1,12 @@
+# Pulumi.yaml — metadatos del proyecto (FastFlow POS / laboratorio IaC)
+#
+# Este proyecto NO sustituye a deploy/terraform (K8s). Es un stack paralelo para:
+#   - Mostrar en Pulumi Cloud (URL en NEXT_PUBLIC_DEMO_PULUMI_URL en el sitio UnClic)
+#   - Ejecutar `pulumi preview` desde Jenkins (.jenkins/scripts/pulumi-preview.sh)
+#
+# Primer uso local:
+#   cd deploy/pulumi && npm ci && pulumi login && pulumi stack init dev && pulumi up
+#
+name: fastflow-pos-lab
+runtime: nodejs
+description: Bucket S3 de laboratorio alineado al pipeline POS (opcional LocalStack)

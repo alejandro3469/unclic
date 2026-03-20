@@ -1,0 +1,11 @@
+SOURCE: chapter12/functions/movies-store/Dockerfile
+MIME: text/plain; charset=us-ascii
+----- BEGIN CONTENT -----
+FROM node:14.0.0
+
+WORKDIR /app
+
+COPY package-lock.json .
+COPY package.json .
+RUN npm i --only=prod
+----- END CONTENT -----

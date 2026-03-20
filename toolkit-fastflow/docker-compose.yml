@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins-fastflow
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - ./jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - JAVA_OPTS=-Djenkins.install.runSetupWizard=true
+    restart: unless-stopped
+    networks:
+      - fastflow-net
+
+  # Agente Docker opcional para builds aislados
+  agent:
+    image: jenkins/inbound-agent
+    container_name: jenkins-agent-fastflow
+    depends_on:
+      - jenkins
+    environment:
+      - JENKINS_URL=http://jenkins:8080
+      - JENKINS_AGENT_NAME=docker-agent
+      - JENKINS_SECRET=your-secret-here # Debe configurarse en la UI
+    networks:
+      - fastflow-net
+
+networks:
+  fastflow-net:
+    driver: bridge

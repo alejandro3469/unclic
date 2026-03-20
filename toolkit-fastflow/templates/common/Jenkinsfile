@@ -1,0 +1,152 @@
+// Jenkinsfile base Fast Flow (Plug-and-Play + Universal Git Support)
+
+pipeline {
+  agent any
+
+  parameters {
+    choice(name: 'DEPLOY_ENV', choices: ['envPrd', 'envQas', 'envPpr'], description: 'Ambiente de deploy')
+    string(name: 'GIT_CREDENTIALS_ID', defaultValue: 'git-universal-credentials', description: 'ID de credenciales de Git (User/Pass o SSH)')
+  }
+
+  tools { jdk 'jdk11' }
+
+  environment {
+    MAVEN_REPO_LOCAL = "${env.HOME}/.m2/repository"
+    MAVEN_OPTS = "-Dmaven.repo.local=${env.MAVEN_REPO_LOCAL}"
+    MAVEN_CLI_OPTS = "--batch-mode --errors --fail-at-end --show-version"
+    ENABLE_REGISTRY = "false"
+    REGISTRY_HOST = "docker.io"
+    REGISTRY_REPOSITORY = "your-namespace/your-app"
+    REGISTRY_CREDENTIALS_ID = "registry-credentials"
+    // Soporte Universal para Git (GitHub, GitLab, Private)
+    GIT_PROVIDER = "auto" // auto, github, gitlab, private
+  }
+
+  stages {
+    stage('Checkout') {
+      steps {
+        script {
+          echo "Conectando con el repositorio Git..."
+          // El checkout scm estándar de Jenkins maneja la mayoría de los casos si el Job está bien configurado
+          checkout scm
+        }
+      }
+    }
+    stage('Prepare') {
+      steps {
+        script {
+          def prepare = load '.jenkins/build/prepare.groovy'
+          prepare.run(this)
+        }
+      }
+    }
+
+    stage('Build') {
+      steps {
+        script {
+          def build = load '.jenkins/build/build.groovy'
+          build.run(this)
+        }
+        stash name: 'build-output', includes: 'target/**'
+      }
+    }
+
+    stage('Test') {
+      steps {
+        unstash 'build-output'
+        script {
+          echo "Ejecutando Unit e Integration Tests..."
+          def test = load '.jenkins/build/test.groovy'
+          test.run(this)
+        }
+      }
+      post {
+        always {
+          junit '**/target/surefire-reports/*.xml'
+        }
+      }
+    }
+
+    stage('Security Scan (SAST)') {
+      steps {
+        script {
+          echo "Analizando vulnerabilidades y calidad de código..."
+          // Ejemplo de integración con SonarQube o Checkstyle avanzado
+          sh 'mvn checkstyle:check -q -DskipTests -Dmaven.repo.local=${MAVEN_REPO_LOCAL} ${MAVEN_CLI_OPTS}'
+        }
+      }
+    }
+
+    stage('Package') {
+      when { anyOf { branch 'main'; expression { env.GIT_BRANCH == 'origin/main' || env.GIT_BRANCH == 'main' } } }
+      steps {
+        unstash 'build-output'
+        script {
+          def pkg = load '.jenkins/package/package.groovy'
+          pkg.run(this)
+        }
+      }
+    }
+
+    stage('Containerize + Push Registry') {
+      when {
+        allOf {
+          anyOf { branch 'main'; expression { env.GIT_BRANCH == 'origin/main' || env.GIT_BRANCH == 'main' } }
+          expression { env.ENABLE_REGISTRY?.toBoolean() }
+        }
+      }
+      steps {
+        script {
+          def rawBranch = (env.BRANCH_NAME ?: env.GIT_BRANCH ?: "main")
+            .replace("origin/", "")
+            .replaceAll("[^A-Za-z0-9._-]", "-")
+            .toLowerCase()
+          def shortSha = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+          def imageBase = "${env.REGISTRY_HOST}/${env.REGISTRY_REPOSITORY}"
+          def tagSha = "${imageBase}:${shortSha}"
+          def tagBranch = "${imageBase}:${rawBranch}"
+          def tagLatest = "${imageBase}:latest"
+
+          withCredentials([usernamePassword(credentialsId: env.REGISTRY_CREDENTIALS_ID, usernameVariable: 'REGISTRY_USER', passwordVariable: 'REGISTRY_PASS')]) {
+            sh '''
+              set -euo pipefail
+              echo "$REGISTRY_PASS" | docker login "${REGISTRY_HOST}" -u "$REGISTRY_USER" --password-stdin
+            '''
+          }
+
+          sh """
+            set -euo pipefail
+            docker build -t '${tagSha}' .
+            docker tag '${tagSha}' '${tagBranch}'
+            docker tag '${tagSha}' '${tagLatest}'
+            docker push '${tagSha}'
+            docker push '${tagBranch}'
+            docker push '${tagLatest}'
+          """
+        }
+      }
+    }
+
+    stage('Cleanup') {
+      when { anyOf { branch 'main'; expression { env.GIT_BRANCH == 'origin/main' || env.GIT_BRANCH == 'main' } } }
+      steps {
+        script {
+          input message: "Cleanup en servidor (${params.DEPLOY_ENV}). ¿Ejecutar?", ok: 'Sí, ejecutar Cleanup'
+          def cleanup = load '.jenkins/deploy/cleanup.groovy'
+          cleanup.run(this)
+        }
+      }
+    }
+
+    stage('Deploy') {
+      when { anyOf { branch 'main'; expression { env.GIT_BRANCH == 'origin/main' || env.GIT_BRANCH == 'main' } } }
+      steps {
+        script {
+          input message: "Deploy en servidor (${params.DEPLOY_ENV}). ¿Ejecutar?", ok: 'Sí, ejecutar Deploy'
+          def deploy = load '.jenkins/deploy/deploy.groovy'
+          deploy.run(this)
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+SOURCE: chapter4/distributed/master/scripts/disable-cli.groovy
+MIME: text/plain; charset=us-ascii
+----- BEGIN CONTENT -----
+#!groovy
+
+import jenkins.model.Jenkins
+
+Jenkins jenkins = Jenkins.getInstance()
+
+println "--> disabling Jenkins remote CLI"
+jenkins.CLI.get().setEnabled(false)
+jenkins.save()
+----- END CONTENT -----

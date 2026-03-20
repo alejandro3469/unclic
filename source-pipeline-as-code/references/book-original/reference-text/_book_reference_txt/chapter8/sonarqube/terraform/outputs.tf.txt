@@ -1,0 +1,7 @@
+SOURCE: chapter8/sonarqube/terraform/outputs.tf
+MIME: text/plain; charset=us-ascii
+----- BEGIN CONTENT -----
+output "sonarqube" {
+  value = "https://${aws_route53_record.sonarqube.name}"
+}
+----- END CONTENT -----

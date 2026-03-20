@@ -1,0 +1,3 @@
+name: jenkins-aws
+runtime: nodejs
+description: FastFlow Jenkins + Gitea + POS on AWS (Pulumi). Use with Jenkins open source for CI/CD.

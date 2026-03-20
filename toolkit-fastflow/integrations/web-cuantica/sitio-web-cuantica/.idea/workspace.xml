@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="95cdcf3e-dfa4-4686-8b67-7a204e51d195" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../../../../.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../docs/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../docs/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../repo-pos-fastflow/ELEMENTOS-Y-PIPELINE-DEPLOY-OTRO-SERVIDOR.md" beforeDir="false" afterPath="$PROJECT_DIR$/../repo-pos-fastflow/ELEMENTOS-Y-PIPELINE-DEPLOY-OTRO-SERVIDOR.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../repo-pos-fastflow/Jenkinsfile" beforeDir="false" afterPath="$PROJECT_DIR$/../repo-pos-fastflow/Jenkinsfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../repo-pos-fastflow/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../repo-pos-fastflow/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../repo-pos-fastflow/deploy/terraform/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../repo-pos-fastflow/deploy/terraform/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unclic/.env.example" beforeDir="false" afterPath="$PROJECT_DIR$/../unclic/.env.example" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unclic/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../unclic/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unclic/app/demo/access/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../unclic/app/demo/access/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unclic/app/login/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../unclic/app/login/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unclic/components/demo/demo-gate.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../unclic/components/demo/demo-gate.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unclic/components/sections/architecture-live-section.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../unclic/components/sections/architecture-live-section.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unclic/components/sections/demos-section.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../unclic/components/sections/demos-section.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unclic/components/sections/hub-demos-section.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../unclic/components/sections/hub-demos-section.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unclic/docs/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../unclic/docs/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unclic/lib/copy.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../unclic/lib/copy.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unclic/lib/demos.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../unclic/lib/demos.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unclic/lib/hub-links.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../unclic/lib/hub-links.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unclic/scripts/deploy-to-unclic-consulting.sh" beforeDir="false" afterPath="$PROJECT_DIR$/../unclic/scripts/deploy-to-unclic-consulting.sh" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../../.." />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
+  <component name="ProjectId" id="3B3gy3E2F3f9D8m28n2KQFAEVRq" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;handoff/george-web-cuantica-front&quot;,
+    &quot;js.debugger.nextJs.config.created.client&quot;: &quot;true&quot;,
+    &quot;js.debugger.nextJs.config.created.server&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/wallfacer/Downloads/pipeline-as-code-with-jenkins-master/toolkit-fastflow/integrations/web-cuantica/sitio-web-cuantica&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RunManager" selected="npm.Next.js: server-side">
+    <configuration name="Next.js: debug client-side" type="JavascriptDebugType" uri="http://localhost:3002/">
+      <method v="2" />
+    </configuration>
+    <configuration name="Next.js: server-side" type="js.build_tools.npm">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="dev" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-WS-253.30387.83" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="95cdcf3e-dfa4-4686-8b67-7a204e51d195" name="Changes" comment="" />
+      <created>1773723418650</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1773723418650</updated>
+      <workItem from="1773723419724" duration="1105000" />
+      <workItem from="1773725305550" duration="2975000" />
+      <workItem from="1773729783830" duration="651000" />
+      <workItem from="1773846656403" duration="641000" />
+      <workItem from="1773933698748" duration="1205000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

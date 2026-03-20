@@ -1,0 +1,41 @@
+{
+  "info": {
+    "name": "pos-online UnClic / FastFlow (laboratorio)",
+    "description": "Para probar el POS desplegado en EC2. Configura APP_BASE_URL (ej. http://pos.unclic.consulting:8111 o http://IP_PUBLICA_POS:8111). Guía: docs/GUIA-UNICA-COMMIT-JENKINS-POSTMAN-UNCLIC.md",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "APP_BASE_URL",
+      "value": "http://localhost:8111"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health (actuator)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{APP_BASE_URL}}/actuator/health",
+          "host": ["{{APP_BASE_URL}}"],
+          "path": ["actuator", "health"]
+        },
+        "description": "Spring Boot Actuator. Respuesta típica: {\"status\":\"UP\"}."
+      }
+    },
+    {
+      "name": "Health (/health)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{APP_BASE_URL}}/health",
+          "host": ["{{APP_BASE_URL}}"],
+          "path": ["health"]
+        },
+        "description": "Algunos despliegues solo exponen /health. Si actuator devuelve 404, prueba esta."
+      }
+    }
+  ]
+}

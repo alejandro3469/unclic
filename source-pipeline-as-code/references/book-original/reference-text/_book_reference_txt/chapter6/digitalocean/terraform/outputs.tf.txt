@@ -1,0 +1,7 @@
+SOURCE: chapter6/digitalocean/terraform/outputs.tf
+MIME: text/plain; charset=us-ascii
+----- BEGIN CONTENT -----
+output "master" {
+  value = digitalocean_droplet.jenkins_master.ipv4_address
+}
+----- END CONTENT -----

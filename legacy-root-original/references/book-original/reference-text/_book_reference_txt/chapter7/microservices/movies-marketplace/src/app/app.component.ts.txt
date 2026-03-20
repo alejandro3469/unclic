@@ -1,0 +1,15 @@
+SOURCE: chapter7/microservices/movies-marketplace/src/app/app.component.ts
+MIME: text/x-java; charset=us-ascii
+----- BEGIN CONTENT -----
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  title = 'marketplace';
+}
+
+----- END CONTENT -----

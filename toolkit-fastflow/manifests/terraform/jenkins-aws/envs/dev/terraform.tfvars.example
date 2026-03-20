@@ -1,0 +1,40 @@
+# Copiar a terraform.tfvars y rellenar con tus valores.
+# No subir terraform.tfvars a control de versiones (contiene datos por entorno).
+
+aws_region = "us-east-1"
+name_prefix = "fastflow"
+author      = "fastflow"
+
+vpc_cidr             = "10.0.0.0/16"
+availability_zones   = ["us-east-1a", "us-east-1b"]
+public_subnet_count  = 2
+private_subnet_count = 2
+
+# AMI: usar Amazon Linux 2 o Ubuntu 22.04 en tu región.
+# Ejemplo Amazon Linux 2 (us-east-1): consultar en AWS Console o:
+# aws ec2 describe-images --owners amazon --filters "Name=name,Values=amzn2-ami-hvm-*-x86_64-gp2" --query 'Images[*].[ImageId,Name]' --output table
+jenkins_controller_ami_id = "ami-xxxxxxxxxxxxxxxxx"
+jenkins_worker_ami_id      = "ami-xxxxxxxxxxxxxxxxx"
+
+jenkins_instance_type        = "t3.medium"
+jenkins_worker_instance_type = "t3.small"
+
+# Gitea y POS (Fase 1): misma AMI que Jenkins o específica por servicio
+gitea_ami_id = "ami-xxxxxxxxxxxxxxxxx"
+pos_ami_id   = "ami-xxxxxxxxxxxxxxxxx"
+gitea_instance_type = "t3.micro"
+pos_instance_type   = "t3.micro"
+
+# Registry opcional (default false). Si true, usa registry_ami_id o la de Jenkins
+# enable_registry     = false
+# registry_ami_id     = ""
+# registry_instance_type = "t3.micro"
+
+# --- OPCIÓN FREE TIER (ver DESPLIEGUE-AWS-GRATIS-Y-REPLICAR.md) ---
+# Descomentar y rellenar AMIs para desplegar gratis (1 instancia t2.micro, sin workers, acceso por IP pública):
+# jenkins_instance_type        = "t2.micro"
+# jenkins_worker_instance_type = "t2.micro"
+# jenkins_in_public_subnet     = true
+# workers_desired_capacity     = 0
+# workers_min_size             = 0
+# workers_max_size             = 0

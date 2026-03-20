@@ -1,0 +1,9 @@
+SOURCE: chapter11/jx/movies-store/OWNERS
+MIME: text/plain; charset=us-ascii
+----- BEGIN CONTENT -----
+approvers:
+- mlabouardy
+reviewers:
+- mlabouardy
+
+----- END CONTENT -----

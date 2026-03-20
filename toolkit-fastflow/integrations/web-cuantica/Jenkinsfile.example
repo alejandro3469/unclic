@@ -1,0 +1,36 @@
+// =============================================================================
+// Jenkinsfile.example — plantilla / puntero FastFlow (integración web-cuantica)
+// =============================================================================
+//
+// IMPORTANTE:
+//   El pipeline POS Online **completo y documentado** (Maven, Docker, registry,
+//   deploy remoto SSH, Terraform K8s, LocalStack, Pulumi) está en:
+//
+//     repo-pos-fastflow/Jenkinsfile
+//
+//   Junto con:
+//     repo-pos-fastflow/.jenkins/PLAN-FASTFLOW-PIPELINE-IAC.md
+//     repo-pos-fastflow/.jenkins/scripts/*.sh
+//     repo-pos-fastflow/.jenkins/groovy/fastflowIacHelpers.groovy
+//
+// En el job Jenkins (Gitea), Script Path = `Jenkinsfile` apuntando al repo
+// pos-online (repo-pos-fastflow o el remoto que clonaste).
+//
+// Variables de job documentadas en la cabecera de ese Jenkinsfile, p. ej.:
+//   REGISTRY, POS_DEPLOY_*, FASTFLOW_TF_VALIDATE, FASTFLOW_TF_PLAN_K8S,
+//   FASTFLOW_TF_PLAN_LOCALSTACK, LOCALSTACK_ENDPOINT, FASTFLOW_PULUMI_PREVIEW
+//
+// Este archivo se mantiene como **recordatorio**; no duplica 300+ líneas.
+// Para UnClic (Next static): ver unclic/Jenkinsfile (build + rsync).
+// =============================================================================
+
+pipeline {
+    agent any
+    stages {
+        stage('Readme') {
+            steps {
+                echo 'Usa repo-pos-fastflow/Jenkinsfile como canónico. Ver comentarios en Jenkinsfile.example (este archivo).'
+            }
+        }
+    }
+}

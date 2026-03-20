@@ -1,0 +1,24 @@
+# LocalStack para desarrollo y pruebas locales (saving local).
+# Uso: docker compose up -d
+# Endpoint: http://localhost:4566
+# Ver README.md para Pulumi, Terraform y estado local.
+
+services:
+  localstack:
+    image: localstack/localstack:latest
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=s3,lambda,sqs,dynamodb,ec2,ecr,ecs,iam,sts
+      - DEBUG=0
+      - PERSISTENCE=0
+    volumes:
+      - localstack-data:/var/lib/localstack
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:4566/_localstack/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  localstack-data:

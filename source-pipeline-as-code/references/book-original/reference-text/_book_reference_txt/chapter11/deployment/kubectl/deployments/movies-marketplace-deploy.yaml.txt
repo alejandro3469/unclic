@@ -1,0 +1,23 @@
+SOURCE: chapter11/deployment/kubectl/deployments/movies-marketplace-deploy.yaml
+MIME: text/plain; charset=us-ascii
+----- BEGIN CONTENT -----
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: movies-marketplace
+  namespace: watchlist
+spec:
+  selector:
+    matchLabels:
+      app: movies-marketplace
+  template:
+    metadata: 
+      labels: 
+        app: movies-marketplace
+    spec:
+      containers:
+      - name: movies-marketplace
+        image: ID.dkr.ecr.REGION.amazonaws.com/USER/movies-marketplace:develop
+        ports:
+        - containerPort: 80
+----- END CONTENT -----

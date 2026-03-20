@@ -1,0 +1,14 @@
+package mx.com.endtoend.infrastructure.reports.sales.branchEmployee.calzada.fragua;
+
+import mx.com.endtoend.infrastructure.reports.sales.branchEmployee.common.repository.BaseSaleBranchEmployeeReportRepository;
+import org.springframework.stereotype.Service;
+import mx.com.endtoend.infrastructure.reports.sales.branchEmployee.calzada.SaleBranchEmployeeReportCalzadaRepository;
+import mx.com.endtoend.infrastructure.reports.sales.branchEmployee.calzada.fragua.repositories.CustomDSLPaymentBranchEmployeeCFraguaRepository;
+
+@Service
+public class SaleBranchEmployeeReportFraguaRepository extends BaseSaleBranchEmployeeReportRepository {
+
+	public SaleBranchEmployeeReportFraguaRepository(CustomDSLPaymentBranchEmployeeCFraguaRepository branchEmployeeCFraguaRepository){
+		super(SaleBranchEmployeeReportCalzadaRepository.class, branchEmployeeCFraguaRepository);
+	}
+}

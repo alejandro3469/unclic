@@ -1,0 +1,9 @@
+# ------------------------------------------------------------------------------
+# Namespace fastflow: aislar recursos del servidor FastFlow. Aplicar primero.
+# ------------------------------------------------------------------------------
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: fastflow
+  labels:
+    app.kubernetes.io/name: fastflow

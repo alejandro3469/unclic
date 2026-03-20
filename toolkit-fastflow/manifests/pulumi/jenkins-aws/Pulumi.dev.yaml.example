@@ -1,0 +1,11 @@
+# Copy to Pulumi.dev.yaml and set your AMI IDs for the chosen region.
+# Get latest Amazon Linux 2 AMI, e.g. us-east-2:
+#   aws ec2 describe-images --owners amazon --region us-east-2 \
+#     --filters "Name=name,Values=amzn2-ami-hvm-*-x86_64-gp2" \
+#     --query 'Images | sort_by(@, &CreationDate) | [-1].ImageId' --output text
+config:
+  aws:region: us-east-2
+  jenkins-aws:namePrefix: fastflow
+  jenkins-aws:jenkinsControllerAmiId: ami-xxxxxxxxxxxxxxxxx
+  jenkins-aws:giteaAmiId: ami-xxxxxxxxxxxxxxxxx
+  jenkins-aws:posAmiId: ami-xxxxxxxxxxxxxxxxx

@@ -1,0 +1,64 @@
+// Alternativa SIN Docker: usa la herramienta Node.js configurada en Jenkins.
+// Si "npm: command not found" con el Jenkinsfile principal (Docker), usa este:
+//   - Copia este contenido al Jenkinsfile (o en el job elige "Pipeline script from SCM" y script path a este archivo).
+//   - En Jenkins: Manage Jenkins → Global Tool Configuration → NodeJS → Añadir instalación (ej. "NodeJS 20").
+//   - Ajusta el nombre en "tool 'NodeJS 20'" abajo si es distinto.
+
+def APP_DIR = 'toolkit-fastflow/integrations/web-cuantica/unclic'
+
+pipeline {
+    agent any
+    environment {
+        DEPLOY_PATH = "${env.DEPLOY_PATH ?: '/usr/share/nginx/landing'}"
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+                sh "echo 'Rama: ${GIT_BRANCH:-main}'; git rev-parse --short HEAD"
+            }
+        }
+        stage('Install') {
+            steps {
+                dir(APP_DIR) {
+                    // Requiere Node.js en el PATH del agente, o configurar herramienta "NodeJS" en Jenkins y descomentar:
+                    // withEnv(["PATH+Node=${tool(name: 'NodeJS 20', type: 'nodejs').getNodeJs().getBin()}"]) {
+                    sh 'npm ci'
+                    // }
+                }
+            }
+        }
+        stage('Build') {
+            steps {
+                dir(APP_DIR) {
+                    // withEnv(["PATH+Node=${tool(name: 'NodeJS 20', type: 'nodejs').getNodeJs().getBin()}"]) {
+                    sh 'npm run build'
+                    sh 'ls -la out/ | head -20'
+                    // }
+                }
+            }
+        }
+        stage('Deploy') {
+            when { branch 'main' }
+            steps {
+                script {
+                    def host = env.DEPLOY_HOST ?: ''
+                    def user = env.DEPLOY_USER ?: 'ec2-user'
+                    if (!host.trim()) {
+                        echo 'DEPLOY_HOST no configurado: omitiendo Deploy.'
+                        return
+                    }
+                    def outPath = "${APP_DIR}/out"
+                    sh """
+                        echo "Desplegando ${outPath}/ a ${user}@${host}:${DEPLOY_PATH}"
+                        rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" ${outPath}/ ${user}@${host}:${DEPLOY_PATH}/
+                    """
+                }
+            }
+        }
+    }
+    post {
+        success { echo "Build y despliegue completados." }
+        failure { echo "Pipeline falló. Revisar logs de Install, Build o Deploy." }
+    }
+}

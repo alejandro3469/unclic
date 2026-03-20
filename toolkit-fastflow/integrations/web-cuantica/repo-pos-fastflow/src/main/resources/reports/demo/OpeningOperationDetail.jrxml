@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.19.1.final using JasperReports Library version 6.19.1-867c00bf88cd4d784d404379d6c05e1b419e8a4c  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="OpeningOperationDetail" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="f3914318-51b4-4413-9c88-a5895d03a080">
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="lineNumber" class="java.lang.Long"/>
+	<field name="instrumentName" class="java.lang.String"/>
+	<field name="incomeType" class="java.lang.String"/>
+	<field name="amountApplied" class="java.math.BigDecimal"/>
+	<pageHeader>
+		<band height="34" splitType="Stretch">
+			<staticText>
+				<reportElement x="20" y="8" width="60" height="12" uuid="752648d2-fcd1-4c1b-a6ee-7bb204c8ebc9">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Línea]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="165" y="8" width="110" height="12" uuid="9ba9dc1f-1a0f-4fdc-af1d-acba602a2226">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Instrumento de  apertura]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="370" y="8" width="90" height="12" uuid="a44c7345-af14-49cf-8b1d-5bbdd03714de">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tipo de movimiento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="522" y="8" width="58" height="12" uuid="fe24b6a9-2251-4832-b10e-b1e8cef2dc1d">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="0" width="595" height="1" uuid="1b8a2f3e-acaf-4b37-a831-ef702746ca89">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="2.0" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="0" y="29" width="595" height="1" uuid="f989cb93-d7ed-4870-8959-495f1a344df8">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="2.0" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="22" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="100" height="20" uuid="f77b92a1-24de-4c4e-89f9-b232d577d729"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{lineNumber}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="0" width="240" height="20" uuid="35d568fa-3c04-403d-943a-af70c9cd3787"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{instrumentName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="340" y="0" width="150" height="20" uuid="620d361f-6b4c-4192-b43c-aee18009a324"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{incomeType}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="490" y="0" width="105" height="20" uuid="bf140897-2f59-400d-b222-c6fe056ac6e0"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{amountApplied}]]></textFieldExpression>
+				<patternExpression><![CDATA["#,##0.00"]]></patternExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

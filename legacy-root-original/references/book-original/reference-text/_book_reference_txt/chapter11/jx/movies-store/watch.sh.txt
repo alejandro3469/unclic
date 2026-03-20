@@ -1,0 +1,11 @@
+SOURCE: chapter11/jx/movies-store/watch.sh
+MIME: text/x-shellscript; charset=us-ascii
+----- BEGIN CONTENT -----
+#!/usr/bin/env bash
+
+# watch the go files and continously deploy the service
+make linux
+skaffold run -p dev
+reflex -r "\.go$" -- bash -c 'make linux && skaffold run -p dev'
+
+----- END CONTENT -----

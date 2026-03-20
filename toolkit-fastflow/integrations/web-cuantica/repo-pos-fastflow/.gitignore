@@ -1,0 +1,11 @@
+target/
+*.jar
+*.war
+*.log
+.idea/
+*.iml
+.env
+.env.local
+*.tfstate
+*.tfstate.*
+.terraform/

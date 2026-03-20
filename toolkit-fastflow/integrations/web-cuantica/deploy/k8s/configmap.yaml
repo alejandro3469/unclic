@@ -1,0 +1,15 @@
+# ------------------------------------------------------------------------------
+# ConfigMap: variables de entorno no secretas (NODE_ENV, BASE_URL).
+# Secretos (SESSION_SECRET, ADMIN_PASSWORD) crear con kubectl create secret.
+# Ajustar BASE_URL en producción al dominio público.
+# ------------------------------------------------------------------------------
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fastflow-config
+  namespace: fastflow
+  labels:
+    app: fastflow-server
+data:
+  NODE_ENV: "production"
+  BASE_URL: "http://localhost:3000"   # Cambiar en prod al dominio real

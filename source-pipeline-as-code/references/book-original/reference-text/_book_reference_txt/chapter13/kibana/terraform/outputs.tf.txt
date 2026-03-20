@@ -1,0 +1,7 @@
+SOURCE: chapter13/kibana/terraform/outputs.tf
+MIME: text/plain; charset=us-ascii
+----- BEGIN CONTENT -----
+output "kibana" {
+  value = "https://${aws_route53_record.kibana.name}"
+}
+----- END CONTENT -----

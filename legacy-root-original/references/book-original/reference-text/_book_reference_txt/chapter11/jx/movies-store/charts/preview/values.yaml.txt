@@ -1,0 +1,26 @@
+SOURCE: chapter11/jx/movies-store/charts/preview/values.yaml
+MIME: text/plain; charset=us-ascii
+----- BEGIN CONTENT -----
+
+expose:
+  Annotations:
+    helm.sh/hook: post-install,post-upgrade
+    helm.sh/hook-delete-policy: hook-succeeded
+  config:
+    exposer: Ingress
+    http: true
+    tlsacme: false
+
+cleanup:
+  Args:
+    - --cleanup
+  Annotations:
+    helm.sh/hook: pre-delete
+    helm.sh/hook-delete-policy: hook-succeeded
+
+preview:
+  image:
+    repository:
+    tag:
+    pullPolicy: IfNotPresent
+----- END CONTENT -----

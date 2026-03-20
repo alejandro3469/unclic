@@ -1,0 +1,10 @@
+{
+  "name": "pos-online-deploy",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Scripts y assets de deploy para pos-online (ESM)",
+  "scripts": {
+    "agent:verify": "node scripts/agent-verify-all.js"
+  }
+}

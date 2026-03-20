@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.19.1.final using JasperReports Library version 6.19.1-867c00bf88cd4d784d404379d6c05e1b419e8a4c  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="OpeningOperationDetail" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="f3914318-51b4-4413-9c88-a5895d03a080">
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="currency" class="java.lang.String"/>
+	<field name="incomeType" class="java.lang.String"/>
+	<field name="theoreticalAmount" class="java.math.BigDecimal"/>
+	<field name="physicalAmount" class="java.math.BigDecimal"/>
+	<field name="differences" class="java.math.BigDecimal"/>
+	<pageHeader>
+		<band height="37" splitType="Stretch">
+			<staticText>
+				<reportElement x="10" y="8" width="60" height="12" uuid="752648d2-fcd1-4c1b-a6ee-7bb204c8ebc9">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Moneda]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="8" width="90" height="12" uuid="a44c7345-af14-49cf-8b1d-5bbdd03714de">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tipo de movimiento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="500" y="8" width="83" height="12" uuid="fe24b6a9-2251-4832-b10e-b1e8cef2dc1d">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Diferencia]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="0" width="595" height="1" uuid="1b8a2f3e-acaf-4b37-a831-ef702746ca89">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="2.0" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="0" y="29" width="595" height="1" uuid="f989cb93-d7ed-4870-8959-495f1a344df8">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="2.0" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="220" y="8" width="100" height="12" uuid="6058663c-332f-4471-b7ba-f2f5a26d466a"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Importe calculado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="360" y="8" width="100" height="12" uuid="39e97e83-b1f5-48f9-a59c-0a6f73a986c1"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Importe digitado]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement x="10" y="5" width="60" height="20" uuid="733c3738-b8d0-4e43-b70d-3f92a859e570"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{currency}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="5" width="90" height="20" uuid="c72e0826-4313-4cfc-8706-9c8e72f990a3"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{incomeType}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="220" y="5" width="100" height="20" uuid="6093a648-a9a7-4837-ad9e-bb41d3cde06f"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{theoreticalAmount}]]></textFieldExpression>
+				<patternExpression><![CDATA["#,##0.00"]]></patternExpression>
+			</textField>
+			<textField>
+				<reportElement x="360" y="5" width="100" height="20" uuid="8b4c1eb6-3058-4898-af70-fb49774a9134"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{physicalAmount}]]></textFieldExpression>
+				<patternExpression><![CDATA["#,##0.00"]]></patternExpression>
+			</textField>
+			<textField>
+				<reportElement x="500" y="5" width="83" height="20" uuid="a8a6a32f-979e-4336-b655-584feaa21b18"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{differences}]]></textFieldExpression>
+				<patternExpression><![CDATA["#,##0.00"]]></patternExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

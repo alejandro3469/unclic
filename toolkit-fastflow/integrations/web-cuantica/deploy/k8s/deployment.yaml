@@ -1,0 +1,55 @@
+# ------------------------------------------------------------------------------
+# Deployment del servidor FastFlow (imagen desde registry)
+# ------------------------------------------------------------------------------
+# La imagen debe existir en el registry tras: Jenkins → build → push (o scripts/build-and-push.sh).
+# Sustituir fastflow-server:latest por <REGISTRY>/fastflow-server:latest (Docker Hub, GitLab, ECR).
+# Namespace: fastflow (crear con namespace.yaml). ConfigMap: fastflow-config (configmap.yaml).
+# Probes: /api/health para liveness y readiness.
+# ------------------------------------------------------------------------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastflow-server
+  namespace: fastflow
+  labels:
+    app: fastflow-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fastflow-server
+  template:
+    metadata:
+      labels:
+        app: fastflow-server
+    spec:
+      containers:
+        - name: fastflow-server
+          image: fastflow-server:latest   # Reemplazar por <registry>/fastflow-server:latest
+          imagePullPolicy: IfNotPresent   # En prod con registry: Always
+          ports:
+            - containerPort: 3000
+              name: http
+          envFrom:
+            - configMapRef:
+                name: fastflow-config
+          # Secretos (SESSION_SECRET, ADMIN_PASSWORD) vía Secret; crear con kubectl create secret
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
