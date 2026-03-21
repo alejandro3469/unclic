@@ -1,17 +1,14 @@
-// Pipeline landing UnClic (repo nucleic en Gitea): build Next.js static export + deploy rsync a EC2 (Nginx).
-// Tras editar: sincronizar a Gitea (ver scripts/update-nucleic-from-monorepo.sh y docs/JENKINS-NUCLEIC-DEPLOY.md).
+// Pipeline landing UnClic (repo nucleic): Next.js static export + deploy rsync a EC2 (Nginx).
+// Requiere plugin "Docker Pipeline" en Jenkins (Manage Jenkins → Plugins → Available → "Docker").
 //
-// Repo nucleic: la raíz del clone ES el proyecto (app/, package.json, Jenkinsfile). APP_DIR = '.'.
-// Si algún día clonas un monorepo, define en el job la variable de entorno UNC_APP_DIR (ej. toolkit-fastflow/integrations/web-cuantica/unclic).
+// El agente Docker usa node:20-alpine. En Deploy se instalan openssh-client y rsync dentro del contenedor.
 //
-// Agente Docker (node:20-alpine): en Deploy se instalan openssh-client y rsync dentro del contenedor.
-// Alternativa sin Docker: agent any + NodeJS tool en Jenkins (ver comentario al final).
-//
-// Variables de job (Jenkins → Configure):
+// Variables opcionales del job (Jenkins → Configure → This project is parameterized o Environment variables):
 //   DEPLOY_HOST     — IP o hostname EC2 (obligatorio para desplegar)
 //   DEPLOY_USER     — usuario SSH (default ec2-user)
 //   DEPLOY_PATH     — ruta remota document root (default /usr/share/nginx/landing)
-//   DEPLOY_SSH_CREDENTIALS — (opcional) ID de credencial Jenkins tipo "SSH Username with private key" para rsync/ssh
+//   DEPLOY_SSH_CREDENTIALS — (opcional) ID de credencial Jenkins tipo "SSH Username with private key"
+//   UNC_APP_DIR     — (solo monorepo) ruta al package.json. En nucleic déjalo sin definir (usa '.').
 //
 // Rama: el job debe usar Branch Specifier */main (no master).
 
@@ -110,8 +107,5 @@ pipeline {
     }
 }
 
-// --- Sin Docker en el agente Jenkins ---
-// 1) Manage Jenkins → Global Tool Configuration → NodeJS → añade instalación "Node20".
-// 2) Sustituye agent { docker { ... } } por:  agent any
-// 3) En stage Install, antes de npm:  env.PATH = "${tool('Node20')}/bin:${env.PATH}"
-// 4) En Deploy, el agente debe tener rsync y ssh (Amazon Linux: yum install -y rsync openssh-clients).
+// Alternativa sin Docker: si no puedes instalar el plugin Docker Pipeline, usa Jenkinsfile.no-docker
+// (agent any + NodeJS tool en Jenkins o Node instalado en el servidor).

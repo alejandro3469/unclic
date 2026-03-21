@@ -11,10 +11,11 @@ Repo Gitea: `alejandro-perez/nucleic` → la **raíz del repositorio** es el pro
 5. **Branch Specifier:** `*/main` (no `master`).
 6. **Script Path:** `Jenkinsfile`
 
-## Requisitos en el agente
+## Requisitos en Jenkins
 
-- **Con Docker (por defecto en el Jenkinsfile):** el nodo debe poder ejecutar contenedores (`node:20-alpine`). En el stage Deploy el propio pipeline instala `rsync` y `openssh-client` dentro del contenedor.
-- **Sin Docker:** ver comentarios al final del `Jenkinsfile` (agent `any` + NodeJS tool + rsync/ssh en el host).
+- **Plugin Docker Pipeline:** Manage Jenkins → Plugins → Available → busca "Docker" (nombre completo: "Docker Pipeline") → Install. Sin este plugin, el Jenkinsfile fallará con "Invalid agent type 'docker'".
+- **Docker en el servidor Jenkins:** el servidor donde corre Jenkins debe tener Docker instalado y el usuario `jenkins` debe poder ejecutar `docker` (p. ej. en el grupo `docker`).
+- **En el stage Deploy:** el pipeline instala `rsync` y `openssh-client` dentro del contenedor Alpine (`apk add`), así que no necesitas instalarlos en el servidor Jenkins.
 
 ## Variables del job (Environment variables)
 
@@ -25,6 +26,7 @@ Repo Gitea: `alejandro-perez/nucleic` → la **raíz del repositorio** es el pro
 | `DEPLOY_PATH` | No | `/usr/share/nginx/landing` | Directorio remoto donde está el `root` de Nginx para el sitio. |
 | `DEPLOY_SSH_CREDENTIALS` | No | `id-credencial-jenkins` | ID de credencial tipo **SSH Username with private key** (plugin SSH Agent). Si no se define, se usa la identidad SSH por defecto del agente Jenkins. |
 | `UNC_APP_DIR` | No | `.` | Solo monorepo: ruta al `package.json` de UnClic. En **nucleic** déjalo sin definir. |
+| `NODEJS_INSTALLATION_NAME` | No | - | Solo si usas `Jenkinsfile.no-docker` (agent any). Nombre de la herramienta NodeJS en Global Tool Configuration. |
 
 \* Para automatizar deploy en cada push a `main`, configura al menos `DEPLOY_HOST` y la clave SSH adecuada.
 
