@@ -1,7 +1,7 @@
 # Subir el landing a Gitea (repo nucleic)
 
 Repo en Gitea: **nucleic**  
-URL: `https://gitea.unclic.consulting/alejandro-perez/nucleic.git`
+URL: `https://gitea.<TU_DOMINIO>/TU_USUARIO/nucleic.git`
 
 **Importante:** El repo **nucleic** debe contener **solo** el código del landing (`unclic`), no todo el monorepo. Así Jenkins clona solo lo necesario.
 
@@ -17,7 +17,7 @@ Ajusta la ruta `SITIO` si tu monorepo está en otra carpeta.
 
 ```bash
 cd ~/Downloads
-SITIO="/Users/wallfacer/Downloads/pipeline-as-code-with-jenkins-master/toolkit-fastflow/integrations/web-cuantica/unclic"
+SITIO="<RUTA_MONOREPO>/toolkit-fastflow/integrations/web-cuantica/unclic"
 
 # Copiar solo código (sin node_modules, .next, .idea)
 rsync -av --exclude=node_modules --exclude=.next --exclude=.idea "$SITIO/" nucleic-landing/
@@ -25,7 +25,7 @@ cd nucleic-landing
 
 git init
 git checkout -b main
-git remote add origin https://gitea.unclic.consulting/alejandro-perez/nucleic.git
+git remote add origin https://gitea.<TU_DOMINIO>/TU_USUARIO/nucleic.git
 ```
 
 ### Bloque 1: Config y app
@@ -94,7 +94,7 @@ Si el límite 413 ya está resuelto en el servidor (Nginx `client_max_body_size 
 
 ## Crear el repo en Gitea (ya hecho)
 
-En Gitea: **alejandro-perez/nucleic** (privado o público). No inicializar con README si vas a subir el código existente.
+En Gitea: **TU_USUARIO/nucleic** (privado o público). No inicializar con README si vas a subir el código existente.
 
 ---
 
@@ -103,7 +103,7 @@ En Gitea: **alejandro-perez/nucleic** (privado o público). No inicializar con R
 Si el landing **ya es** un repo Git propio (solo esa carpeta, no monorepo), desde su raíz:
 
 ```bash
-git remote add origin https://gitea.unclic.consulting/alejandro-perez/nucleic.git
+git remote add origin https://gitea.<TU_DOMINIO>/TU_USUARIO/nucleic.git
 git push -u origin main
 ```
 
@@ -114,7 +114,7 @@ Si tu rama se llama `master`, usa `git push -u origin master`.
 ## Clonar el repo en otra máquina
 
 ```bash
-git clone https://gitea.unclic.consulting/alejandro-perez/nucleic.git
+git clone https://gitea.<TU_DOMINIO>/TU_USUARIO/nucleic.git
 cd nucleic
 ```
 
@@ -124,8 +124,12 @@ cd nucleic
 
 En el job de Jenkins (landing / unclic):
 
-- **Repository URL:** `https://gitea.unclic.consulting/alejandro-perez/nucleic.git`
-- **Branch:** `main`
+- **Repository URL:** `https://gitea.<TU_DOMINIO>/TU_USUARIO/nucleic.git`
+- **Branch Specifier:** `*/main` (no `master`)
 - **Script Path:** `Jenkinsfile`
 
 Si el repo es privado, configurar en Jenkins las credenciales de Gitea (usuario + contraseña o token).
+
+**Build + deploy automático (rsync a EC2):** [JENKINS-NUCLEIC-DEPLOY.md](JENKINS-NUCLEIC-DEPLOY.md).
+
+**Actualizar nucleic desde el monorepo local:** `bash scripts/update-nucleic-from-monorepo.sh` (desde la raíz del proyecto unclic).

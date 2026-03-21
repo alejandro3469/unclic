@@ -1,26 +1,18 @@
 # Landing UnClic
 
-Proyecto Next.js (export estático) con **estructura de sitio completo** y componentes **dummy**: misma UI que las muestras, tema neutro (out of the box), listo para ordenar y rellenar con contenido.
+Next.js (export estático): landing, demos y hub de capacidades. **Integración con el toolkit** (POS, Jenkins, docs): [../docs/00-inicio/EMPIEZA-AQUI-GEORGE-O-COLABORADOR.md](../docs/00-inicio/EMPIEZA-AQUI-GEORGE-O-COLABORADOR.md).
 
-**Propósito:** **Hub central** (`#hub-demos`) con todas las demos y referencias (Jenkins, Gitea, POS, registry, Cloudcraft, Gmail/Workspace, audio/vídeo, roadmap pagos/SAT). Un solo enlace para **CV, LinkedIn y GitHub**. Ver [docs/POSICIONAMIENTO-ENTERPRISE-UNClic.md](docs/POSICIONAMIENTO-ENTERPRISE-UNClic.md) y [docs/CV-LINKEDIN-INSTAGRAM-UNClic.md](docs/CV-LINKEDIN-INSTAGRAM-UNClic.md).  
-**Stack contenedores:** [DOCKER-Y-REGISTRY-UNClic.md](docs/DOCKER-Y-REGISTRY-UNClic.md) — alineación con [registry oficial Docker Hub](https://hub.docker.com/_/registry), [Docker Docs](https://docs.docker.com/).  
-**Logo y prompts (Gemini):** [docs/PROMPTS-GANADORES-LOGO-GEMINI-UNClic.md](docs/PROMPTS-GANADORES-LOGO-GEMINI-UNClic.md) · asset `public/images/brand/unclic-logo.svg`.  
-**Estructura (referencia Sequoia):** [REFERENCIA-DISENO-SEQUOIA.md](docs/REFERENCIA-DISENO-SEQUOIA.md). **Shadcn Blocks:** [SHADCN-BLOCKS-MAP.md](docs/SHADCN-BLOCKS-MAP.md) — mapeo categorías → componentes y copy. [INSTALAR-SHADCN-BLOCKS.md](docs/INSTALAR-SHADCN-BLOCKS.md) — instalar bloques (alineado a [docs oficiales](https://www.shadcnblocks.com/docs/getting-started)). [CONSISTENCIA-UI.md](docs/CONSISTENCIA-UI.md) — una sola fuente para texto (lib/copy) y componentes UI (Shadcn/tema). · [PATRON-PAGINA-SOLUCION-SEQUOIA.md](docs/PATRON-PAGINA-SOLUCION-SEQUOIA.md) · [PATRON-HUB-CAPACIDADES-SEQUOIA.md](docs/PATRON-HUB-CAPACIDADES-SEQUOIA.md) · [PATRON-ARTICULO-INSIGHTS-SEQUOIA.md](docs/PATRON-ARTICULO-INSIGHTS-SEQUOIA.md) · [IA-SITIO-ESTILO-ENTERPRISE.md](docs/IA-SITIO-ESTILO-ENTERPRISE.md).
+**Docs útiles:** [docs/README.md](docs/README.md) · posicionamiento/copy/UI: [docs/POSICIONAMIENTO-ENTERPRISE-UNClic.md](docs/POSICIONAMIENTO-ENTERPRISE-UNClic.md), [SHADCN-BLOCKS-MAP.md](docs/SHADCN-BLOCKS-MAP.md), [CONSISTENCIA-UI.md](docs/CONSISTENCIA-UI.md), [DOCKER-Y-REGISTRY-UNClic.md](docs/DOCKER-Y-REGISTRY-UNClic.md).
 
-**Ubicación:** `toolkit-fastflow/integrations/web-cuantica/unclic`
+`toolkit-fastflow/integrations/web-cuantica/unclic`
 
 ---
 
 ## Stack
 
-- **Next.js** 15, **React** 19, **TypeScript**
-- **Tailwind CSS** (tema neutro slate/zinc)
-- **Radix UI** (Button, Card, Separator, etc.)
-- **motion** (animaciones)
-- **lucide-react** (iconos genéricos)
-- **Three.js** + **@react-three/fiber** + **@react-three/drei** (Orb)
-- **Audio:** sección dummy con lista de pistas y `<audio>`; para reproductor completo tipo ElevenLabs copiar desde Vantive
-- **Referencias UI:** [ElevenLabs UI](https://ui.elevenlabs.io/) (componentes agente/audio open source sobre shadcn) y **[Shadcn Blocks](https://www.shadcnblocks.com/)** (bloques Shadcn UI). Componentes vitales (login, formularios, cards) usan **Shadcn UI** (Card, Button, Input, Label, Textarea) y tokens del tema para consistencia en todo el sitio.
+- Next.js 15, React 19, TypeScript, Tailwind, Radix, motion, lucide-react
+- Three.js / R3F / drei (Orb); sección audio con `<audio>`
+- UI: Shadcn + tema; referencias: [Shadcn Blocks](https://www.shadcnblocks.com/), [ElevenLabs UI](https://ui.elevenlabs.io/)
 
 ---
 
@@ -47,6 +39,8 @@ Si en dev ves errores tipo `Expected '</'` en JSX o `ENOENT` en `.next/`, borra 
 
 **Desplegar el sitio:** [docs/DEPLOY-SITIO-REMOTO.md](docs/DEPLOY-SITIO-REMOTO.md) — GitHub Pages, Gitea desde local, rsync/SSH a servidor, Vercel/Netlify.
 
+**Jenkins (repo nucleic) + deploy automático:** [docs/JENKINS-NUCLEIC-DEPLOY.md](docs/JENKINS-NUCLEIC-DEPLOY.md) · sincronizar monorepo → Gitea: `bash scripts/update-nucleic-from-monorepo.sh`
+
 **Demos solo para correos autorizados (Jenkins, Gitea, hub, Cloudcraft en la web):** [docs/DEMO-ACCESO-ALLOWLIST-INFRA.md](docs/DEMO-ACCESO-ALLOWLIST-INFRA.md) — combinar con Basic Auth/VPN en servidores reales. **Checklist producción HTTPS + flujo commit→POS:** [docs/DEMOS-PRODUCCION-END-TO-END.md](docs/DEMOS-PRODUCCION-END-TO-END.md).
 
 **LocalStack + Terraform / Pulumi / SST + Jenkins + registry + POS:** [docs/LOCALSTACK-IAC-JENKINS-POS.md](docs/LOCALSTACK-IAC-JENKINS-POS.md) — qué simula LocalStack, qué no, y cómo encajar con tu `deploy/terraform` (Kubernetes).
@@ -64,15 +58,15 @@ Si en dev ves errores tipo `Expected '</'` en JSX o `ENOENT` en `.next/`, borra 
 
 ---
 
-## Audios genéricos
+## Audio en la landing
 
-Los archivos referenciados en `lib/audio-samples.ts` son `/audio/sample-1.mp3`, etc. Añadir en `public/audio/` o sustituir por URLs definitivas. Para reproductor completo (controles ElevenLabs-style) copiar desde Vantive: `components/ui/audio-player.tsx`, provider y drawer de pistas.
+Rutas en `lib/audio-samples.ts` (p. ej. `/audio/sample-1.mp3`). Coloca los ficheros en `public/audio/` o apunta a URLs finales. Reproductor avanzado: extender con componente dedicado según diseño.
 
 ---
 
-## Orb completo
+## Orb 3D
 
-El Orb actual es un placeholder (esfera Three.js). Para el Orb igual que en Vantive, copiar `components/ui/orb.tsx` desde el proyecto Vantive.
+Esfera Three.js en `components/ui/orb.tsx`; ajustable a la identidad visual del sitio.
 
 ---
 
@@ -92,11 +86,11 @@ NEXT_PUBLIC_CLOUDCRAFT_EMBED_URL=https://app.cloudcraft.co/view/XXXXXXXX?key=YYY
 
 Tras cambiar variables, reiniciar `npm run dev` o volver a ejecutar `npm run build`. En producción, definir las mismas variables en el entorno de build (Vercel, Docker, CI). Documentación completa: **toolkit-fastflow/docs/GUIA-CLOUDCRAFT-COMPLETA.md** y **PLAN-CLOUDCRAFT-UNCLIC-TAREAS-GRANULARES.md**.
 
-**Blueprint privado (“not public” / Login):** sube una **captura** del diagrama y configura **`NEXT_PUBLIC_CLOUDCRAFT_STATIC_IMAGE`**. Pasos: **[docs/VISUALES-CLOUDCRAFT-Y-DEMOS-REPO.md](docs/VISUALES-CLOUDCRAFT-Y-DEMOS-REPO.md)**.
+**Diagrama con acceso restringido:** usa una **captura** estática y **`NEXT_PUBLIC_CLOUDCRAFT_STATIC_IMAGE`**. Pasos: **[docs/VISUALES-CLOUDCRAFT-Y-DEMOS-REPO.md](docs/VISUALES-CLOUDCRAFT-Y-DEMOS-REPO.md)**.
 
 ---
 
 ## Documentación
 
 - **docs/PLAN-GRANULAR-SITIO-WEB-CUANTICA.md** — Plan por fases y checklist
-- **docs/REQUISITOS-SITIO-WEB-CUANTICA.md** — Requisitos técnicos y de contenido (basado en Vantive)
+- **docs/REQUISITOS-SITIO-WEB-CUANTICA.md** — Requisitos técnicos y de contenido

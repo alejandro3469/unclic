@@ -1,22 +1,24 @@
-// Pipeline landing UnClic: build Next.js export estático y despliegue a EC2 (Nginx).
-// IMPORTANTE: Tras cambiar este archivo, haz commit y push a Gitea (nucleic) para que el próximo build lo use.
-// Repo en Gitea; Jenkins clona, hace npm ci + npm run build, copia out/ por SSH a la EC2 del subdominio landing.
+// Pipeline landing UnClic (repo nucleic en Gitea): build Next.js static export + deploy rsync a EC2 (Nginx).
+// Tras editar: sincronizar a Gitea (ver scripts/update-nucleic-from-monorepo.sh y docs/JENKINS-NUCLEIC-DEPLOY.md).
 //
-// OPCIÓN A (recomendada): Agente Docker con Node.js — evita "npm: command not found".
-//   Requiere que el nodo Jenkins tenga Docker instalado y el usuario de Jenkins pueda usar Docker.
+// Repo nucleic: la raíz del clone ES el proyecto (app/, package.json, Jenkinsfile). APP_DIR = '.'.
+// Si algún día clonas un monorepo, define en el job la variable de entorno UNC_APP_DIR (ej. toolkit-fastflow/integrations/web-cuantica/unclic).
 //
-// OPCIÓN B: Si Docker no está disponible, usar agente "any" y herramienta Node.js de Jenkins:
-//   - En Jenkins: Manage Jenkins → Global Tool Configuration → NodeJS → Add "NodeJS" (ej. 20.x).
-//   - En este Jenkinsfile: cambiar "agent { docker { ... } }" por "agent any" y añadir en Install/Build:
-//     env.NODEJS_HOME = "${tool 'NodeJS'}"  (o el nombre que le hayas puesto)
-//     env.PATH = "${env.NODEJS_HOME}/bin:${env.PATH}"
-//   O usar el wrapper: wrap([$class: 'NodeJSInstallation', nodeJSInstallationName: 'NodeJS']) { ... }
+// Agente Docker (node:20-alpine): en Deploy se instalan openssh-client y rsync dentro del contenedor.
+// Alternativa sin Docker: agent any + NodeJS tool en Jenkins (ver comentario al final).
 //
-// Configurar en Jenkins: credenciales Gitea; credenciales SSH para DEPLOY_HOST.
-// Variables del job: DEPLOY_HOST, DEPLOY_USER, DEPLOY_PATH (ej. /usr/share/nginx/landing).
-// Si el job clona solo unclic (raíz = unclic), cambiar APP_DIR a '.'.
+// Variables de job (Jenkins → Configure):
+//   DEPLOY_HOST     — IP o hostname EC2 (obligatorio para desplegar)
+//   DEPLOY_USER     — usuario SSH (default ec2-user)
+//   DEPLOY_PATH     — ruta remota document root (default /usr/share/nginx/landing)
+//   DEPLOY_SSH_CREDENTIALS — (opcional) ID de credencial Jenkins tipo "SSH Username with private key" para rsync/ssh
+//
+// Rama: el job debe usar Branch Specifier */main (no master).
 
-def APP_DIR = 'toolkit-fastflow/integrations/web-cuantica/unclic'
+def resolvedAppDir() {
+    def d = env.UNC_APP_DIR?.trim()
+    return (d && d.length() > 0) ? d : '.'
+}
 
 pipeline {
     agent {
@@ -25,6 +27,10 @@ pipeline {
             reuseNode true
         }
     }
+    options {
+        timestamps()
+        disableConcurrentBuilds()
+    }
     environment {
         DEPLOY_PATH = "${env.DEPLOY_PATH ?: '/usr/share/nginx/landing'}"
     }
@@ -32,49 +38,80 @@ pipeline {
         stage('Checkout') {
             steps {
                 checkout scm
-                sh "echo 'Rama: ${GIT_BRANCH:-main}'; git rev-parse --short HEAD"
+                sh "echo 'Rama: ${env.BRANCH_NAME ?: GIT_BRANCH}'; git rev-parse --short HEAD"
             }
         }
         stage('Install') {
             steps {
-                dir(APP_DIR) {
+                script {
+                    env._UNC_DIR = resolvedAppDir()
+                }
+                dir("${env._UNC_DIR}") {
+                    sh 'node -v && npm -v'
                     sh 'npm ci'
                 }
             }
         }
         stage('Build') {
             steps {
-                dir(APP_DIR) {
+                dir("${env._UNC_DIR}") {
                     sh 'npm run build'
-                    sh 'ls -la out/ | head -20'
+                    sh 'test -d out && ls -la out/ | head -25'
                 }
             }
         }
         stage('Deploy') {
-            when { branch 'main' }
+            when {
+                expression {
+                    def b = env.BRANCH_NAME ?: env.GIT_BRANCH ?: ''
+                    return b.replaceFirst('^origin/', '') == 'main' || b.endsWith('/main')
+                }
+            }
             steps {
                 script {
-                    def host = env.DEPLOY_HOST ?: ''
-                    def user = env.DEPLOY_USER ?: 'ec2-user'
-                    if (!host.trim()) {
-                        echo 'DEPLOY_HOST no configurado: omitiendo Deploy. Configurar en job o global.'
+                    def host = env.DEPLOY_HOST?.trim() ?: ''
+                    def user = env.DEPLOY_USER?.trim() ?: 'ec2-user'
+                    def credId = env.DEPLOY_SSH_CREDENTIALS?.trim() ?: ''
+                    def appDir = resolvedAppDir()
+                    def outPath = "${appDir}/out"
+
+                    if (!host) {
+                        echo 'DEPLOY_HOST vacío: se omite Deploy (solo artefacto en workspace). Configura DEPLOY_HOST en el job para publicar.'
                         return
                     }
-                    def outPath = "${APP_DIR}/out"
-                    sh """
-                        echo "Desplegando ${outPath}/ a ${user}@${host}:${DEPLOY_PATH}"
-                        rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" ${outPath}/ ${user}@${host}:${DEPLOY_PATH}/
-                    """
+
+                    sh 'apk add --no-cache openssh-client rsync'
+
+                    def rsyncCmd = """
+                        rsync -avz --delete -e "ssh -o StrictHostKeyChecking=accept-new" \
+                          ${outPath}/ ${user}@${host}:${env.DEPLOY_PATH}/
+                    """.trim()
+
+                    echo "Desplegando ${outPath}/ → ${user}@${host}:${env.DEPLOY_PATH}"
+
+                    if (credId) {
+                        sshagent(credentials: [credId]) {
+                            sh rsyncCmd
+                        }
+                    } else {
+                        sh rsyncCmd
+                    }
                 }
             }
         }
     }
     post {
         success {
-            echo "Build y despliegue completados. Landing actualizado en el subdominio configurado."
+            echo 'Pipeline UnClic OK. Si hubo DEPLOY_HOST, Nginx debería servir el nuevo out/.'
         }
         failure {
-            echo "Pipeline falló. Revisar logs de Install, Build o Deploy."
+            echo 'Pipeline falló: revisar Install (npm ci), Build (next build) o Deploy (ssh/rsync).'
         }
     }
 }
+
+// --- Sin Docker en el agente Jenkins ---
+// 1) Manage Jenkins → Global Tool Configuration → NodeJS → añade instalación "Node20".
+// 2) Sustituye agent { docker { ... } } por:  agent any
+// 3) En stage Install, antes de npm:  env.PATH = "${tool('Node20')}/bin:${env.PATH}"
+// 4) En Deploy, el agente debe tener rsync y ssh (Amazon Linux: yum install -y rsync openssh-clients).
