@@ -38,6 +38,9 @@ rsync -av \
   --exclude .idea \
   --exclude .git \
   --exclude tsconfig.tsbuildinfo \
+  --exclude '.env' \
+  --exclude '.env.local' \
+  --exclude '.env.*' \
   "$SITIO/" "$NUCLEIC_WORK/"
 
 cd "$NUCLEIC_WORK"
