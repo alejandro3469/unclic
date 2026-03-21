@@ -10,7 +10,8 @@
     "serve": "npx --yes serve out -p 3002",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "shadcn-blocks": "bash scripts/add-shadcn-blocks.sh"
+    "shadcn-blocks": "bash scripts/add-shadcn-blocks.sh",
+    "deploy:nucleic": "bash scripts/update-nucleic-from-monorepo.sh"
   },
   "dependencies": {
     "@elevenlabs/elevenlabs-js": "^2.39.0",

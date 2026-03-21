@@ -5,3 +5,5 @@
 - **CV (2025):** [CV-ALEJANDRO-PEREZ-2025-EN.md](CV-ALEJANDRO-PEREZ-2025-EN.md) · [CV-ALEJANDRO-PEREZ-2025-ES.md](CV-ALEJANDRO-PEREZ-2025-ES.md) · [CV-FUENTES-Y-VERIFICACION.md](CV-FUENTES-Y-VERIFICACION.md) (fuentes y datos a contrastar).
 - **[PLAN-GRANULAR-SITIO-WEB-CUANTICA.md](PLAN-GRANULAR-SITIO-WEB-CUANTICA.md)** — Plan por fases, alcance, estructura de archivos y criterios de “listo para ordenar y rellenar”.
 - **[REQUISITOS-SITIO-WEB-CUANTICA.md](REQUISITOS-SITIO-WEB-CUANTICA.md)** — Requisitos técnicos, demos y usuario abierto, dependencias, audios genéricos, iconos y referencias a Vantive.
+- **[FLUJO-NORMAL-BLOQUE-Y-COPY.md](FLUJO-NORMAL-BLOQUE-Y-COPY.md)** — Flujo normal: bloque Shadcn Blocks → `components/sections/` → copy en `lib/copy.ts` → página → sync **nucleic**.
+- **[EJEMPLO-COMMIT-FLUJO-BLOQUE-Y-DEPLOY.md](EJEMPLO-COMMIT-FLUJO-BLOQUE-Y-DEPLOY.md)** — Ejemplo real: `Progress` + `/flow-demo` + comandos + commit + **deploy rápido** (nucleic/Jenkins).

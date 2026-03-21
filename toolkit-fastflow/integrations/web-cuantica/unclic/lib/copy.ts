@@ -98,6 +98,8 @@ export const hero = {
   ctaDemo: 'Demo',
   noCreditCard: '',
   imageAlt: 'Flujo commit → deploy — UnClic',
+  /** Placeholder del email en Hero154 (home con formulario). */
+  leadEmailPlaceholder: 'Tu correo de trabajo',
   heroFeatures: [
     { title: 'Pipeline en Git', description: 'Jenkinsfile · multibranch' },
     { title: 'Registry OCI', description: 'Tags · rollback' },
@@ -117,6 +119,21 @@ export const trustStrip = {
     { label: 'Regiones AWS (demo)', value: '4' },
     { label: 'Pipeline en Git', value: '100%' },
   ] as ReadonlyArray<{ label: string; value: string }>,
+} as const;
+
+/**
+ * Ejemplo de flujo bloque + copy — ruta `/flow-demo`.
+ * Ver docs/EJEMPLO-COMMIT-FLUJO-BLOQUE-Y-DEPLOY.md (comando: npx shadcn add progress -y).
+ */
+export const flowDemo = {
+  kicker: 'Ejemplo de flujo',
+  title: 'Componente UI + copy en un solo lugar',
+  lead: 'Pieza shadcn (Progress), textos aquí; la sección vive en components/sections/flow-demo-section.tsx.',
+  progressLabel: 'Avance del pipeline (demo visual)',
+  /** 0–100 para el componente Progress */
+  progressValue: 66,
+  badges: ['CLI shadcn', 'lib/copy.ts', 'components/sections'] as const,
+  footnote: 'Pulí solo este objeto flowDemo para cambiar toda la página de ejemplo.',
 } as const;
 
 /** Carrusel de logos (Shadcn Blocks: Logos12) — stack o partners. image = URL (ej. Simple Icons) o path en public. */

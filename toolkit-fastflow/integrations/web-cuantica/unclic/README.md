@@ -2,7 +2,7 @@
 
 Next.js (export estático): landing, demos y hub de capacidades. **Integración con el toolkit** (POS, Jenkins, docs): [../docs/00-inicio/EMPIEZA-AQUI-GEORGE-O-COLABORADOR.md](../docs/00-inicio/EMPIEZA-AQUI-GEORGE-O-COLABORADOR.md).
 
-**Docs útiles:** [docs/README.md](docs/README.md) · posicionamiento/copy/UI: [docs/POSICIONAMIENTO-ENTERPRISE-UNClic.md](docs/POSICIONAMIENTO-ENTERPRISE-UNClic.md), [SHADCN-BLOCKS-MAP.md](docs/SHADCN-BLOCKS-MAP.md), [CONSISTENCIA-UI.md](docs/CONSISTENCIA-UI.md), [DOCKER-Y-REGISTRY-UNClic.md](docs/DOCKER-Y-REGISTRY-UNClic.md).
+**Docs útiles:** [docs/README.md](docs/README.md) · **flujo bloque + copy:** [docs/FLUJO-NORMAL-BLOQUE-Y-COPY.md](docs/FLUJO-NORMAL-BLOQUE-Y-COPY.md) · posicionamiento/copy/UI: [docs/POSICIONAMIENTO-ENTERPRISE-UNClic.md](docs/POSICIONAMIENTO-ENTERPRISE-UNClic.md), [SHADCN-BLOCKS-MAP.md](docs/SHADCN-BLOCKS-MAP.md), [CONSISTENCIA-UI.md](docs/CONSISTENCIA-UI.md), [DOCKER-Y-REGISTRY-UNClic.md](docs/DOCKER-Y-REGISTRY-UNClic.md).
 
 `toolkit-fastflow/integrations/web-cuantica/unclic`
 
