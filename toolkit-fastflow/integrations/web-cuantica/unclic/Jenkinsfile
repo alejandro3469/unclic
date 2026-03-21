@@ -1,7 +1,8 @@
 // Pipeline landing UnClic (repo nucleic): Next.js static export + deploy rsync a EC2 (Nginx).
 // Requiere plugin "Docker Pipeline" en Jenkins (Manage Jenkins → Plugins → Available → "Docker").
 //
-// El agente Docker usa node:20-alpine (no trae git: no uses `git` en steps `sh` dentro del contenedor).
+// Agente Docker: node:22-alpine (algunas deps piden Node >= 22). Jenkins ejecuta el contenedor con -u jenkins:
+// HOME puede quedar sin escribir → npm usa /.npm y falla con EACCES. Forzamos HOME y NPM_CONFIG_CACHE en el workspace.
 //
 // Variables opcionales del job (Jenkins → Configure → This project is parameterized o Environment variables):
 //   DEPLOY_HOST     — IP o hostname EC2 (obligatorio para desplegar)
@@ -20,7 +21,7 @@ def resolvedAppDir() {
 pipeline {
     agent {
         docker {
-            image 'node:20-alpine'
+            image 'node:22-alpine'
             reuseNode true
         }
     }
@@ -49,16 +50,28 @@ pipeline {
                     env._UNC_DIR = resolvedAppDir()
                 }
                 dir("${env._UNC_DIR}") {
-                    sh 'node -v && npm -v'
-                    sh 'npm ci'
+                    sh '''
+                        set -e
+                        mkdir -p "${WORKSPACE}/.npm-cache" "${WORKSPACE}/.jenkins-container-home"
+                        export HOME="${WORKSPACE}/.jenkins-container-home"
+                        export NPM_CONFIG_CACHE="${WORKSPACE}/.npm-cache"
+                        node -v && npm -v
+                        # Instalación previa a medias (t3.micro + volumen) provoca TAR_ENTRY_ERROR; empezar limpio
+                        rm -rf node_modules
+                        npm ci
+                    '''
                 }
             }
         }
         stage('Build') {
             steps {
                 dir("${env._UNC_DIR}") {
-                    sh 'npm run build'
-                    sh 'test -d out && ls -la out/ | head -25'
+                    sh '''
+                        export HOME="${WORKSPACE}/.jenkins-container-home"
+                        export NPM_CONFIG_CACHE="${WORKSPACE}/.npm-cache"
+                        npm run build
+                        test -d out && ls -la out/ | head -25
+                    '''
                 }
             }
         }

@@ -16,6 +16,7 @@ Repo Gitea: `alejandro-perez/nucleic` → la **raíz del repositorio** es el pro
 - **Plugin Docker Pipeline:** Manage Jenkins → Plugins → Available → busca "Docker" (nombre completo: "Docker Pipeline") → Install. Sin este plugin, el Jenkinsfile fallará con "Invalid agent type 'docker'".
 - **Docker en el servidor Jenkins:** el servidor donde corre Jenkins debe tener Docker instalado y el usuario `jenkins` debe poder ejecutar `docker` (p. ej. en el grupo `docker`).
 - **En el stage Deploy:** el pipeline instala `rsync` y `openssh-client` dentro del contenedor Alpine (`apk add`), así que no necesitas instalarlos en el servidor Jenkins.
+- **npm en Docker + usuario Jenkins:** si ves `EACCES` sobre `/.npm`, el `Jenkinsfile` ya fuerza `HOME` y `NPM_CONFIG_CACHE` bajo el workspace del job. Imagen recomendada: `node:22-alpine` (algunas dependencias exigen Node ≥ 22).
 
 ## Variables del job (Environment variables)
 
