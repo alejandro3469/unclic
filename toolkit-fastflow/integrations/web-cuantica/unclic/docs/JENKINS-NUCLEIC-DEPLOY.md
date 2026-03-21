@@ -29,6 +29,7 @@ Repo Gitea: `alejandro-perez/nucleic` → la **raíz del repositorio** es el pro
 | `UNC_APP_DIR` | No | `.` | Solo monorepo: ruta al `package.json` de UnClic. En **nucleic** déjalo sin definir. |
 | `NODEJS_INSTALLATION_NAME` | No | - | Solo si usas `Jenkinsfile.no-docker` (agent any). Nombre de la herramienta NodeJS en Global Tool Configuration. |
 | `NODE_HEAP_MB` | No | `2048` | MiB de heap V8 para `next build` (`NODE_OPTIONS=--max-old-space-size=...`). Si ves **JavaScript heap out of memory**, sube el valor **solo si la EC2 tiene RAM/swap** (t3.micro 1 GiB: añade **swap 2G** o pasa a **t3.small**). |
+| `CLEANUP_WORKSPACE` | No | - | Si es `true` o `1`, ejecuta stage Cleanup antes de Install (elimina node_modules, .next, cachés del workspace). Útil si el disco se llena. |
 
 \* Para automatizar deploy en cada push a `main`, configura al menos `DEPLOY_HOST` y la clave SSH adecuada.
 
@@ -54,3 +55,24 @@ bash scripts/update-nucleic-from-monorepo.sh
 ```
 
 Documentación histórica de pushes por bloques: [GITEA-NUCLEIC-PUSH.md](GITEA-NUCLEIC-PUSH.md).
+
+---
+
+## Limpiar servidor de deploy (fastflow-vantive u otro)
+
+Para limpiar backups antiguos, logs de Nginx y caché en el servidor donde se despliega el sitio:
+
+1. **Job separado en Jenkins:**
+   - New Item → Pipeline → nombre `unclic-cleanup-deploy`
+   - Pipeline script from SCM → repo `nucleic`, Script Path: `Jenkinsfile.cleanup-deploy`
+   - Variables: `DEPLOY_HOST`, `DEPLOY_USER`, `DEPLOY_PATH`, `KEEP_BACKUPS` (default 3)
+   - Build Now cuando quieras limpiar
+
+2. **O ejecutar manualmente en el servidor:**
+   ```bash
+   bash scripts/cleanup-deploy-server.sh
+   # O con variables:
+   DEPLOY_PATH=/usr/share/nginx/unclic KEEP_BACKUPS=5 bash scripts/cleanup-deploy-server.sh
+   ```
+
+El script crea backups del sitio actual antes de limpiar y mantiene solo los últimos N backups.

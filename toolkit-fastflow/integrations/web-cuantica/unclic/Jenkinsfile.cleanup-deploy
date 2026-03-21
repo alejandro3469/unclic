@@ -1,0 +1,104 @@
+// Job de Jenkins para limpiar el servidor de deploy (fastflow-vantive u otro).
+// Configurar como Pipeline script from SCM o Pipeline script (copia este contenido).
+//
+// Variables del job:
+//   DEPLOY_HOST     — IP del servidor de deploy (ej. 3.22.236.150)
+//   DEPLOY_USER     — usuario SSH (default ec2-user)
+//   DEPLOY_PATH     — ruta del sitio en el servidor (default /usr/share/nginx/unclic)
+//   DEPLOY_SSH_CREDENTIALS — (opcional) ID de credencial SSH
+//   KEEP_BACKUPS    — número de backups a mantener (default 3)
+
+pipeline {
+    agent any
+    options {
+        timestamps()
+    }
+    environment {
+        DEPLOY_HOST = "${env.DEPLOY_HOST ?: ''}"
+        DEPLOY_USER = "${env.DEPLOY_USER ?: 'ec2-user'}"
+        DEPLOY_PATH = "${env.DEPLOY_PATH ?: '/usr/share/nginx/unclic'}"
+        KEEP_BACKUPS = "${env.KEEP_BACKUPS ?: '3'}"
+    }
+    stages {
+        stage('Cleanup Deploy Server') {
+            steps {
+                script {
+                    def host = env.DEPLOY_HOST?.trim() ?: ''
+                    def user = env.DEPLOY_USER?.trim() ?: 'ec2-user'
+                    def credId = env.DEPLOY_SSH_CREDENTIALS?.trim() ?: ''
+                    def deployPath = env.DEPLOY_PATH?.trim() ?: '/usr/share/nginx/unclic'
+                    def keepBackups = env.KEEP_BACKUPS?.trim() ?: '3'
+
+                    if (!host) {
+                        error 'DEPLOY_HOST no configurado. Define la IP del servidor de deploy.'
+                    }
+
+                    def cleanupScript = """
+                        set -e
+                        BACKUP_DIR="\${DEPLOY_PATH}.backups"
+                        mkdir -p "\${BACKUP_DIR}"
+
+                        # Backup del sitio actual
+                        if [ -d "\${DEPLOY_PATH}" ] && [ "\$(ls -A \${DEPLOY_PATH} 2>/dev/null)" ]; then
+                            BACKUP_NAME="backup-\$(date +%Y%m%d-%H%M%S)"
+                            echo "Creando backup: \${BACKUP_DIR}/\${BACKUP_NAME}"
+                            tar -czf "\${BACKUP_DIR}/\${BACKUP_NAME}.tar.gz" -C "\$(dirname \${DEPLOY_PATH})" "\$(basename \${DEPLOY_PATH})" 2>/dev/null || true
+                        fi
+
+                        # Mantener solo los últimos N backups
+                        if [ -d "\${BACKUP_DIR}" ]; then
+                            echo "Eliminando backups antiguos (manteniendo últimos ${keepBackups})"
+                            ls -t "\${BACKUP_DIR}"/backup-*.tar.gz 2>/dev/null | tail -n +$((keepBackups + 1)) | xargs rm -f 2>/dev/null || true
+                        fi
+
+                        # Limpiar logs de Nginx antiguos (>30 días)
+                        if [ -d /var/log/nginx ]; then
+                            echo "Limpiando logs de Nginx antiguos"
+                            sudo find /var/log/nginx -name "*.log" -type f -mtime +30 -delete 2>/dev/null || true
+                            sudo find /var/log/nginx -name "*.log.*.gz" -type f -mtime +30 -delete 2>/dev/null || true
+                        fi
+
+                        # Limpiar caché de Nginx
+                        if [ -d /var/cache/nginx ]; then
+                            echo "Limpiando caché de Nginx"
+                            sudo rm -rf /var/cache/nginx/* 2>/dev/null || true
+                        fi
+
+                        echo "Limpieza completada. Espacio libre:"
+                        df -h "\${DEPLOY_PATH}" | tail -1
+
+                        if [ -d "\${BACKUP_DIR}" ]; then
+                            echo "Backups guardados en: \${BACKUP_DIR}"
+                            ls -lh "\${BACKUP_DIR}"/*.tar.gz 2>/dev/null | tail -5 || echo "  (sin backups)"
+                        fi
+                    """.trim()
+
+                    def sshCmd = """
+                        ssh -o StrictHostKeyChecking=accept-new ${user}@${host} \
+                          "DEPLOY_PATH='${deployPath}' KEEP_BACKUPS='${keepBackups}' bash -s" << 'EOFCLEANUP'
+                        ${cleanupScript}
+                        EOFCLEANUP
+                    """.trim()
+
+                    echo "Limpiando servidor de deploy: ${user}@${host}:${deployPath}"
+
+                    if (credId) {
+                        sshagent(credentials: [credId]) {
+                            sh sshCmd
+                        }
+                    } else {
+                        sh sshCmd
+                    }
+                }
+            }
+        }
+    }
+    post {
+        success {
+            echo 'Limpieza del servidor de deploy completada.'
+        }
+        failure {
+            echo 'Limpieza falló. Revisar conexión SSH o permisos en el servidor.'
+        }
+    }
+}

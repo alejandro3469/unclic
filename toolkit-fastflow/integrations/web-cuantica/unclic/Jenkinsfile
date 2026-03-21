@@ -48,6 +48,24 @@ pipeline {
                 }
             }
         }
+        stage('Cleanup') {
+            when {
+                expression { env.CLEANUP_WORKSPACE == 'true' || env.CLEANUP_WORKSPACE == '1' }
+            }
+            steps {
+                script {
+                    env._UNC_DIR = resolvedAppDir()
+                }
+                dir("${env._UNC_DIR}") {
+                    sh '''
+                        echo "Limpiando workspace antes del build..."
+                        rm -rf node_modules .next out .npm-cache .jenkins-container-home
+                        find . -type d -name ".next" -prune -exec rm -rf {} + 2>/dev/null || true
+                        df -h "${WORKSPACE}" | tail -1
+                    '''
+                }
+            }
+        }
         stage('Install') {
             steps {
                 script {
