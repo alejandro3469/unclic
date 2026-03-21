@@ -21,6 +21,19 @@ def resolvedAppDir() {
     return (d && d.length() > 0) ? d : '.'
 }
 
+def resolvedNodeHeapMB() {
+    def mb = env.NODE_HEAP_MB?.trim()
+    if (mb && mb.length() > 0) {
+        try {
+            Integer.parseInt(mb)
+            return mb
+        } catch (NumberFormatException e) {
+            return '2048'
+        }
+    }
+    return '2048'
+}
+
 pipeline {
     agent {
         docker {
@@ -34,7 +47,6 @@ pipeline {
     }
     environment {
         DEPLOY_PATH = "${env.DEPLOY_PATH ?: '/usr/share/nginx/landing'}"
-        NODE_HEAP_MB = "${env.NODE_HEAP_MB?.trim() ?: '2048'}"
     }
     stages {
         stage('Checkout') {
@@ -87,13 +99,16 @@ pipeline {
         }
         stage('Build') {
             steps {
+                script {
+                    env._NODE_HEAP_MB = resolvedNodeHeapMB()
+                }
                 dir("${env._UNC_DIR}") {
                     sh '''
                         export HOME="${WORKSPACE}/.jenkins-container-home"
                         export NPM_CONFIG_CACHE="${WORKSPACE}/.npm-cache"
                         export NEXT_TELEMETRY_DISABLED=1
-                        export NODE_OPTIONS="--max-old-space-size=${NODE_HEAP_MB}"
-                        echo "NODE_HEAP_MB=${NODE_HEAP_MB} NODE_OPTIONS=${NODE_OPTIONS}"
+                        export NODE_OPTIONS="--max-old-space-size=${_NODE_HEAP_MB}"
+                        echo "NODE_HEAP_MB=${_NODE_HEAP_MB} NODE_OPTIONS=${NODE_OPTIONS}"
                         npm run build
                         test -d out && ls -la out/ | head -25
                     '''
