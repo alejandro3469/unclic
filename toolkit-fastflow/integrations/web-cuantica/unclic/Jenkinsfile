@@ -79,6 +79,9 @@ pipeline {
             }
         }
         stage('Install') {
+            options {
+                timeout(time: 15, unit: 'MINUTES')
+            }
             steps {
                 script {
                     env._UNC_DIR = resolvedAppDir()
@@ -86,30 +89,42 @@ pipeline {
                 dir("${env._UNC_DIR}") {
                     sh '''
                         set -e
+                        echo "=== Pre-install checks ==="
+                        df -h "${WORKSPACE}" | tail -1
                         mkdir -p "${WORKSPACE}/.npm-cache" "${WORKSPACE}/.jenkins-container-home"
                         export HOME="${WORKSPACE}/.jenkins-container-home"
                         export NPM_CONFIG_CACHE="${WORKSPACE}/.npm-cache"
                         node -v && npm -v
-                        # Instalación previa a medias (t3.micro + volumen) provoca TAR_ENTRY_ERROR; empezar limpio
+                        echo "=== Limpiando node_modules anterior ==="
                         rm -rf node_modules
-                        npm ci
+                        echo "=== Iniciando npm ci (puede tardar 2-5 min en t3.micro) ==="
+                        npm ci --loglevel=warn --progress=false
+                        echo "=== npm ci completado ==="
+                        du -sh node_modules 2>/dev/null || echo "node_modules no encontrado"
                     '''
                 }
             }
         }
         stage('Build') {
+            options {
+                timeout(time: 20, unit: 'MINUTES')
+            }
             steps {
                 script {
                     env._NODE_HEAP_MB = resolvedNodeHeapMB()
                 }
                 dir("${env._UNC_DIR}") {
                     sh '''
+                        echo "=== Pre-build checks ==="
+                        df -h "${WORKSPACE}" | tail -1
                         export HOME="${WORKSPACE}/.jenkins-container-home"
                         export NPM_CONFIG_CACHE="${WORKSPACE}/.npm-cache"
                         export NEXT_TELEMETRY_DISABLED=1
                         export NODE_OPTIONS="--max-old-space-size=${_NODE_HEAP_MB}"
                         echo "NODE_HEAP_MB=${_NODE_HEAP_MB} NODE_OPTIONS=${NODE_OPTIONS}"
+                        echo "=== Iniciando next build (puede tardar 3-8 min) ==="
                         npm run build
+                        echo "=== Build completado ==="
                         test -d out && ls -la out/ | head -25
                     '''
                 }
