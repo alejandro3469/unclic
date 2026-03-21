@@ -10,6 +10,9 @@
 //   DEPLOY_PATH     — ruta remota document root (default /usr/share/nginx/landing)
 //   DEPLOY_SSH_CREDENTIALS — (opcional) ID de credencial Jenkins tipo "SSH Username with private key"
 //   UNC_APP_DIR     — (solo monorepo) ruta al package.json. En nucleic déjalo sin definir (usa '.').
+//   NODE_HEAP_MB    — (opcional) límite heap V8 para `next build` en MiB (default 2048). En t3.micro (1 GiB RAM)
+//                     sin swap puede matar el SO; añade swap 2G o sube a t3.small, o baja a 1024 si aún OOM.
+//   NEXT_TELEMETRY_DISABLED=1 — ya se exporta en Build para menos ruido.
 //
 // Rama: el job debe usar Branch Specifier */main (no master).
 
@@ -31,6 +34,7 @@ pipeline {
     }
     environment {
         DEPLOY_PATH = "${env.DEPLOY_PATH ?: '/usr/share/nginx/landing'}"
+        NODE_HEAP_MB = "${env.NODE_HEAP_MB?.trim() ?: '2048'}"
     }
     stages {
         stage('Checkout') {
@@ -69,6 +73,9 @@ pipeline {
                     sh '''
                         export HOME="${WORKSPACE}/.jenkins-container-home"
                         export NPM_CONFIG_CACHE="${WORKSPACE}/.npm-cache"
+                        export NEXT_TELEMETRY_DISABLED=1
+                        export NODE_OPTIONS="--max-old-space-size=${NODE_HEAP_MB}"
+                        echo "NODE_HEAP_MB=${NODE_HEAP_MB} NODE_OPTIONS=${NODE_OPTIONS}"
                         npm run build
                         test -d out && ls -la out/ | head -25
                     '''

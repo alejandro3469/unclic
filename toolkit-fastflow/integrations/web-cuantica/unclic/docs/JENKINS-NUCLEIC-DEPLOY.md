@@ -28,6 +28,7 @@ Repo Gitea: `alejandro-perez/nucleic` → la **raíz del repositorio** es el pro
 | `DEPLOY_SSH_CREDENTIALS` | No | `id-credencial-jenkins` | ID de credencial tipo **SSH Username with private key** (plugin SSH Agent). Si no se define, se usa la identidad SSH por defecto del agente Jenkins. |
 | `UNC_APP_DIR` | No | `.` | Solo monorepo: ruta al `package.json` de UnClic. En **nucleic** déjalo sin definir. |
 | `NODEJS_INSTALLATION_NAME` | No | - | Solo si usas `Jenkinsfile.no-docker` (agent any). Nombre de la herramienta NodeJS en Global Tool Configuration. |
+| `NODE_HEAP_MB` | No | `2048` | MiB de heap V8 para `next build` (`NODE_OPTIONS=--max-old-space-size=...`). Si ves **JavaScript heap out of memory**, sube el valor **solo si la EC2 tiene RAM/swap** (t3.micro 1 GiB: añade **swap 2G** o pasa a **t3.small**). |
 
 \* Para automatizar deploy en cada push a `main`, configura al menos `DEPLOY_HOST` y la clave SSH adecuada.
 
