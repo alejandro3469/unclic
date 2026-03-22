@@ -1,7 +1,13 @@
 import type { Metadata } from 'next';
+import dynamic from 'next/dynamic';
 import { Roboto, Space_Mono, Ubuntu } from 'next/font/google';
 import './globals.css';
 import { site, nav, seo } from '@/lib/copy';
+
+const ChatterAssist = dynamic(
+  () => import('@/components/chat/chatter-assist').then((m) => m.ChatterAssist),
+  { ssr: false }
+);
 
 const roboto = Roboto({
   weight: ['100', '300', '400', '500', '700', '900'],
@@ -121,6 +127,7 @@ export default function RootLayout({
           {nav.skipToContent}
         </a>
         {children}
+        <ChatterAssist />
       </body>
     </html>
   );
