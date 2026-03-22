@@ -41,6 +41,9 @@ export function VideoSection() {
                 {video.fallbackText}
               </video>
             </div>
+            <p className="border-t border-border px-4 py-3 text-center text-xs text-muted-foreground">
+              {video.ossMediaFootnote}
+            </p>
           </CardContent>
         </Card>
       </BlockContainer>

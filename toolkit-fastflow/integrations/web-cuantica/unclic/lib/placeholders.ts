@@ -40,6 +40,9 @@ export function placeholderImage(
 export const PLACEHOLDER_AUDIO_URL =
   'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3';
 
-/** Video: muestra de prueba pública. Sustituir por public/video/ o URL final. */
+/**
+ * Vídeo de demostración: **Big Buck Bunny** (open movie / Blender Foundation).
+ * CDN de muestras de Google; sustituye por `public/video/*.mp4` o tu pipeline OSS.
+ */
 export const PLACEHOLDER_VIDEO_URL =
-  'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4';
+  'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';

@@ -15,6 +15,9 @@ import {
   AudioPlayerTime,
   useAudioPlayer,
 } from '@/components/ui/audio-player';
+import { AgentWaveformStrip } from '@/components/media/agent-waveform-strip';
+import { OssMediaEnvHint } from '@/components/media/oss-media-env-hint';
+import { OssVoicePanel } from '@/components/media/oss-voice-panel';
 import { AUDIO_TRACKS } from '@/lib/audio-samples';
 import { audio } from '@/lib/copy';
 
@@ -57,7 +60,8 @@ function AudioSectionContent() {
   const getOutputVolume = useCallback(() => outputVolumeRef.current, [outputVolumeRef]);
 
   return (
-    <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,320px)_1fr]">
+    <div className="mt-8 space-y-8">
+      <div className="grid gap-8 lg:grid-cols-[minmax(0,320px)_1fr]">
       {/* Orb: reacciona al audio en reproducción (volumen simulado desde estado del reproductor). */}
       <Card className="flex flex-col items-center justify-center overflow-hidden p-6">
         <div className="relative size-40 shrink-0 md:size-52">
@@ -73,7 +77,10 @@ function AudioSectionContent() {
           </div>
         </div>
         <p className="mt-4 text-center text-xs text-muted-foreground">
-          {audio.elevenLabsCredit}
+          {audio.ossMediaCaption}
+        </p>
+        <p className="mt-1 text-center text-[11px] leading-snug text-muted-foreground/90">
+          {audio.ossMediaStackLine}
         </p>
       </Card>
 
@@ -122,6 +129,8 @@ function AudioSectionContent() {
           </CardContent>
         </Card>
       </div>
+      </div>
+      <OssVoicePanel />
     </div>
   );
 }
@@ -140,6 +149,8 @@ export function AudioSection() {
         <p className="mt-2 text-muted-foreground">
           {audio.sectionDescription}
         </p>
+        <AgentWaveformStrip />
+        <OssMediaEnvHint />
 
         <AudioPlayerProvider>
           <AudioSectionContent />

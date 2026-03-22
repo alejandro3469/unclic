@@ -19,7 +19,7 @@ Documento interno para **mensaje común** en web, propuestas y redes: qué prome
 
 - **CI/CD:** Jenkins, Gitea, **Docker** (build/push/pull), **registry OCI** (mismo estándar que [imagen oficial registry](https://hub.docker.com/_/registry)), app POS en demo. Detalle: [DOCKER-Y-REGISTRY-UNClic.md](DOCKER-Y-REGISTRY-UNClic.md).
 - **Infra documentada:** Cloudcraft (blueprint / vista); sección de arquitectura en vivo en la landing.
-- **Contenido:** audio (ElevenLabs), vídeo, flujos explicados.
+- **Contenido:** audio/vídeo con patrón tipo agente (UI OSS) y medios reproducibles; flujos explicados.
 - **Correo:** posición *Google Workspace / Gmail corporativo* como parte típica del ecosistema cliente (enlace configurable).
 
 ---

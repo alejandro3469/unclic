@@ -2,7 +2,7 @@
 
 Next.js (export estático): landing, demos y hub de capacidades. **Integración con el toolkit** (POS, Jenkins, docs): [../docs/00-inicio/EMPIEZA-AQUI-GEORGE-O-COLABORADOR.md](../docs/00-inicio/EMPIEZA-AQUI-GEORGE-O-COLABORADOR.md).
 
-**Docs útiles:** [docs/README.md](docs/README.md) · **flujo bloque + copy:** [docs/FLUJO-NORMAL-BLOQUE-Y-COPY.md](docs/FLUJO-NORMAL-BLOQUE-Y-COPY.md) · posicionamiento/copy/UI: [docs/POSICIONAMIENTO-ENTERPRISE-UNClic.md](docs/POSICIONAMIENTO-ENTERPRISE-UNClic.md), [SHADCN-BLOCKS-MAP.md](docs/SHADCN-BLOCKS-MAP.md), [CONSISTENCIA-UI.md](docs/CONSISTENCIA-UI.md), [DOCKER-Y-REGISTRY-UNClic.md](docs/DOCKER-Y-REGISTRY-UNClic.md).
+**Docs útiles:** [docs/README.md](docs/README.md) · **implementación prod (Stripe, colas, métricas, LLM, etc.):** [docs/implementacion/README.md](docs/implementacion/README.md) · **flujo bloque + copy:** [docs/FLUJO-NORMAL-BLOQUE-Y-COPY.md](docs/FLUJO-NORMAL-BLOQUE-Y-COPY.md) · posicionamiento/copy/UI: [docs/POSICIONAMIENTO-ENTERPRISE-UNClic.md](docs/POSICIONAMIENTO-ENTERPRISE-UNClic.md), [SHADCN-BLOCKS-MAP.md](docs/SHADCN-BLOCKS-MAP.md), [CONSISTENCIA-UI.md](docs/CONSISTENCIA-UI.md), [DOCKER-Y-REGISTRY-UNClic.md](docs/DOCKER-Y-REGISTRY-UNClic.md).
 
 `toolkit-fastflow/integrations/web-cuantica/unclic`
 
@@ -12,7 +12,8 @@ Next.js (export estático): landing, demos y hub de capacidades. **Integración 
 
 - Next.js 15, React 19, TypeScript, Tailwind, Radix, motion, lucide-react
 - Three.js / R3F / drei (Orb); sección audio con `<audio>`
-- UI: Shadcn + tema; referencias: [Shadcn Blocks](https://www.shadcnblocks.com/), [ElevenLabs UI](https://ui.elevenlabs.io/)
+- UI: Shadcn + tema; referencia visual agente/audio: [ElevenLabs UI](https://ui.elevenlabs.io/) (componentes OSS; **sin** API de pago en este repo — ver [docs/UI-OSS-MEDIA-ELEVENLABS-STYLE.md](docs/UI-OSS-MEDIA-ELEVENLABS-STYLE.md))
+- **Microservicios `services/api`** y **`services/ping`** (Hono): leads, orquestación de salud, demo multi-contenedor. Ver [docs/MICROSERVICIOS-Y-DOCKER.md](docs/MICROSERVICIOS-Y-DOCKER.md), [docs/ARQUITECTURA-MICROSERVICIOS-MODULOS-Y-ADAPTADORES.md](docs/ARQUITECTURA-MICROSERVICIOS-MODULOS-Y-ADAPTADORES.md). Pruebas: `npm run test:services`. Aislar repo: [docs/EXTRACT-REPO-UNClic-AISLADO.md](docs/EXTRACT-REPO-UNClic-AISLADO.md).
 
 ---
 
@@ -24,6 +25,10 @@ npm run dev
 ```
 
 Abre http://localhost:3002
+
+**API en paralelo** (leads + futuros endpoints): otra terminal → `npm run dev:api` (puerto **3001**). En `.env.local` define `NEXT_PUBLIC_UNCLIC_API_URL=http://localhost:3001` y en la shell de la API `CORS_ORIGINS=http://localhost:3002`.
+
+**Voz OSS (stub STT/TTS/WebSocket):** `npm run dev:oss-voice` (puerto **3005**). En `.env.local`: `NEXT_PUBLIC_OSS_STT_URL`, `NEXT_PUBLIC_OSS_TTS_URL`, `NEXT_PUBLIC_OSS_VOICE_WS_URL` (ver [docs/UI-OSS-MEDIA-ELEVENLABS-STYLE.md](docs/UI-OSS-MEDIA-ELEVENLABS-STYLE.md)).
 
 ---
 

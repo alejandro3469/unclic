@@ -125,6 +125,30 @@
   /* h4–h6 stay sans (Roboto) unless overridden */
 }
 
+@keyframes unclic-agent-wavebar {
+  0% {
+    opacity: 0.45;
+    transform: scaleY(0.65);
+    transform-origin: bottom;
+  }
+  100% {
+    opacity: 1;
+    transform: scaleY(1);
+    transform-origin: bottom;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @keyframes unclic-agent-wavebar {
+    0%,
+    100% {
+      opacity: 0.65;
+      transform: scaleY(0.85);
+      transform-origin: bottom;
+    }
+  }
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -160,5 +184,8 @@ html {
   /* Glass / backdrop for nav and cards */
   .glass-subtle {
     @apply bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/70;
+  }
+  .animate-unclic-agent-wavebar {
+    animation: unclic-agent-wavebar 0.9s ease-in-out infinite alternate;
   }
 }
