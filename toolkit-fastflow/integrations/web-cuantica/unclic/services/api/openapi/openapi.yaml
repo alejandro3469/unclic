@@ -1,0 +1,54 @@
+openapi: 3.0.3
+info:
+  title: UnClic API
+  version: 0.1.0
+  description: >
+    Microservicio público (CORS) para leads y agregación de salud.
+    Fuente de verdad de comportamiento: código en `services/api/src/`.
+servers:
+  - url: http://localhost:3001
+    description: Desarrollo local
+paths:
+  /health:
+    get:
+      summary: Liveness
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: { type: boolean }
+                  service: { type: string }
+                  ts: { type: string, format: date-time }
+  /v1/orchestration/health:
+    get:
+      summary: Salud API + upstream ping (si PING_SERVICE_URL)
+      responses:
+        '200':
+          description: Estado agregado
+          content:
+            application/json:
+              schema:
+                type: object
+  /v1/leads/email:
+    post:
+      summary: Captura correo (mismo cuerpo que Next `/api/lead-email`)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email]
+              properties:
+                email: { type: string, format: email }
+                website: { type: string, description: Honeypot }
+                source: { type: string }
+      responses:
+        '200': { description: OK o honeypot silencioso }
+        '400': { description: Validación }
+        '502': { description: Fallo SMTP }
+        '503': { description: SMTP no configurado }
