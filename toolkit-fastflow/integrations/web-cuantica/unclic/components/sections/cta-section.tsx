@@ -3,6 +3,7 @@
 import { BlockContainer } from '@/components/blocks';
 import { Cta1 } from '@/components/cta1';
 import { LoginCardWithBorderBeam } from '@/components/ui/login-card-with-border-beam';
+import { LeadEmailForm } from '@/components/lead-email-form';
 import { cta } from '@/lib/copy';
 import { HERO_IMAGE_PLACEHOLDER } from '@/lib/placeholders';
 import { cn } from '@/lib/utils';
@@ -30,7 +31,8 @@ export function CtaSection() {
           imageAlt: '',
         }}
       />
-      <BlockContainer className="mt-12 flex justify-center">
+      <BlockContainer className="mt-12 flex flex-col items-center gap-12">
+        <LeadEmailForm />
         <LoginCardWithBorderBeam />
       </BlockContainer>
     </section>
