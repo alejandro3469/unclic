@@ -8,6 +8,14 @@
 # Terraform
 **/.terraform/
 **/.terraform.lock.hcl
+# Estado y variables locales (secretos); no versionar
+**/*.tfstate
+**/*.tfstate.backup
+**/terraform.tfvars
+!**/terraform.tfvars.example
+
+# IDE (evita ruido de workspace.xml, etc.)
+**/.idea/
 
 # Dependencias y builds (opcional; cada subproyecto puede tener el suyo)
 **/node_modules/
