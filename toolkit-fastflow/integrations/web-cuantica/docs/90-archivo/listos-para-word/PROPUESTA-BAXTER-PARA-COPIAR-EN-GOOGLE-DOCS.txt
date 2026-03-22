@@ -1,0 +1,118 @@
+PROPUESTA — Calculadora Olimel/Numetzah y presencia digital para Baxter
+
+Destinatario: Baxter (Joers / Kings & Joers)
+Asunto: Calculadora clínica Olimel/Numetzah para NPT, página web del producto y entrega en entorno acordado.
+
+
+INTRODUCCIÓN
+
+Calculadora clínica (Olimel/Numetzah) para que los profesionales de la salud calculen requerimientos de NPT, elijan fórmulas o introduzcan resultados de calorimetría y obtengan una o dos opciones de Olimel que mejor se ajusten al paciente, con alertas cuando haga falta. Incluye registro de profesionales, flujo clínico acordado, portafolio Olimel, guías de referencia y, si se acuerda, reporte de uso. Incluye también una página web del producto alineada con Baxter y la entrega en un entorno que cumpla sus normas de privacidad. Debajo: qué recibe, plazos, inversión, ahorro y los pequeños compromisos que nos ayudan a cerrar en fecha.
+
+
+1. QUÉ RECIBE
+
+Calculadora (aplicación web)
+• Registro de profesionales (nombre, correo, profesión, hospital, ciudad); acceso con contraseña y recuperación de la misma; aceptación de términos y aviso de privacidad.
+• Datos del paciente: edad (desde 2 años), ayuno, primer día de soporte, vía enteral u oral, sedación con propofol, vía de acceso (periférica o central), formatos de Olimel disponibles en el hospital, fórmula para energía o resultado de calorimetría, proteína según guías.
+• Cálculo de energía con fórmulas para adulto y pediátrico; glucosa y lípidos; una o dos opciones de Olimel que mejor encajen; alertas si se superan límites recomendados.
+• Resultado: dos opciones recomendadas, detalle de prescripción (volumen, kcal, aminoácidos, nitrógeno, glucosa, lípidos, electrolitos, etc.) y descarga en PDF.
+• Opcional (opción B): reporte de uso (hospital, frecuencia, perfil de usuario, opción de Olimel más usada). Detalles en anexo.
+
+Portafolio Olimel
+• Tabla de formatos (vía, volumen, kcal, aminoácidos, glucosa, lípidos, electrolitos, etc.) y selección automática de una o dos bolsas según el cálculo y la vía elegida. Mensajes de advertencia acordados (realimentación, glucosa, volumen, etc.).
+
+Página web del producto
+• Página de presentación del producto/servicio, alineada con la marca Baxter. Al cierre del proyecto la recibe operativa y accesible; se prueba en el entorno acordado antes de dar por cerrado.
+
+Fuera de alcance (salvo anexo)
+• Conexión con sistemas internos de Baxter no indicados en esta propuesta.
+• Soporte sin límite después de la entrega, formación en sus instalaciones o cambios futuros no pactados por escrito.
+
+
+2. PLAZOS (1 A 2 MESES)
+
+La información inicial y la base ya están acordadas; no se parte de cero.
+
+Definición y anexo: ya cerrado.
+Diseño (pantallas, flujos, marca): 3-5 días.
+Desarrollo (lógica, fórmulas, portafolio, informes): 5-8 días.
+Desarrollo (formularios, resultados, PDF): 5-8 días.
+Unión de correos, políticas y entorno: 2-3 días.
+Pruebas y ajustes finales: 5 días.
+
+Total: 20-29 días laborables (aprox. 1 a 2 meses), según ritmo de revisiones diarias.
+
+
+3. ESTUDIO DE MERCADO (referencia para el precio)
+
+Contexto: El coste de desarrollar una aplicación web para uso clínico o sanitario varía según alcance, normativa de privacidad y plazos. Para proyectos a medida de 1 a 2 meses en Europa/España, las referencias de mercado suelen situar:
+• Aplicaciones web básicas o MVP (funcionalidad acotada): desde unos 15.000 € hasta 30.000 € según características.
+• Proyectos con registro de usuarios, lógica de negocio (fórmulas, cálculos), exportación a PDF, cumplimiento normativo y página corporativa: en torno a 20.000 € – 45.000 € según alcance y opciones.
+• Factores que suben el precio: reportes analíticos a medida, más rondas de revisión, integraciones con otros sistemas, requisitos de seguridad o privacidad adicionales.
+
+Esta propuesta (calculadora clínica, registro de profesionales, fórmulas adulto/pediátrico, portafolio Olimel, PDF, página web del producto, 5 días de pruebas y revisiones diarias) se enmarca en el rango anterior. La cotización definitiva se envía en anexo o contrato.
+
+
+4. PRECIO INICIAL Y PRECIO MÁXIMO DEL PROYECTO
+
+Precio inicial (opción A — Base): 22.000 € (IVA no incluido, si aplica).
+Incluye: calculadora completa, página web operativa al cierre, 5 días de pruebas y ajustes, revisiones diarias (avances a las 9:00, comentarios antes de las 16:00). Condiciones y forma de pago en contrato u orden de encargo.
+
+Precio máximo del proyecto (techo con opciones B + C y anexos acordados): 38.000 € (IVA no incluido, si aplica).
+Cubre: opción A + reporte de uso (opción B) + extensión de revisión o ajustes (opción C) y los conceptos que se pacten por escrito en anexo. Cualquier ampliación fuera de este techo se cotiza aparte.
+
+Lo último en tres líneas:
+El precio inicial del proyecto es 22.000 € (opción A). El precio máximo, incluyendo reporte de uso y posibles extensiones de revisión pactadas, es 38.000 €. Las cantidades y fechas de pago se fijan en el contrato o en la orden de encargo.
+
+
+5. OTRAS OPCIONES (B Y C)
+
+Opción B: Igual que A + reporte de uso según especificación en anexo. Precio: base + monto en anexo.
+
+Opción C: Igual que A (o A+B) con más días de revisión o ajuste si se acuerda por escrito. Precio: base + porcentaje según acuerdo.
+
+
+QUÉ INVIERTE (BAXTER)
+• Tiempo: 1 a 2 meses y revisar los avances cada día (comentarios antes de las 16:00).
+• Dinero: según la opción; fechas de pago en contrato u orden de encargo.
+
+QUÉ AHORRA
+• Tiempo: se parte de base y datos ya acordados.
+• Coste: al cierre recibe la página web operativa y accesible sin coste extra de infraestructura en este alcance.
+
+QUÉ SE AHORRAN (POR QUÉ EL PRECIO ES BAJO)
+• Con el precio de esta propuesta reciben el proyecto cerrado en 2-3 meses. El mismo alcance, si lo desarrollaran internamente o con un proveedor especializado en software médico a medida (por ejemplo Claricode, Apex Systems o agencias similares), suele cotizarse en plazos y presupuestos equivalentes a entre 1 y hasta 5 años de proyecto. Se ahorran ese tiempo y ese coste; por eso el precio no solo es competitivo, refleja ese ahorro.
+
+QUÉ VALOR RECIBE
+• Calculadora clínica lista para usar, página web alineada con Baxter, 5 días de pruebas y ajustes y entrega comprobada en el entorno acordado antes del cierre.
+
+
+6. COMPROMISOS DEL CLIENTE (breves y claros)
+
+Revisiones
+• Cada día les enviamos un avance a las 9:00. Si nos devuelven comentarios antes de las 16:00, todo sigue según lo previsto. Si un día no hay comentarios, ese día no cuenta en el plazo y movemos la entrega un día — así el calendario refleja solo los días con revisión.
+
+Pagos
+• Las fechas y cantidades se fijan en el contrato; solo necesitamos que se respeten para poder seguir entregando sin cortes.
+
+
+7. LÍMITES Y TRANSPARENCIA
+
+• El precio cubre lo descrito aquí; cualquier ampliación se cotiza aparte y se deja por escrito.
+• Incluido: calculadora, página web operativa al cierre, 5 días de pruebas y ajustes, revisiones diarias (9:00 / 16:00). Opción B: reporte de uso según anexo.
+• No incluido: lo no indicado (otros sistemas, soporte ilimitado, formación in situ).
+• Alcance y condiciones se formalizan en contrato u orden de encargo; los cambios se documentan por escrito.
+
+
+8. GARANTÍA
+
+La calculadora y la página web se entregan cumpliendo lo acordado y sus normas de privacidad. Incluimos 5 días de pruebas y ajustes; la entrega se comprueba en el entorno acordado antes de dar el proyecto por cerrado.
+
+
+9. RESUMEN
+
+Recibe: calculadora Olimel/Numetzah (registro, checklist, fórmulas adulto y pediátrico, portafolio, resultado con 1-2 opciones, alertas, PDF), opción de reporte de uso, página web operativa y accesible, 5 días de pruebas y ajustes. Plazo: 1 a 2 meses desde base ya acordada.
+
+Compromisos de Baxter: revisar avances a diario (9:00 / comentarios antes de 16:00); si un día no hay comentarios, la entrega se mueve un día. Pagar según lo acordado en contrato u orden de encargo.
+
+A su disposición para ajustar alcance, plazos o condiciones.
