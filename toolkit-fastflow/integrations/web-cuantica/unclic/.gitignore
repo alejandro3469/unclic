@@ -24,3 +24,11 @@ yarn-error.log*
 
 # types
 next-env.d.ts
+
+# Python — servicio ChatterBot local
+services/chatterbot/.venv
+services/chatterbot/data
+services/chatterbot/**/__pycache__
+services/oss-voice/.venv
+services/oss-voice/**/__pycache__
+*.py[cod]
