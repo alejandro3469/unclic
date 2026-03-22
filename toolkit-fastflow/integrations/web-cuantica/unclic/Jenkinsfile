@@ -105,6 +105,39 @@ pipeline {
                 }
             }
         }
+        stage('Test API') {
+            options {
+                timeout(time: 8, unit: 'MINUTES')
+            }
+            steps {
+                script {
+                    env._UNC_DIR = resolvedAppDir()
+                }
+                dir("${env._UNC_DIR}") {
+                    sh '''
+                        set -e
+                        export HOME="${WORKSPACE}/.jenkins-container-home"
+                        export NPM_CONFIG_CACHE="${WORKSPACE}/.npm-cache"
+                        if [ -d services/api ]; then
+                          echo "=== npm ci + test (services/api) ==="
+                          cd services/api
+                          npm ci --loglevel=warn --progress=false
+                          npm test
+                          cd - >/dev/null
+                        else
+                          echo "Sin services/api: se omite Test API"
+                        fi
+                        if [ -d services/ping ]; then
+                          echo "=== npm ci + test (services/ping) ==="
+                          cd services/ping
+                          npm ci --loglevel=warn --progress=false
+                          npm test
+                          cd - >/dev/null
+                        fi
+                    '''
+                }
+            }
+        }
         stage('Build') {
             options {
                 timeout(time: 20, unit: 'MINUTES')
