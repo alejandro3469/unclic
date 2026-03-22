@@ -1,0 +1,77 @@
+# UnClic: ping (demo) + API + (opcional) Postgres.
+#   docker compose up -d --build
+# Prueba orquestación: curl http://localhost:3001/v1/orchestration/health
+#
+# Sitio estático: NEXT_PUBLIC_UNCLIC_API_URL=https://api.tu-dominio.com
+
+services:
+  ping:
+    build:
+      context: ./services/ping
+      dockerfile: Dockerfile
+    ports:
+      - '3010:3010'
+    environment:
+      PORT: '3010'
+      HOST: '0.0.0.0'
+
+  api:
+    depends_on:
+      - ping
+    build:
+      context: ./services/api
+      dockerfile: Dockerfile
+    ports:
+      - '3001:3001'
+    environment:
+      PORT: '3001'
+      HOST: '0.0.0.0'
+      # Red Docker: hostname del servicio `ping`
+      PING_SERVICE_URL: ${PING_SERVICE_URL:-http://ping:3010}
+      # Orígenes del sitio Next (export) que llaman al API desde el navegador
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3002,http://127.0.0.1:3002}
+      GMAIL_SMTP_USER: ${GMAIL_SMTP_USER:-}
+      GMAIL_SMTP_APP_PASSWORD: ${GMAIL_SMTP_APP_PASSWORD:-}
+      LEAD_NOTIFY_TO: ${LEAD_NOTIFY_TO:-}
+      LEAD_FROM_NAME: ${LEAD_FROM_NAME:-UnClic}
+
+  # ChatterBot (Python): asistente FAQ para la landing exportada (CORS desde el navegador).
+  # En .env: NEXT_PUBLIC_CHATTERBOT_API_URL=http://localhost:8765 (dev) o URL pública detrás de HTTPS.
+  chatterbot:
+    build:
+      context: ./services/chatterbot
+      dockerfile: Dockerfile
+    ports:
+      - '8765:8765'
+    environment:
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3002,http://127.0.0.1:3002}
+      CHATTERBOT_DB_PATH: /data/unclic_chatterbot.sqlite3
+    volumes:
+      - chatterbot_data:/data
+
+  # Stub STT/TTS/WebSocket (Python) — mismo contrato que Whisper/Piper self-hosted.
+  # .env.local: NEXT_PUBLIC_OSS_STT_URL=http://localhost:3005 NEXT_PUBLIC_OSS_TTS_URL=... NEXT_PUBLIC_OSS_VOICE_WS_URL=ws://localhost:3005/ws/voice
+  oss-voice:
+    build:
+      context: ./services/oss-voice
+      dockerfile: Dockerfile
+    ports:
+      - '3005:3005'
+    environment:
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3002,http://127.0.0.1:3002}
+
+  # Descomenta cuando un servicio use DB dedicada
+  # db:
+  #   image: postgres:16-alpine
+  #   environment:
+  #     POSTGRES_USER: unclic
+  #     POSTGRES_PASSWORD: unclic
+  #     POSTGRES_DB: unclic
+  #   ports:
+  #     - '5432:5432'
+  #   volumes:
+  #     - unclic_pg:/var/lib/postgresql/data
+
+volumes:
+  chatterbot_data:
+#   unclic_pg:
