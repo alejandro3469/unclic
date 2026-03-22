@@ -1,0 +1,60 @@
+# EJEMPLO — NO es el compose activo del repo.
+# Copia servicios a docker-compose.yml o usa: docker compose -f docker-compose.yml -f docs/implementacion/04-...yml
+# Revisa imágenes y versiones en la documentación oficial de cada producto antes de producción.
+
+services:
+  # --- Ya existentes en docker-compose.yml raíz: ping, api ---
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: unclic
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set in env file}
+      POSTGRES_DB: unclic
+    volumes:
+      - unclic_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U unclic -d unclic']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  lavinmq:
+    image: cloudamqp/lavinmq:latest
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    volumes:
+      - lavinmq_data:/var/lib/lavinmq
+    # Healthcheck: confirmar comando en la imagen que uses (doc LavinMQ / Docker Hub).
+
+  # Ollama: GPU opcional; en CPU puede ser lento. Documentación: https://github.com/ollama/ollama
+  ollama:
+    image: ollama/ollama:latest
+    volumes:
+      - ollama_data:/root/.ollama
+    ports:
+      - '11434:11434'
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
+
+  # Ajusta `api` en tu compose real:
+  # api:
+  #   environment:
+  #     DATABASE_URL: postgres://unclic:${POSTGRES_PASSWORD}@postgres:5432/unclic
+  #     AMQP_URL: amqp://guest:guest@lavinmq:5672
+  #     OLLAMA_URL: http://ollama:11434
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
+  #     - lavinmq
+
+volumes:
+  unclic_pg:
+  lavinmq_data:
+  ollama_data:
