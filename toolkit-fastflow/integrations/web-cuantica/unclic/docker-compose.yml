@@ -60,6 +60,18 @@ services:
     environment:
       CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3002,http://127.0.0.1:3002}
 
+  # Ollama (opcional): LLM local. En Mac suele instalarse con la app; en Linux/servidor puedes usar esta imagen.
+  # Tras levantar: docker compose exec ollama ollama pull llama3.2
+  # Front: NEXT_PUBLIC_OLLAMA_URL=http://localhost:11434
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - '11434:11434'
+    environment:
+      OLLAMA_ORIGINS: ${OLLAMA_ORIGINS:-http://localhost:3002,http://127.0.0.1:3002,http://localhost:11434}
+    volumes:
+      - ollama_data:/root/.ollama
+
   # Descomenta cuando un servicio use DB dedicada
   # db:
   #   image: postgres:16-alpine
@@ -74,4 +86,5 @@ services:
 
 volumes:
   chatterbot_data:
+  ollama_data:
 #   unclic_pg:

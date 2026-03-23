@@ -1,0 +1,18 @@
+import { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { FlatCompat } from '@eslint/eslintrc';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const compat = new FlatCompat({
+  baseDirectory: __dirname,
+});
+
+/** Non-interactive ESLint for Next 15 (replaces deprecated `next lint` wizard when no config). */
+export default [
+  ...compat.extends('next/core-web-vitals', 'next/typescript'),
+  {
+    ignores: ['out/**', '.next/**', 'node_modules/**', 'services/**/dist/**'],
+  },
+];
