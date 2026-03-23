@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import {
   Card,
   CardContent,
@@ -16,6 +16,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { UnClicLogo } from '@/components/ui/unclic-logo';
 import { loginPage as copy, nav } from '@/lib/copy';
+import { routes } from '@/lib/routes';
 import {
   DEMO_ACCESS_KEY,
   DEMO_SCOPE_KEY,
@@ -23,18 +24,81 @@ import {
   DEMO_LOGIN_EMAIL_KEY,
 } from '@/components/demo/demo-gate';
 import { isDemoAllowlistMode, isEmailAllowedForDemos } from '@/lib/demo-access-policy';
+import { getUnclicApiBase } from '@/lib/api-base';
+import { isPortalAuthRequired } from '@/lib/portal-auth-policy';
+import { setPortalJwt } from '@/lib/portal-session';
 import { cn } from '@/lib/utils';
 
 export type DemoScope = 'pos' | 'full';
 
-export default function LoginPage() {
+function safeNext(raw: string | null): string {
+  if (!raw || !raw.startsWith('/') || raw.startsWith('//')) return routes.portal;
+  return raw;
+}
+
+function LoginPageInner() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const next = safeNext(searchParams.get('next'));
+
+  const apiBase = getUnclicApiBase();
+  const usePasswordLogin = apiBase.length > 0;
+  const portalRequired = isPortalAuthRequired();
+
   const [tab, setTab] = useState<DemoScope>('pos');
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [allowlistError, setAllowlistError] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
 
-  const handleContinue = (e: React.FormEvent) => {
+  const handlePasswordLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setFormError(null);
+    if (!email.trim() || !password) return;
+    const normalized = email.trim().toLowerCase();
+    setLoading(true);
+    try {
+      const res = await fetch(`${apiBase}/v1/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: normalized, password }),
+      });
+      const data = (await res.json().catch(() => ({}))) as {
+        ok?: boolean;
+        error?: string;
+        token?: string;
+      };
+      if (!res.ok) {
+        if (data.error === 'email_not_verified') {
+          setFormError(
+            'Revisa tu correo y abre el enlace de verificación antes de entrar. Si no llega, comprueba SMTP en la API.'
+          );
+        } else {
+          setFormError('Correo o contraseña incorrectos, o cuenta no verificada.');
+        }
+        return;
+      }
+      if (!data.token) {
+        setFormError('Respuesta inválida del servidor.');
+        return;
+      }
+      setPortalJwt(data.token);
+      try {
+        sessionStorage.setItem(DEMO_ACCESS_KEY, '1');
+        sessionStorage.setItem(DEMO_LOGIN_EMAIL_KEY, normalized);
+        sessionStorage.setItem(DEMO_SCOPE_KEY, tab);
+        sessionStorage.removeItem(DEMO_BYPASS_KEY);
+      } catch {
+        /* ignore */
+      }
+      router.push(next);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleLegacyContinue = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) return;
     const normalized = email.trim().toLowerCase();
@@ -52,12 +116,34 @@ export default function LoginPage() {
     } catch {
       // sessionStorage blocked
     }
-    router.push('/demo');
+    router.push(next === routes.portal ? routes.demo : next);
   };
+
+  if (portalRequired && !usePasswordLogin) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center bg-background px-4">
+        <Card className="w-full max-w-md">
+          <CardHeader>
+            <CardTitle>Configuración incompleta</CardTitle>
+            <CardDescription>
+              El portal requiere API y autenticación. Define{' '}
+              <code className="text-xs">NEXT_PUBLIC_UNCLIC_API_URL</code> en{' '}
+              <code className="text-xs">.env.local</code> y arranca{' '}
+              <code className="text-xs">npm run dev:api</code>.
+            </CardDescription>
+          </CardHeader>
+          <CardFooter>
+            <Button asChild variant="outline">
+              <Link href={routes.home}>{nav.backToHome}</Link>
+            </Button>
+          </CardFooter>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
-      {/* Fondo suave alineado al tema (Nord / enterprise) */}
       <div
         className="pointer-events-none fixed inset-0 bg-[radial-gradient(ellipse_120%_80%_at_50%_-20%,hsl(var(--primary)/0.08),transparent),radial-gradient(ellipse_80%_50%_at_100%_50%,hsl(var(--accent)/0.06),transparent)]"
         aria-hidden
@@ -65,7 +151,7 @@ export default function LoginPage() {
 
       <div className="relative flex flex-1 flex-col items-center justify-center px-4 py-12 sm:py-16">
         <Link
-          href="/"
+          href={routes.home}
           className="mb-10 flex flex-col items-center gap-2 text-foreground transition-opacity hover:opacity-80"
           aria-label={nav.home}
         >
@@ -75,14 +161,13 @@ export default function LoginPage() {
         <Card className="w-full max-w-[420px] border-border bg-card shadow-md">
           <CardHeader className="space-y-1 text-center">
             <CardTitle className="text-2xl font-semibold tracking-tight">
-              {copy.title}
+              {usePasswordLogin ? copy.titlePortal : copy.title}
             </CardTitle>
             <CardDescription className="text-muted-foreground">
-              {copy.emailLabel}
+              {usePasswordLogin ? copy.subtitlePortal : copy.emailLabel}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
-            {/* Toggle tipo Shadcn: dos opciones (POS / Full) */}
             <div className="flex rounded-lg border border-input bg-muted/50 p-1">
               <button
                 type="button"
@@ -116,7 +201,10 @@ export default function LoginPage() {
               </button>
             </div>
 
-            <form onSubmit={handleContinue} className="space-y-4">
+            <form
+              onSubmit={usePasswordLogin ? handlePasswordLogin : handleLegacyContinue}
+              className="space-y-4"
+            >
               <div className="space-y-2">
                 <Label htmlFor="login-email" className="sr-only">
                   {copy.emailLabel}
@@ -130,32 +218,66 @@ export default function LoginPage() {
                   value={email}
                   onChange={(e) => {
                     setAllowlistError(false);
+                    setFormError(null);
                     setEmail(e.target.value);
                   }}
                   disabled={loading}
                   className="h-11"
                 />
               </div>
+              {usePasswordLogin ? (
+                <div className="space-y-2">
+                  <Label htmlFor="login-password" className="sr-only">
+                    {copy.passwordLabel}
+                  </Label>
+                  <Input
+                    id="login-password"
+                    type="password"
+                    autoComplete="current-password"
+                    required
+                    placeholder={copy.passwordPlaceholder}
+                    value={password}
+                    onChange={(e) => {
+                      setFormError(null);
+                      setPassword(e.target.value);
+                    }}
+                    disabled={loading}
+                    className="h-11"
+                  />
+                </div>
+              ) : null}
               {allowlistError ? (
                 <p className="text-sm text-destructive" role="alert">
                   {copy.allowlistDenied}
                 </p>
               ) : null}
-              <Button
-                type="submit"
-                disabled={loading}
-                className="h-11 w-full"
-                size="lg"
-              >
-                {loading ? '…' : copy.continue}
+              {formError ? (
+                <p className="text-sm text-destructive" role="alert">
+                  {formError}
+                </p>
+              ) : null}
+              <Button type="submit" disabled={loading} className="h-11 w-full" size="lg">
+                {loading ? '…' : usePasswordLogin ? copy.signIn : copy.continue}
               </Button>
             </form>
+
+            {usePasswordLogin ? (
+              <p className="text-center text-sm text-muted-foreground">
+                {copy.noAccount}{' '}
+                <Link
+                  href={routes.portalRegistro}
+                  className="font-semibold text-foreground underline-offset-2 hover:underline"
+                >
+                  {copy.createAccount}
+                </Link>
+              </p>
+            ) : null}
           </CardContent>
           <CardFooter className="flex flex-col items-center gap-1 border-t border-border pt-6">
             <p className="text-center text-xs leading-relaxed text-muted-foreground">
               {copy.termsLine}{' '}
               <Link
-                href="/legal/acceso-demos#terminos"
+                href={routes.legalDemosTerminos}
                 className="font-medium text-foreground underline underline-offset-2 hover:no-underline"
               >
                 {copy.termsLink}
@@ -168,12 +290,19 @@ export default function LoginPage() {
         <p className="mt-8 text-center text-sm text-muted-foreground">
           {copy.firstTime}{' '}
           <Link
-            href="/demo/access"
+            href={routes.publicSignup}
             className="font-semibold text-foreground underline-offset-2 hover:underline"
           >
             {copy.firstTimeLink}
           </Link>
         </p>
+        {usePasswordLogin ? (
+          <p className="mt-2 text-center text-sm text-muted-foreground">
+            <Link href={routes.portal} className="underline-offset-2 hover:underline">
+              {copy.portalHubLink}
+            </Link>
+          </p>
+        ) : null}
       </div>
 
       <footer
@@ -184,32 +313,34 @@ export default function LoginPage() {
           className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 px-4 text-sm text-muted-foreground"
           aria-label="Pie de login"
         >
-          <Link
-            href="/empresa#why"
-            className="transition-colors hover:text-foreground"
-          >
+          <Link href={routes.empresaWhy} className="transition-colors hover:text-foreground">
             {copy.footerAbout}
           </Link>
-          <Link
-            href="/contacto"
-            className="transition-colors hover:text-foreground"
-          >
+          <Link href={routes.contactForm} className="transition-colors hover:text-foreground">
             {copy.footerContact}
           </Link>
-          <Link
-            href="/legal/acceso-demos#datos"
-            className="transition-colors hover:text-foreground"
-          >
+          <Link href={routes.legalDemosDatos} className="transition-colors hover:text-foreground">
             {copy.footerPrivacy}
           </Link>
-          <Link
-            href="/legal/acceso-demos#terminos"
-            className="transition-colors hover:text-foreground"
-          >
+          <Link href={routes.legalDemosTerminos} className="transition-colors hover:text-foreground">
             {copy.footerTerms}
           </Link>
         </nav>
       </footer>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center">
+          <p className="text-muted-foreground">Cargando…</p>
+        </div>
+      }
+    >
+      <LoginPageInner />
+    </Suspense>
   );
 }

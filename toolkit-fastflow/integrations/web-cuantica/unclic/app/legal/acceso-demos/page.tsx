@@ -1,21 +1,33 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { BlockContainer } from '@/components/blocks';
+import { PageIntroWithAnchors } from '@/components/layout/page-intro-with-anchors';
+import { legalAccesoDemosLead, legalAccesoDemosPageIntro, pagesMeta } from '@/lib/copy';
+import { routes } from '@/lib/routes';
 
-export const metadata = {
-  title: 'Términos y política de datos — acceso a demos',
-  description: 'Términos y condiciones y política de datos personales para el acceso a las demos UnClic.',
+export const metadata: Metadata = {
+  title: pagesMeta.legalAccesoDemos.title,
+  description: pagesMeta.legalAccesoDemos.description,
 };
 
 /** Texto base para revisión legal; sustituir por versión aprobada. */
 export default function LegalAccesoDemosPage() {
   return (
-    <div className="min-h-screen bg-background py-12">
-      <BlockContainer className="max-w-2xl space-y-10 text-sm leading-relaxed">
+    <div className="min-h-screen bg-background">
+      <PageIntroWithAnchors
+        variant={legalAccesoDemosPageIntro.variant}
+        eyebrow={legalAccesoDemosPageIntro.eyebrow}
+        navLabel={legalAccesoDemosPageIntro.navLabel}
+        links={legalAccesoDemosPageIntro.links}
+        className="border-border/80 bg-muted/15 !pt-20 !pb-4 md:!pt-24 md:!pb-5"
+      />
+      <BlockContainer className="max-w-2xl space-y-10 py-10 text-sm leading-relaxed md:py-12">
         <p>
-          <Link href="/demo/access" className="text-primary hover:underline">
-            ← Volver a solicitar acceso
+          <Link href={routes.publicSignup} className="text-primary hover:underline">
+            ← Crear cuenta / registro
           </Link>
         </p>
+        <p className="text-muted-foreground">{legalAccesoDemosLead}</p>
         <article id="terminos" className="scroll-mt-24 space-y-4">
           <h1 className="text-2xl font-semibold tracking-tight">Términos y condiciones — acceso a demos</h1>
           <p className="text-muted-foreground">

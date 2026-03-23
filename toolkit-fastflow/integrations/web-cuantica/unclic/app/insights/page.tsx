@@ -1,5 +1,7 @@
+import type { Metadata } from 'next';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
+import { PageIntroWithAnchors } from '@/components/layout/page-intro-with-anchors';
 import { GallerySection } from '@/components/sections/gallery-section';
 import { VideoSection } from '@/components/sections/video-section';
 import { AudioSection } from '@/components/sections/audio-section';
@@ -8,10 +10,11 @@ import { SocialTrendingCarouselSection } from '@/components/sections/social-tren
 import { ClienteIdealSection } from '@/components/sections/cliente-ideal-section';
 import { CtaSection } from '@/components/sections/cta-section';
 import { Separator } from '@/components/ui/separator';
+import { insightsPageIntro, pagesMeta } from '@/lib/copy';
 
-export const metadata = {
-  title: 'Insights',
-  description: 'Galería, vídeo, audio, presencia global y para quién es UnClic.',
+export const metadata: Metadata = {
+  title: pagesMeta.insights.title,
+  description: pagesMeta.insights.description,
 };
 
 export default function InsightsPage() {
@@ -19,6 +22,13 @@ export default function InsightsPage() {
     <>
       <Header />
       <main id="main-content">
+        <PageIntroWithAnchors
+          eyebrow={insightsPageIntro.eyebrow}
+          title={insightsPageIntro.title}
+          lead={insightsPageIntro.lead}
+          navLabel={insightsPageIntro.navLabel}
+          links={insightsPageIntro.links}
+        />
         <GallerySection />
         <Separator />
         <VideoSection />

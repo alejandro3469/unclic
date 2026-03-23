@@ -1,6 +1,8 @@
 # Landing UnClic
 
-Next.js (export estático): landing, demos y hub de capacidades. **Integración con el toolkit** (POS, Jenkins, docs): [../docs/00-inicio/EMPIEZA-AQUI-GEORGE-O-COLABORADOR.md](../docs/00-inicio/EMPIEZA-AQUI-GEORGE-O-COLABORADOR.md).
+Next.js (export estático): **sitio y producto UnClic** (landing, demos, hub de capacidades). El código fuente de referencia está **en esta carpeta del monorepo**; el deploy de producción suele ir al repo Gitea **`alejandro-perez/nucleic`** (raíz Next + Jenkins; ver [docs/JENKINS-NUCLEIC-DEPLOY.md](docs/JENKINS-NUCLEIC-DEPLOY.md)). **Ámbito:** UnClic / tu sitio — **no** un proyecto genérico “para George”; ver [docs/ALCANCE-REPO-UNClic-Y-NUCLEIC.md](docs/ALCANCE-REPO-UNClic-Y-NUCLEIC.md).
+
+**Toolkit FastFlow / POS** (contexto monorepo): índice en [../docs/00-inicio/](../docs/00-inicio/) (documentación compartida; la landing UnClic es independiente en propósito).
 
 **Docs útiles:** [docs/README.md](docs/README.md) · **implementación prod (Stripe, colas, métricas, LLM, etc.):** [docs/implementacion/README.md](docs/implementacion/README.md) · **flujo bloque + copy:** [docs/FLUJO-NORMAL-BLOQUE-Y-COPY.md](docs/FLUJO-NORMAL-BLOQUE-Y-COPY.md) · posicionamiento/copy/UI: [docs/POSICIONAMIENTO-ENTERPRISE-UNClic.md](docs/POSICIONAMIENTO-ENTERPRISE-UNClic.md), [SHADCN-BLOCKS-MAP.md](docs/SHADCN-BLOCKS-MAP.md), [CONSISTENCIA-UI.md](docs/CONSISTENCIA-UI.md), [DOCKER-Y-REGISTRY-UNClic.md](docs/DOCKER-Y-REGISTRY-UNClic.md).
 
@@ -10,10 +12,10 @@ Next.js (export estático): landing, demos y hub de capacidades. **Integración 
 
 ## Stack
 
-- Next.js 15, React 19, TypeScript, Tailwind, Radix, motion, lucide-react
-- Three.js / R3F / drei (Orb); sección audio con `<audio>`
+- Next.js 15, React 19, TypeScript, Tailwind, Radix, lucide-react
+- Sección audio con `<audio>` (sin WebGL / Three en runtime)
 - UI: Shadcn + tema; referencia visual agente/audio: [ElevenLabs UI](https://ui.elevenlabs.io/) (componentes OSS; **sin** API de pago en este repo — ver [docs/UI-OSS-MEDIA-ELEVENLABS-STYLE.md](docs/UI-OSS-MEDIA-ELEVENLABS-STYLE.md))
-- **Microservicios `services/api`** y **`services/ping`** (Hono): leads, orquestación de salud, demo multi-contenedor. Ver [docs/MICROSERVICIOS-Y-DOCKER.md](docs/MICROSERVICIOS-Y-DOCKER.md), [docs/ARQUITECTURA-MICROSERVICIOS-MODULOS-Y-ADAPTADORES.md](docs/ARQUITECTURA-MICROSERVICIOS-MODULOS-Y-ADAPTADORES.md). Pruebas: `npm run test:services`. Aislar repo: [docs/EXTRACT-REPO-UNClic-AISLADO.md](docs/EXTRACT-REPO-UNClic-AISLADO.md).
+- **Microservicios `services/api`** y **`services/ping`** (Hono): leads, orquestación de salud, demo multi-contenedor. Ver [docs/MICROSERVICIOS-Y-DOCKER.md](docs/MICROSERVICIOS-Y-DOCKER.md), [docs/ARQUITECTURA-MICROSERVICIOS-MODULOS-Y-ADAPTADORES.md](docs/ARQUITECTURA-MICROSERVICIOS-MODULOS-Y-ADAPTADORES.md). Pruebas: `npm run test:services`. **Todo el front + servicios:** `npm run verify` (ver [docs/LISTO-PARA-PROBAR-E-IMPLEMENTAR.md](docs/LISTO-PARA-PROBAR-E-IMPLEMENTAR.md)). Aislar repo: [docs/EXTRACT-REPO-UNClic-AISLADO.md](docs/EXTRACT-REPO-UNClic-AISLADO.md).
 
 ---
 
@@ -26,9 +28,11 @@ npm run dev
 
 Abre http://localhost:3002
 
-**API en paralelo** (leads + futuros endpoints): otra terminal → `npm run dev:api` (puerto **3001**). En `.env.local` define `NEXT_PUBLIC_UNCLIC_API_URL=http://localhost:3001` y en la shell de la API `CORS_ORIGINS=http://localhost:3002`.
+**API en paralelo** (leads + auth portal + presupuesto OSS): otra terminal → `npm run dev:api` (puerto **3001**). En `.env.local` define `NEXT_PUBLIC_UNCLIC_API_URL=http://localhost:3001` y en la shell de la API `CORS_ORIGINS=http://localhost:3002`. **Portal demos** (JWT + email verificado): [docs/PORTAL-AUTH-JWT-EMAIL.md](docs/PORTAL-AUTH-JWT-EMAIL.md); activa `NEXT_PUBLIC_PORTAL_AUTH_REQUIRED=true` para exigir login en `/demo` y `/flow-demo`.
 
 **Voz OSS (stub STT/TTS/WebSocket):** `npm run dev:oss-voice` (puerto **3005**). En `.env.local`: `NEXT_PUBLIC_OSS_STT_URL`, `NEXT_PUBLIC_OSS_TTS_URL`, `NEXT_PUBLIC_OSS_VOICE_WS_URL` (ver [docs/UI-OSS-MEDIA-ELEVENLABS-STYLE.md](docs/UI-OSS-MEDIA-ELEVENLABS-STYLE.md)).
+
+**Ollama (LLM local):** instala desde [ollama.com](https://ollama.com/download) o `docker compose up -d ollama`. `.env.local`: `NEXT_PUBLIC_OLLAMA_URL=http://127.0.0.1:11434`, `NEXT_PUBLIC_OLLAMA_MODEL=llama3.2`. CORS: [docs/OLLAMA-UNClic-LLM-E-IMAGEN.md](docs/OLLAMA-UNClic-LLM-E-IMAGEN.md).
 
 ---
 
@@ -40,7 +44,13 @@ npm run build
 
 Genera `out/`. Probar: `npm run serve` (sirve `out/` en 3002).
 
-Si en dev ves errores tipo `Expected '</'` en JSX o `ENOENT` en `.next/`, borra la caché y vuelve a compilar: `rm -rf .next && npm run build` (y luego `npm run dev` si quieres).
+**CI local (lint + types + build + tests API/ping):**
+
+```bash
+npm run verify
+```
+
+Si en dev ves errores tipo `Expected '</'` en JSX, **`ssr: false` en `app/layout.tsx`** (usa solo `ChatterAssistLoader`, no `dynamic` en el layout), `ENOENT`/`middleware-manifest.json` en `.next/` (caché corrupta tras un fallo), o **`ENOSPC`**: libera espacio en disco, luego `rm -rf .next` y vuelve a arrancar. Con disco muy justo en dev: `NEXT_DISABLE_WEBPACK_CACHE=1 npm run dev` (más lento, menos escrituras en `.next/cache`).
 
 **Desplegar el sitio:** [docs/DEPLOY-SITIO-REMOTO.md](docs/DEPLOY-SITIO-REMOTO.md) — GitHub Pages, Gitea desde local, rsync/SSH a servidor, Vercel/Netlify.
 

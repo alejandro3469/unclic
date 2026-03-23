@@ -1,29 +1,7 @@
-'use client';
+import { redirect } from 'next/navigation';
+import { routes } from '@/lib/routes';
 
-import { Signup10 } from '@/components/signup10';
-import { Footer1Section } from '@/components/sections/footer1-section';
-import { signupPage } from '@/lib/copy';
-
+/** Registro único: mismo flujo que el resto del sitio. */
 export default function SignupPage() {
-  return (
-    <>
-      <Signup10
-        content={{
-          title: signupPage.title,
-          signUpWithGoogle: signupPage.signUpWithGoogle,
-          or: signupPage.or,
-          emailPlaceholder: signupPage.emailPlaceholder,
-          continue: signupPage.continue,
-          termsPrefix: signupPage.termsPrefix,
-          termsAnd: signupPage.termsAnd,
-          termsLink: signupPage.termsLink,
-          privacyLink: signupPage.privacyLink,
-          alreadyUser: signupPage.alreadyUser,
-          logIn: signupPage.logIn,
-          logoAlt: signupPage.logoAlt,
-        }}
-      />
-      <Footer1Section />
-    </>
-  );
+  redirect(routes.publicSignup);
 }

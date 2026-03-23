@@ -1,19 +1,17 @@
+/**
+ * Root layout = Server Component. Widgets con lógica de cliente van en
+ * `components/layout/*-loader.tsx` (`'use client'`). No uses aquí `dynamic(..., { ssr: false })`.
+ */
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
-import { Roboto, Space_Mono, Ubuntu } from 'next/font/google';
+import { Inter, Space_Mono, Ubuntu } from 'next/font/google';
 import './globals.css';
+import { ChatterAssistLoader } from '@/components/layout/chatter-assist-loader';
 import { site, nav, seo } from '@/lib/copy';
 
-const ChatterAssist = dynamic(
-  () => import('@/components/chat/chatter-assist').then((m) => m.ChatterAssist),
-  { ssr: false }
-);
-
-const roboto = Roboto({
-  weight: ['100', '300', '400', '500', '700', '900'],
-  style: ['normal', 'italic'],
+/** Inter — alineado a preset shadcn “Nova” / doc oficial (ritmo y jerarquía en un solo stack). */
+const inter = Inter({
   subsets: ['latin'],
-  variable: '--font-roboto',
+  variable: '--font-inter',
   display: 'swap',
 });
 
@@ -114,7 +112,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es" className={`${roboto.variable} ${spaceMono.variable} ${ubuntu.variable}`}>
+    <html lang="es" className={`${inter.variable} ${spaceMono.variable} ${ubuntu.variable}`}>
       <body className="min-h-screen bg-background font-sans text-foreground antialiased">
         <script
           type="application/ld+json"
@@ -127,7 +125,7 @@ export default function RootLayout({
           {nav.skipToContent}
         </a>
         {children}
-        <ChatterAssist />
+        <ChatterAssistLoader />
       </body>
     </html>
   );
