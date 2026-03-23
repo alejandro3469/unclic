@@ -11,6 +11,7 @@ dist
 
 # misc
 .DS_Store
+.cursor
 .idea
 *.pem
 .env
@@ -24,6 +25,7 @@ yarn-error.log*
 
 # types
 next-env.d.ts
+tsconfig.tsbuildinfo
 
 # Python — servicio ChatterBot local
 services/chatterbot/.venv
