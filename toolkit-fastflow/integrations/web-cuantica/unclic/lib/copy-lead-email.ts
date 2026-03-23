@@ -4,7 +4,7 @@
 export const leadEmailForm = {
   title: 'Déjanos tu correo',
   description:
-    'Te escribimos con próximos pasos, demos y propuestas. Sin spam; solo lo que encaje contigo.',
+    'A: “¿y ahora qué?”. B: siguiente paso por correo (demo o propuesta) sin ruido.',
   label: 'Correo electrónico',
   placeholder: 'tu@empresa.com',
   submit: 'Enviar',

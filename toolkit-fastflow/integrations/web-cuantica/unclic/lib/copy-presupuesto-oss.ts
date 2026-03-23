@@ -1,0 +1,42 @@
+/** Página /presupuesto-oss — calculadora + API para apps self-hosted. */
+export const presupuestoOssPage = {
+  title: 'Presupuesto open source',
+  description:
+    'A: “¿cuánto cuesta el B con OSS?”. B: rangos indicativos (infra + esfuerzo) antes de la llamada. Misma lógica por API (n8n, intranet).',
+  heroKicker: 'Herramienta',
+  heroTitle: 'Calculadora de presupuesto OSS',
+  heroLead:
+    'Pocas preguntas → orden de magnitud (€/mes, semanas), fases y riesgos. No es cotización.',
+  apiTitle: 'API para integraciones',
+  apiBody:
+    'GET schema → POST estimate con respuestas. CORS: origen en CORS_ORIGINS (ver README del API).',
+  apiEndpoints: 'Base: NEXT_PUBLIC_UNCLIC_API_URL (ej. http://localhost:3001).',
+  missingApiUrl:
+    'Falta NEXT_PUBLIC_UNCLIC_API_URL en el build. En .env.local: NEXT_PUBLIC_UNCLIC_API_URL=http://127.0.0.1:3001 y reinicia next dev.',
+  schemaLoadError: 'No se pudo cargar el cuestionario desde el API. ¿Está `npm run dev:api` en marcha?',
+  loadingSchema: 'Cargando cuestionario…',
+  configTitle: 'Configuración necesaria',
+  envSnippet: 'NEXT_PUBLIC_UNCLIC_API_URL=http://127.0.0.1:3001',
+  stepOf: 'Paso',
+  back: 'Atrás',
+  next: 'Siguiente',
+  calculate: 'Calcular estimación',
+  multiHint: 'Marca al menos una opción. Puedes elegir varias.',
+  contextLabel: 'Contexto adicional (opcional)',
+  contextPlaceholder: 'Ej.: JDE, tiendas piloto, ventana de despliegue los domingos…',
+  estimateError: 'No se pudo calcular. Revisa el API y la consola de red.',
+  resultTitle: 'Resultado orientativo',
+  monthlyInfra: 'Infra OSS (orden de magnitud / mes)',
+  month: 'mes',
+  implOnce: 'Implementación / acompañamiento (una vez)',
+  implFootnote: 'Rango muy indicativo. No es cotización.',
+  alignmentTitle: 'Dónde encajáis',
+  targetPhases: 'Fases objetivo sugeridas:',
+  phasesTitle: 'Fases tipo UnClic / FastFlow',
+  effort: 'Esfuerzo',
+  weeks: 'sem. equipo',
+  stackTitle: 'Stack OSS sugerido',
+  howTitle: 'Cómo lo lograríamos',
+  risksTitle: 'Riesgos y huecos',
+  restart: 'Nuevo cálculo',
+} as const;

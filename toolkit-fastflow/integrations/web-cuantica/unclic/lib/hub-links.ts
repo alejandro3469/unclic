@@ -4,6 +4,7 @@
  */
 
 import { CLOUDCRAFT_DEMO_VIEW_BASE } from '@/lib/copy';
+import { routes } from '@/lib/routes';
 
 export type HubBadge = 'roadmap' | 'interno';
 
@@ -201,7 +202,7 @@ export function getHubCategories(): HubCategory[] {
           id: 'pagos',
           title: 'Pagos',
           description: 'En integración · alineado a la app.',
-          href: '/contacto',
+          href: routes.publicSignup,
           external: false,
           iconId: 'card',
           badge: 'roadmap',
@@ -210,7 +211,7 @@ export function getHubCategories(): HubCategory[] {
           id: 'sat-sello',
           title: 'SAT / CFDI',
           description: 'Planeado · sello digital.',
-          href: '/contacto',
+          href: routes.publicSignup,
           external: false,
           iconId: 'file',
           badge: 'roadmap',

@@ -5,9 +5,9 @@
 
 export const pricingHero = {
   title: 'Precios',
-  subtitle: 'Flexible · transparente.',
+  subtitle: 'A: “¿cuánto cuesta el B?”. B: modelo claro (suscripción o sprint).',
   currencyNote: 'USD.',
-  note: 'Descuentos por volumen.',
+  note: 'Volumen: descuento acordado.',
   ctaDemo: 'Probar la demo',
   ctaContact: 'Contactar',
   ctaPlans: 'Ver planes',
@@ -16,11 +16,11 @@ export const pricingHero = {
 export const pricingModels = [
   {
     name: 'Suscripción',
-    description: 'Mensual o trimestral por pipeline o entorno. Previsibilidad y mantenimiento incluido.',
+    description: 'B: coste recurrente por pipeline/entorno — menos sorpresas que horas sueltas.',
   },
   {
     name: 'Pago por sprint',
-    description: 'Alcance por sprint (p. ej. 2 semanas). Entregas y feedback en cada ciclo; revisiones base incluidas.',
+    description: 'B: alcance por ciclo (p. ej. 2 semanas) con entrega revisable.',
   },
 ] as const;
 
@@ -31,21 +31,21 @@ export const pricingCategories = [
     products: [
       {
         name: 'Pipeline as Code',
-        description: 'Jenkinsfile, Jenkins, Gitea; build, test y deploy automático ante commit.',
+        description: 'B: commit → build → test → deploy (Jenkinsfile en Git; webhooks).',
         price: 'Cotización según alcance',
       },
       {
         name: 'Registry de imágenes',
-        description: 'Docker/OCI versionado; deploy y rollback con tag conocido (estándar Distribution).',
+        description: 'B: imagen con tag = rollback (OCI; patrón Distribution).',
         price: 'Incluido con pipeline o por entorno',
       },
     ],
-    startingAt: 'Cotización según alcance (un pipeline, un repo, un entorno).',
+    startingAt: 'Un pipeline, un repo, un entorno — cotización según alcance.',
     features: [
-      'Jenkinsfile en Git, multibranch',
-      'Ejecución automática ante commit (webhook)',
-      'Build con Maven, tests y empaquetado',
-      'Registry opcional para imágenes versionadas',
+      'Jenkinsfile en Git (multibranch)',
+      'Webhook: build al push',
+      'Maven, tests, artefacto',
+      'Registry opcional: versionado',
     ],
   },
   {
@@ -54,20 +54,20 @@ export const pricingCategories = [
     products: [
       {
         name: 'Despliegue',
-        description: 'EC2, Nginx; opcional Kubernetes y Terraform. Entorno acordado y repetible.',
+        description: 'B: mismo EC2/Nginx o K8s cada vez (Terraform opcional).',
         price: 'Por entorno / por sprint',
       },
       {
         name: 'Infraestructura como código',
-        description: 'Terraform para redes, instancias y seguridad; documentación incluida.',
+        description: 'B: red e instancias en repo (HashiCorp Terraform — doc oficial).',
         price: 'Según alcance',
       },
     ],
-    startingAt: 'Por entorno o por sprint; cotización según alcance.',
+    startingAt: 'Por entorno o sprint; según alcance.',
     features: [
-      'Despliegue en servidor (EC2) o cluster (K8s)',
-      'Configuración y documentación en repo',
-      'Rollback con versión conocida cuando hay registry',
+      'EC2 o K8s según acuerdo',
+      'Repo como fuente de verdad',
+      'Rollback si hay imagen versionada',
     ],
   },
   {
@@ -76,19 +76,19 @@ export const pricingCategories = [
     products: [
       {
         name: 'Demos en vivo',
-        description: 'Acceso a Jenkins, registry y app de ejemplo. Sin compromiso.',
+        description: 'B: ver Jenkins + registry + app antes de compromiso largo.',
         price: 'Gratuito',
       },
       {
         name: 'Sitios y landings',
-        description: 'Sitios estáticos (Next.js) con deploy repetible por pipeline.',
+        description: 'B: Next.js estático — mismo pipeline que el resto.',
         price: 'Por proyecto / por sprint',
       },
     ],
     startingAt: null,
     features: [
-      'Flujo commit → build → registry → deploy sin compromiso',
-      'Sitios con contenido y estructura acordados por escrito',
+      'Demo: flujo real sin contrato largo',
+      'Landings: alcance por escrito',
     ],
   },
   {
@@ -97,14 +97,14 @@ export const pricingCategories = [
     products: [
       {
         name: 'Consultoría y diseño',
-        description: 'Auditoría, diseño de pipeline y estrategia de despliegue.',
+        description: 'A: dudas sin plan. B: auditoría + diseño de pipeline acotado.',
         price: 'Por proyecto / por sprint',
       },
     ],
     startingAt: null,
     features: [
-      'Alcance pactado por escrito',
-      'Entregables: documentación, diseño de pipeline, recomendaciones',
+      'Alcance por escrito',
+      'Salida: doc + diseño de pipeline',
     ],
   },
 ] as const;
@@ -112,31 +112,31 @@ export const pricingCategories = [
 export const pricingCombined = {
   title: 'Combinación de planes',
   items: [
-    'Pipeline + Registry + Despliegue: suscripción por entorno (mensual o trimestral).',
-    'Varios repos o entornos: plan Team; cotización según alcance.',
-    'Por fases: pago por sprint con entregas y feedback en cada ciclo.',
+    'B típico: pipeline + registry + deploy → suscripción por entorno.',
+    'Varios repos: Team — cotización según alcance.',
+    'B por fases: sprint con entrega en cada ciclo.',
   ],
 } as const;
 
 export const pricingSupport = {
   title: 'Soporte y servicio',
   included: [
-    'Documentación del pipeline y del despliegue en repo',
-    'Alcance y revisiones por escrito (propuesta o anexo)',
-    'Entrega probada en el entorno acordado antes del cierre',
+    'Doc en repo (pipeline + deploy)',
+    'Alcance y revisiones por escrito',
+    'Prueba en entorno acordado antes de cierre',
   ],
   notIncluded: [
-    'Soporte 24/7',
-    'Revisiones ilimitadas (base incluida; adicionales por anexo)',
-    'Alcance no especificado en propuesta o anexo firmado',
+    '24/7',
+    'Revisiones ilimitadas (extras por anexo)',
+    'Fuera de alcance firmado',
   ],
-  supportPlans: 'Soporte por email/chat en horario laboral; acuerdos a medida bajo consulta.',
+  supportPlans: 'Email/chat laboral; SLA a medida bajo consulta.',
 } as const;
 
 export const pricingFaq = [
   {
     q: '¿Facturación?',
-    a: 'Por pipeline o entorno. Mensual / trimestral / anual con descuento.',
+    a: 'Por pipeline o entorno. Ciclo mensual/trimestral/anual (descuento).',
   },
   {
     q: '¿Pago por sprint?',
@@ -144,15 +144,15 @@ export const pricingFaq = [
   },
   {
     q: '¿Varios productos a la vez?',
-    a: 'No hace falta. Empieza con un pipeline.',
+    a: 'No hace falta: un pipeline primero cierra el B mínimo.',
   },
   {
     q: '¿Alto volumen de ventas?',
-    a: 'Sí. Rollback por versión, trazabilidad, arquitectura documentada.',
+    a: 'B: rollback por tag + trazabilidad en Git.',
   },
   {
     q: '¿Workspace / SAT?',
-    a: 'Workspace típico en clientes. SAT y pagos en roadmap.',
+    a: 'Workspace habitual. SAT/pagos: roadmap según cliente.',
   },
 ] as const;
 
@@ -160,7 +160,7 @@ export const pricingPlanCards = [
   {
     id: 'starter',
     name: 'Starter',
-    description: 'Un pipeline, un repo, un entorno. Suscripción o por sprint.',
+    description: 'A: un repo sin CI. B: un pipeline + un entorno.',
     priceFrom: 'Desde 150 USD/mes',
     priceFromMxn: '2 775 MXN/mes',
     cta: 'Solicitar cotización',
@@ -168,7 +168,7 @@ export const pricingPlanCards = [
   {
     id: 'team',
     name: 'Team',
-    description: 'Múltiples repos o entornos, registry compartido, documentación.',
+    description: 'A: varios repos. B: registry compartido + doc en repo.',
     priceFrom: 'Desde 350 USD/mes',
     priceFromMxn: '6 475 MXN/mes',
     cta: 'Solicitar cotización',
@@ -176,7 +176,7 @@ export const pricingPlanCards = [
   {
     id: 'demos',
     name: 'Demos',
-    description: 'Acceso gratuito a Jenkins, registry y app de ejemplo.',
+    description: 'B: ver el hub antes de pagar: Jenkins, registry, app.',
     priceFrom: null,
     priceFromMxn: null,
     cta: 'Probar la demo',
@@ -206,14 +206,13 @@ export const pricingPerSprint = [
 export const whyOurPricing = {
   title: 'Por qué nuestra oferta',
   points: [
-    'Precios por costes reales; muy por debajo de consultoría tradicional (15k–50k USD por proyecto).',
-    'Pipeline, plantillas y documentación ya existen: pagas por aplicarlo a tu repo, no desde cero.',
-    'Alcance y revisiones por escrito; lo extra se cotiza por anexo. Sin sorpresas.',
-    'Suscripción o por sprint. Sin compromiso largo para empezar.',
-    'Tu Jenkins, Gitea y registry a medida, en tu entorno o el nuestro.',
-    'Menos coste que DevOps full-time: pipeline, documentación y mantenimiento acordado.',
+    'A: proyecto genérico 15k–50k USD. B: plantillas FastFlow + tu repo — pagas adaptación, no inventario desde cero.',
+    'A: horas sin techo. B: alcance por escrito; extra = anexo.',
+    'A: contrato largo para “ver”. B: demo gratis + sprint cuando encaje.',
+    'Stack estándar (Jenkins, Gitea, Docker): documentación pública de cada pieza.',
+    'A: FTE DevOps 24/7. B: pipeline + doc + mantenimiento acotado.',
   ],
 } as const;
 
 export const pricingDisclaimer =
-  'Precios según expertise, infraestructura y entrega probada. Cotización vigente según alcance y variables del proyecto.';
+  'Cotización según alcance e infra. Entrega probada antes de cerrar.';

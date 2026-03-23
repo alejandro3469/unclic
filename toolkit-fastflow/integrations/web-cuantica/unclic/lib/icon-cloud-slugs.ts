@@ -25,7 +25,36 @@ const SLUGS = [
   'linux',
 ] as const;
 
-/** URLs de iconos para IconCloud (Simple Icons, color slate). */
+/** URLs de iconos (referencia CDN; la sección usa Badge con texto). */
 export const iconCloudImageUrls = SLUGS.map(
   (slug) => `https://cdn.simpleicons.org/${slug}/64748b`
 );
+
+const LABELS: Record<(typeof SLUGS)[number], string> = {
+  jenkins: 'Jenkins',
+  docker: 'Docker',
+  kubernetes: 'Kubernetes',
+  git: 'Git',
+  github: 'GitHub',
+  gitea: 'Gitea',
+  terraform: 'Terraform',
+  nginx: 'NGINX',
+  amazonaws: 'AWS',
+  nextdotjs: 'Next.js',
+  java: 'Java',
+  typescript: 'TypeScript',
+  postgresql: 'PostgreSQL',
+  mysql: 'MySQL',
+  redis: 'Redis',
+  gradle: 'Gradle',
+  apachemaven: 'Maven',
+  visualstudiocode: 'VS Code',
+  gitlab: 'GitLab',
+  linux: 'Linux',
+};
+
+/** Para lista Badge en `/capacidades` (sin IconCloud). */
+export const SLUG_LABELS = SLUGS.map((slug) => ({
+  slug,
+  label: LABELS[slug],
+}));

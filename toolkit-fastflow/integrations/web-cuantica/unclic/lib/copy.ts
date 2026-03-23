@@ -1,16 +1,21 @@
 /**
- * Copy UnClic — adaptado a tu caso (docs locales: PLAN-COPIA, COPY-PRODUCTOS-SERVICIOS-PRICING,
- * COPY-LANDING-ESTILO-CLERK, COPY-DEVOPS-AS-A-SERVICE-DAAS, COPY-FRAGMENTOS).
- * Sistema de copia orientado a SEO: ver unclic/docs/SISTEMA-COPIA-SEO-SITIO-WEB.md.
+ * Copy UnClic — narrativa simple en todo el sitio:
+ * - **Punto A:** dónde está el equipo hoy (fricción, incertidumbre, coste oculto).
+ * - **Punto B:** a dónde quiere llegar (deploy trazable, menos sorpresas, más calidad/velocidad).
+ * - **Brecha:** hay muchos caminos; UnClic presenta **uno** que la cierra con stack abierto y práctica de campo.
+ * - **Herramientas:** una pista + enlace a doc oficial; sin ensayar en la landing.
+ * Detalle ampliado: docs del repo (`docs/`). SEO: `docs/SISTEMA-COPIA-SEO-SITIO-WEB.md`.
  */
+
+import { routes } from '@/lib/routes';
 
 /** SEO: meta, títulos y keywords para que quien busque nos encuentre. */
 export const seo = {
   /** Título principal (home). Incluye keyword + marca. */
-  title: 'UnClic — Pipeline as Code, app de recursos y finanzas y demos técnicas | Jenkins, Gitea, AWS',
+  title: 'UnClic — Pipeline as Code, stack abierto y demos | Jenkins, Gitea, FastFlow',
   /** Meta description 150–160 caracteres: beneficio + keyword + CTA. */
   metaDescription:
-    'Hub de demos: Jenkins, Gitea, app operativa, registry, Cloudcraft. Retail y alto volumen. Workspace, roadmap pagos y SAT.',
+    'De un despliegue opaco a un pipeline en Git que puedes auditar: Jenkins, Gitea, registry. Demos y estimador OSS — retail y operación crítica.',
   /** Keyword principal para H1 y títulos. */
   primaryKeyword: 'Pipeline as Code',
   /** Keywords secundarias para H2 y cuerpo. */
@@ -33,25 +38,25 @@ export const seo = {
     'despliegue continuo con Jenkins y Gitea',
   ] as const,
   /** Título corto para Open Graph / redes (opcional). */
-  ogTitle: 'UnClic — Pipeline as Code. Despliega sin gestionar servidores.',
+  ogTitle: 'UnClic — De A a B: pipeline en Git, demos bajo control.',
 } as const;
 
-/** Banner superior — hub de demos + CV/LinkedIn (enlace único para portfolio). */
+/** Banner superior — mensaje corto tipo producto (impacto + acción). */
 export const banner = {
-  message: 'Un enlace: demos + stack (Jenkins, Gitea, app).',
+  message: 'Punto B cercano: portal verificado · mismas demos (Jenkins, Gitea, app) en un hub.',
   cta: 'Hub',
   dismissLabel: 'Cerrar',
 } as const;
 
 /** Hub central — primera parada: demos y tecnologías para enterprise. */
 export const hubDemos = {
-  kicker: 'Portfolio',
+  kicker: 'Punto B',
   sectionTitle: 'Demos y stack',
-  sectionLead: 'Un solo sitio para compartir: Jenkins, Gitea, registry y app de recursos y finanzas.',
-  sectionSub: 'Pipeline versionado · despliegue controlado.',
+  sectionLead: 'A: enlaces dispersos. B: un hub con lo mismo que defendemos en proyecto.',
+  sectionSub: 'Git + Jenkins + registry — pista visual, no sustituye la doc.',
   ctaExternal: 'Abrir',
   ctaInternal: 'Ir',
-  ctaRoadmapContact: 'Roadmap',
+  ctaRoadmapContact: 'Cuenta',
   ctaConfigureEnv: '.env',
   badgeRoadmap: 'Roadmap',
   footerNote: 'SAT / pagos en roadmap · Workspace típico en clientes.',
@@ -62,9 +67,9 @@ export const hubDemos = {
 
 export const site = {
   name: 'UnClic',
-  tagline: 'Pipeline as Code. Demos vivas para retail y alto volumen.',
+  tagline: 'A → B: del commit al deploy con trazabilidad (stack abierto).',
   description:
-    'Hub técnico: Jenkins, Gitea, app operativa, registry, Cloudcraft. Operación crítica.',
+    'Cerramos la brecha con pipelines en Git, demos acotadas y números antes de comprometer — documentación y práctica alineadas.',
   keywords: [
     'pipeline as code',
     'CI/CD',
@@ -88,37 +93,329 @@ export const site = {
  */
 export const hero = {
   title: 'UnClic',
-  heroEyebrow: 'PIPELINE · REGISTRY · DEPLOY',
-  headline: 'Pipeline as Code para operación crítica',
-  subtitle: 'Retail y alto volumen: Jenkins, Gitea y registry en un hub. Despliega sin parar la venta.',
-  heroPillars: 'PIPELINE + REGISTRY + DEPLOY',
-  trustLead: 'CI/CD con trazabilidad real.',
-  ctaPrimary: 'Comenzar',
-  ctaSecondary: 'Contactar',
-  ctaDemo: 'Demo',
+  heroEyebrow: 'PUNTO A → PUNTO B',
+  /** Parte 1 del H1 — situación inicial (A). */
+  headline: 'Hoy: despliegues poco auditables y muchas horas en “¿qué pasó?”.',
+  /** Punto B — situación deseada (gradiente visual). */
+  headlineAccent: 'Mañana: un pipeline en Git, artefacto trazable, rollback con nombre.',
+  subtitle:
+    'Hay muchos caminos del A al B; nosotros mostramos uno que ya ahorró tiempo y nervios en operación crítica: Jenkins, Gitea, registry — con demos y docs oficiales como referencia.',
+  heroPillars: 'MENOS RUIDO · MÁS TRAZA · MISMO GIT',
+  trustLead: 'Menos coste oculto; más evidencia por commit.',
+  ctaPrimary: 'Crear cuenta',
+  /** Enlaces de texto bajo el botón principal (sin segundo botón). */
+  ctaProduct: 'Ver servicios',
+  ctaSecondary: 'Hablar con el equipo',
+  ctaDemo: 'Iniciar sesión',
   noCreditCard: '',
   imageAlt: 'Flujo commit → deploy — UnClic',
   /** Placeholder del email en Hero154 (home con formulario). */
   leadEmailPlaceholder: 'Tu correo de trabajo',
   heroFeatures: [
-    { title: 'Pipeline en Git', description: 'Jenkinsfile · multibranch' },
-    { title: 'Registry OCI', description: 'Tags · rollback' },
-    { title: 'Un flujo', description: 'Commit → deploy' },
-    { title: 'Trazable', description: 'Por commit' },
+    { title: 'A: código suelto', description: 'B: Jenkinsfile en repo' },
+    { title: 'A: “última imagen”', description: 'B: tag = rollback' },
+    { title: 'A: acceso anónimo', description: 'B: portal con correo' },
+    { title: 'A: herramientas sueltas', description: 'B: atlas con doc oficial' },
   ] as ReadonlyArray<{ title: string; description: string }>,
 } as const;
 
-/** Trust strip — estilo Sequoia (clientes / países / NPS / años). Adaptado a demos públicas. */
+/** Trust strip — métricas tipo agencia (número + etiqueta corta). */
 export const trustStrip = {
-  title: 'Un stack, un equipo',
-  subtitle: 'Jenkins · Gitea · registry · diagramas vivos.',
-  partnerTitle: 'Todo en un hub',
+  title: 'Misma historia en web, repo y demo',
+  subtitle: 'Pista rápida: si no cuadra aquí, no lo vendemos allí.',
+  partnerTitle: 'Señales (demo)',
   metrics: [
-    { label: 'Hub de demos', value: '1' },
-    { label: 'Enlaces técnicos', value: '12+' },
-    { label: 'Regiones AWS (demo)', value: '4' },
+    { label: 'Portal & demos', value: '1' },
+    { label: 'Herramientas en atlas', value: '40+' },
+    { label: 'API presupuesto OSS', value: 'v1' },
     { label: 'Pipeline en Git', value: '100%' },
   ] as ReadonlyArray<{ label: string; value: string }>,
+} as const;
+
+/** Home — tres pilares (A → brecha → B). */
+export const homePillars = {
+  eyebrow: 'Tres brechas típicas',
+  title: 'Del dolor de hoy al control de mañana',
+  lead: 'Sin humo: cada pilar es un salto A→B que ya hemos repetido con stack documentado (oficial + experiencia).',
+  items: [
+    {
+      title: 'A: deploys opacos · B: pipeline en Git',
+      body: 'Pista: Jenkinsfile versionado, Gitea, contenedores — alineado a retail / JDE / Oracle cuando aplica.',
+      cta: 'Ver soluciones',
+      href: routes.solucionesHub,
+    },
+    {
+      title: 'A: discurso ≠ código · B: una sola historia',
+      body: 'Pista: portal, login y atlas con enlaces oficiales — auditores y partners leen lo mismo que el equipo.',
+      cta: 'Explorar capacidades',
+      href: routes.capacidadesWhy,
+    },
+    {
+      title: 'A: “¿cuánto cuesta?” · B: orden de magnitud',
+      body: 'Pista: estimador OSS + API — no reemplaza propuesta, evita sorpresas en la primera reunión.',
+      cta: 'Presupuesto OSS',
+      href: routes.presupuestoWizard,
+    },
+  ] as const,
+} as const;
+
+/** Banda oscura — open source como medio para B (soberanía operativa). */
+export const homeOpenSource = {
+  id: 'filosofia-oss',
+  eyebrow: 'Por qué abierto',
+  title: 'Menos caja negra, más B alcanzable',
+  lead: 'Código y licencias que puedes revisar = menos tiempo en vendor lock y más en entregar valor.',
+  bullets: [
+    'OSS primero si cubre el caso (doc oficial).',
+    'SaaS solo acotado; contrato y datos claros.',
+    'Web = misma postura que el repo.',
+  ] as const,
+  closing: 'Lo que mostramos en demo es defendible en sala de juntas.',
+  citeNote: 'Referencia de industria: equipos que escalan con OSS (p. ej. prácticas públicas tipo Vates).',
+} as const;
+
+/** Fases del recorrido — A → validar → B por fases. */
+export const homeJourney = {
+  eyebrow: 'Camino A → B',
+  title: 'Validar · Construir · Operar',
+  lead: 'Tres pasos. Cada uno cierra incertidumbre antes de invertir el siguiente.',
+  phases: [
+    {
+      step: '01',
+      title: 'Validar',
+      description: 'Números y riesgos en orden de magnitud (estimador OSS). Pista, no contrato.',
+      linkLabel: 'Abrir calculadora',
+      href: routes.presupuestoWizard,
+    },
+    {
+      step: '02',
+      title: 'Construir',
+      description: 'Pipeline + registry + demo alineados a tu operación (FastFlow / tu contexto).',
+      linkLabel: 'Mapa de soluciones',
+      href: routes.solucionesHub,
+    },
+    {
+      step: '03',
+      title: 'Operar',
+      description: 'Diagramas, integraciones y portal: B con gobernanza.',
+      linkLabel: 'Stack y arquitectura',
+      href: routes.capacidadesWhy,
+    },
+  ] as const,
+} as const;
+
+/** Meta y H1 de `/soluciones` — alineado al mega-menú «Servicios». */
+export const pagesMeta = {
+  soluciones: {
+    title: 'Soluciones — del A al B en un hub',
+    description:
+      'Demos, plataforma, precios y FAQ: un solo recorrido para ver cómo cerramos la brecha (Git → pipeline → deploy).',
+  },
+  capacidades: {
+    title: 'Capacidades — evidencia técnica',
+    description:
+      'Stack, flujos y diagramas: pistas mínimas; detalle en docs oficiales y en el repo.',
+  },
+  empresa: {
+    title: 'Empresa — quiénes somos',
+    description:
+      'Por qué UnClic: A→B con pipeline abierto, demos y contacto.',
+  },
+  integraciones: {
+    title: 'Atlas de integraciones open source y escenarios | UnClic',
+    description:
+      'Mapa breve por escenario; cada herramienta enlaza a su documentación. Ilustrativo, no sustituye el diseño por proyecto.',
+  },
+  contacto: {
+    title: 'Contacto — mismo registro que el resto del sitio',
+    description:
+      'Un solo CTA: crear cuenta (correo + verificación + contraseña). El resto de acciones, tras entrar al portal.',
+  },
+  insights: {
+    title: 'Insights — referencias',
+    description:
+      'Galería, medios y perfil de encaje — mismo tono A→B que el resto del sitio.',
+  },
+  presupuestoOss: {
+    title: 'Presupuesto open source — calculadora y API',
+    description:
+      'Orden de magnitud antes de comprometer capital: cuestionario + API con el mismo esquema.',
+  },
+  demoAccess: {
+    title: 'Acceso a demos — UnClic',
+    description:
+      'Redirige al registro unificado (/portal/registro). Tras verificar correo e iniciar sesión, el hub y demos están en el portal.',
+  },
+  legalAccesoDemos: {
+    title: 'Términos y política de datos — acceso a demos',
+    description:
+      'Marco legal mínimo para el acceso a demos.',
+  },
+  signup: {
+    title: 'Crear cuenta — UnClic',
+    description:
+      'UI de registro; el flujo productivo es portal con verificación por correo.',
+  },
+} as const;
+
+/** Intro + chips de salto — `/soluciones` (misma jerarquía que footer/nav Servicios). */
+export const solucionesPageIntro = {
+  eyebrow: 'Servicios',
+  title: 'Un hub: de la duda al plan',
+  lead: 'A: información dispersa. B: demos, precios orientativos y portal en una sola página — el estimador OSS si necesitas orden de magnitud antes de la llamada.',
+  navLabel: 'En esta página',
+  links: [
+    { label: 'Hub & demos', href: '#hub-demos' },
+    { label: 'Plataforma', href: '#features' },
+    { label: 'Demos enlaces', href: '#demos' },
+    { label: 'Precios', href: '#pricing' },
+    { label: 'FAQ', href: '#faq' },
+    { label: 'Portal', href: routes.portal },
+    { label: 'Presupuesto OSS', href: routes.presupuestoWizard },
+    { label: 'Capacidades técnicas', href: routes.capacidadesWhy },
+  ] as const,
+} as const;
+
+/** Intro + chips — `/capacidades` (mega-menú «Stack OSS» + enlace al atlas). */
+export const capacidadesPageIntro = {
+  eyebrow: 'Stack OSS',
+  title: 'Cómo llevamos el A al B',
+  lead: 'Pistas técnicas escaneables; la fuente de verdad sigue siendo la documentación oficial de cada pieza y tu contexto.',
+  navLabel: 'En esta página',
+  links: [
+    { label: 'Por qué UnClic', href: '#why' },
+    { label: 'Stack técnico', href: '#stack' },
+    { label: 'Flujo integración', href: '#flow' },
+    { label: 'Diagramas', href: '#flow-diagrams' },
+    { label: 'Arquitectura en vivo', href: '#architecture-live' },
+    { label: 'Cómo empezar', href: '#how-it-works' },
+    { label: 'Ecosistema & módulos', href: '#matrix-display' },
+    { label: 'Atlas integraciones', href: routes.integracionesAtlas },
+    { label: 'Soluciones & precios', href: routes.solucionesHub },
+  ] as const,
+} as const;
+
+export const empresaPageIntro = {
+  variant: 'subnav' as const,
+  eyebrow: 'Empresa',
+  navLabel: 'Saltar a',
+  links: [
+    { label: 'Resumen', href: '#empresa-hero' },
+    { label: 'Por qué UnClic', href: '#why' },
+    { label: 'FAQ', href: '#faq' },
+    { label: 'Contacto', href: routes.contactForm },
+    { label: 'Soluciones', href: routes.solucionesHub },
+    { label: 'Capacidades', href: routes.capacidadesWhy },
+    { label: 'Atlas integraciones', href: routes.integracionesAtlas },
+    { label: 'Presupuesto OSS', href: routes.presupuestoWizard },
+  ] as const,
+} as const;
+
+export const integracionesPageIntro = {
+  navLabel: 'Explorar el atlas',
+  links: [
+    { label: 'Catálogo & filtros', href: '#oss-atlas' },
+    { label: 'Capacidades técnicas', href: routes.capacidadesWhy },
+    { label: 'Soluciones', href: routes.solucionesHub },
+    { label: 'Presupuesto OSS', href: routes.presupuestoWizard },
+    { label: 'Portal demos', href: routes.portal },
+    { label: 'Empresa', href: routes.empresa },
+    { label: 'Contacto', href: routes.contactForm },
+  ] as const,
+} as const;
+
+export const contactoPageIntro = {
+  eyebrow: 'Conectar',
+  title: 'Del A al B con contexto',
+  lead: 'Misma acción que en el inicio: crear cuenta. Luego, desde el portal, demos y módulos.',
+  navLabel: 'Enlaces útiles',
+  links: [
+    { label: 'Crear cuenta', href: routes.publicSignup },
+    { label: 'Iniciar sesión', href: routes.login },
+    { label: 'Portal', href: routes.portal },
+    { label: 'Soluciones', href: routes.solucionesHub },
+    { label: 'Capacidades', href: routes.capacidadesWhy },
+    { label: 'Presupuesto OSS', href: routes.presupuestoWizard },
+    { label: 'Atlas integraciones', href: routes.integracionesAtlas },
+  ] as const,
+} as const;
+
+export const insightsPageIntro = {
+  eyebrow: 'Explorar',
+  title: 'Referencias sin perder el hilo A→B',
+  lead: 'Galería y medios: contexto visual; el argumento de negocio sigue en Soluciones y Empresa.',
+  navLabel: 'En esta página',
+  links: [
+    { label: 'Galería', href: '#gallery' },
+    { label: 'Vídeo', href: '#video' },
+    { label: 'Audio', href: '#audio' },
+    { label: 'Presencia global', href: '#globe' },
+    { label: 'Destacados', href: '#social-trending-carousel' },
+    { label: 'Cliente ideal', href: '#cliente-ideal' },
+    { label: 'Crear cuenta', href: routes.publicSignup },
+    { label: 'Soluciones', href: routes.solucionesHub },
+    { label: 'Empresa', href: routes.empresaHero },
+  ] as const,
+} as const;
+
+/** Chips extra — título/lead de `/presupuesto-oss` viven en `lib/copy-presupuesto-oss.ts`. */
+export const presupuestoOssPageIntro = {
+  navLabel: 'Más en UnClic',
+  links: [
+    { label: 'Calculadora', href: '#presupuesto-wizard' },
+    { label: 'API & endpoints', href: '#presupuesto-api' },
+    { label: 'Soluciones', href: routes.solucionesHub },
+    { label: 'Capacidades', href: routes.capacidadesWhy },
+    { label: 'Atlas', href: routes.integracionesAtlas },
+    { label: 'Crear cuenta', href: routes.publicSignup },
+  ] as const,
+} as const;
+
+/** Chips — `/demo/access` redirige a `/portal/registro` (compatibilidad). */
+export const demoAccessPageIntro = {
+  variant: 'subnav' as const,
+  eyebrow: 'Demos',
+  navLabel: 'Enlaces de acceso',
+  links: [
+    { label: 'Crear cuenta', href: routes.publicSignup },
+    { label: 'Términos', href: routes.legalDemosTerminos },
+    { label: 'Datos personales', href: routes.legalDemosDatos },
+    { label: 'Login', href: routes.login },
+    { label: 'Portal', href: routes.portal },
+    { label: 'Hub demos', href: routes.demo },
+    { label: 'Inicio', href: routes.home },
+  ] as const,
+} as const;
+
+/** Chips — `/legal/acceso-demos` (un solo H1 en el cuerpo legal). */
+export const legalAccesoDemosPageIntro = {
+  variant: 'subnav' as const,
+  eyebrow: 'Legal',
+  navLabel: 'En este documento',
+  links: [
+    { label: 'Términos', href: '#terminos' },
+    { label: 'Datos personales', href: '#datos' },
+    { label: 'Crear cuenta', href: routes.publicSignup },
+    { label: 'Portal', href: routes.portal },
+    { label: 'Crear cuenta', href: routes.publicSignup },
+  ] as const,
+} as const;
+
+/** Párrafo bajo chips — `/legal/acceso-demos`. */
+export const legalAccesoDemosLead =
+  'Documento de referencia para quien solicita acceso. Versión provisional: revísalo con asesoría legal antes de producción.';
+
+/** Chips — `/signup` redirige a `/portal/registro`. */
+export const signupPageIntro = {
+  variant: 'subnav' as const,
+  eyebrow: 'Cuenta',
+  navLabel: 'Enlaces útiles',
+  links: [
+    { label: 'Registro', href: routes.publicSignup },
+    { label: 'Iniciar sesión', href: routes.login },
+    { label: 'Portal', href: routes.portal },
+    { label: 'Soluciones', href: routes.solucionesHub },
+  ] as const,
 } as const;
 
 /**
@@ -126,19 +423,19 @@ export const trustStrip = {
  * Ver docs/EJEMPLO-COMMIT-FLUJO-BLOQUE-Y-DEPLOY.md (comando: npx shadcn add progress -y).
  */
 export const flowDemo = {
-  kicker: 'Ejemplo de flujo',
-  title: 'Componente UI + copy en un solo lugar',
-  lead: 'Pieza shadcn (Progress), textos aquí; la sección vive en components/sections/flow-demo-section.tsx.',
+  kicker: 'Ejemplo A→B',
+  title: 'Progreso visible = menos incertidumbre',
+  lead: 'A: etapas solo en la cabeza. B: ver el avance como en un pipeline (demo UI).',
   progressLabel: 'Avance del pipeline (demo visual)',
   /** 0–100 para el componente Progress */
   progressValue: 66,
-  badges: ['CLI shadcn', 'lib/copy.ts', 'components/sections'] as const,
-  footnote: 'Pulí solo este objeto flowDemo para cambiar toda la página de ejemplo.',
+  badges: ['Validar', 'Construir', 'Operar'] as const,
+  footnote: 'Pista técnica: el texto vive en `lib/copy.ts` — un solo sitio para editar.',
 } as const;
 
 /** Carrusel de logos (Shadcn Blocks: Logos12) — stack o partners. image = URL (ej. Simple Icons) o path en public. */
 export const logosCarousel = {
-  sectionTitle: 'Stack',
+  sectionTitle: 'Stack que aparece en demo (pista)',
   items: [
     { id: 'jenkins', description: 'Jenkins', image: 'https://cdn.simpleicons.org/jenkins/D24939' },
     { id: 'gitea', description: 'Gitea', image: 'https://cdn.simpleicons.org/gitea/609926' },
@@ -157,16 +454,16 @@ export const logosCarousel = {
  * No ejecuta los servicios en el navegador; es mapa vivo para clientes y el plan técnico.
  */
 export const ossAtlas = {
-  path: '/integraciones',
+  path: routes.integraciones,
   seoTitle: 'Atlas de integraciones open source y escenarios | UnClic',
   seoDescription:
-    'Mapa ilustrativo: Gitea, Jenkins, ERPNext, colas, observabilidad, identidad y enlaces a docs oficiales. UnClic como base para distintos perfiles de cliente.',
+    'Atlas breve: escenarios (A→B) y herramientas con enlace a documentación oficial — mapa, no sustituto del diseño.',
   pageEyebrow: 'Cartera técnica',
   pageTitle: 'Atlas de integraciones',
   pageLead:
-    'Un mismo sitio como lienzo: aquí ves cómo encajan herramientas open source (y algunas integraciones SaaS inevitables) según el escenario del cliente — sin sustituir la documentación oficial de cada proyecto.',
+    'A: demasiadas opciones sueltas. B: ver en qué capa encaja cada pieza. Cada tarjeta = una pista + doc oficial del proyecto.',
   pageSub:
-    'Filtra por escenario. Cada tarjeta abre la doc del fabricante. En el repo: capas y ejecución (`docs/MAPA-STACK-OSS-…`, `docs/PLAN-OSS-…`), duplicados y elección UnClic (`docs/CURACION-DUPLICADOS-Y-ELECCION-UNClic.md`), cuatro planes de integración en servidor propio (`docs/PLANES-CURADOS-CUATRO-ARQUETIPOS-INTEGRACION.md`).',
+    'Filtra por escenario. Profundidad: carpetas `docs/` del repo (plan OSS, curación, arquetipos).',
   filterAll: 'Todos los escenarios',
   filterLabel: 'Escenario',
   cardLayer: 'Capa',
@@ -174,13 +471,13 @@ export const ossAtlas = {
   docCta: 'Documentación oficial',
   kindOss: 'Open source',
   kindSaaS: 'Integración SaaS',
-  teaserKicker: 'Base para muchos clientes',
-  teaserTitle: 'Atlas de herramientas y escenarios',
+  teaserKicker: 'Mismo marco, distintos perfiles',
+  teaserTitle: 'Herramientas y escenarios',
   teaserLead:
-    'Retail, fintech, manufactura o servicios: el mismo marco de capas — distintas piezas. Explora el mapa ilustrativo con enlaces a documentación oficial.',
+    'Un vistazo: qué capa toca cada herramienta. Detalle en el doc oficial de cada ítem.',
   teaserCta: 'Abrir atlas completo',
   footnote:
-    'Ilustrativo y educativo: la selección real por proyecto depende de restricciones, presupuesto y equipo. UnClic implementa por fases (ver plan OSS en el repo).',
+    'Ilustrativo: la elección final depende de tu A, tu B y tu presupuesto. Implementación por fases — ver plan OSS en el repo.',
 } as const;
 
 /** Escenarios del atlas — ids usados en `ossAtlasTools`. */
@@ -223,20 +520,17 @@ export const ossAtlasScenarios = [
   {
     id: 'ia',
     title: 'IA / ML / agentes',
-    blurb:
-      'LLMs locales (Ollama), experimentos (MLflow), orquestación (n8n) y grafos de agentes (LangGraph); según curación dev.to / daily.dev y docs oficiales.',
+    blurb: 'A: hype. B: modelo con trazabilidad — Ollama, MLflow, n8n, LangGraph (docs oficiales).',
   },
   {
     id: 'devtools',
-    title: 'DX / toolchain 2026',
-    blurb:
-      'Curaciones tipo “dominarán 2026” (dev.to): runtimes, lint, edge DB, front contenido, IDE y asistente código — alternativas a UnClic actual, no reemplazo automático.',
+    title: 'DX / toolchain',
+    blurb: 'A: herramientas nuevas cada mes. B: curar 2–3 que sostengan el pipeline (referencias técnicas públicas).',
   },
   {
     id: 'operacion',
     title: 'Operación empresa OSS',
-    blurb:
-      'Caso Vates (XCP-ng, Xen Orchestra): virtualización, CRM, BI, PM, SSO y política de sourcing; divulgación Lawrence Systems + lista oficial Vates 2025.',
+    blurb: 'A: silos de proveedor. B: stack OSS con política de sourcing explícita (referencias sector públicas).',
   },
 ] as const;
 
@@ -424,6 +718,17 @@ export const ossAtlasTools = [
     icon: 'keycloak/4D4D4D',
   },
   {
+    id: 'workos',
+    name: 'WorkOS',
+    layer: 'L10',
+    kind: 'saas' as const,
+    scenarioIds: ['seguridad'] as const,
+    tagline:
+      'Pago: SSO enterprise (SAML/OIDC), Directory Sync/SCIM, Admin Portal; pricing en workos.com/pricing. Criterios en docs/WORKOS-ENTERPRISE-SSO-REFERENCIA-UNClic.md.',
+    docUrl: 'https://workos.com/docs',
+    icon: null,
+  },
+  {
     id: 'mattermost',
     name: 'Mattermost',
     layer: 'L12',
@@ -501,6 +806,50 @@ export const ossAtlasTools = [
     scenarioIds: ['comercial'] as const,
     tagline: 'Facturación electrónica México; timbrado vía API.',
     docUrl: 'https://docs.facturapi.io/',
+    icon: null,
+  },
+  {
+    id: 'polar',
+    name: 'Polar',
+    layer: 'L14+L19',
+    kind: 'saas' as const,
+    scenarioIds: ['comercial', 'ia'] as const,
+    tagline:
+      'Billing SaaS: checkout, usage (tokens IA), MoR/taxes; adaptador Next. Criterios vs Stripe en docs/PAGOS-BILLING-*.md.',
+    docUrl: 'https://docs.polar.sh',
+    icon: null,
+  },
+  {
+    id: 'lago',
+    name: 'Lago',
+    layer: 'L14',
+    kind: 'oss' as const,
+    scenarioIds: ['comercial'] as const,
+    tagline:
+      'Motor billing OSS/cloud: metering, planes híbridos; conecta Stripe/Adyen… Self-host opcional.',
+    docUrl: 'https://getlago.com/docs',
+    icon: null,
+  },
+  {
+    id: 'hyperswitch',
+    name: 'Hyperswitch',
+    layer: 'L14',
+    kind: 'oss' as const,
+    scenarioIds: ['comercial'] as const,
+    tagline:
+      'Orquestación pagos OSS: multi-PSP, vault, routing, APMs; hosted Juspay opcional.',
+    docUrl: 'https://docs.hyperswitch.io',
+    icon: null,
+  },
+  {
+    id: 'pismo',
+    name: 'Pismo',
+    layer: 'L14',
+    kind: 'saas' as const,
+    scenarioIds: ['comercial'] as const,
+    tagline:
+      'BaaS / card issuing / wallets — nicho fintech; no sustituye checkout típico UnClic.',
+    docUrl: 'https://pismo.io',
     icon: null,
   },
   {
@@ -921,22 +1270,22 @@ export const ossAtlasTools = [
 /** Icon Cloud — stack / tecnologías (Magic UI). */
 export const iconCloud = {
   sectionTitle: 'Stack',
-  sectionDescription: 'Arrastra para explorar.',
+  sectionDescription: 'A: “¿qué usáis?”. B: misma foto en demo y doc.',
 } as const;
 
 /** Sección globo 3D — México, SAT / factura digital, alcance internacional. */
 export const globeSection = {
   title: 'Presencia global',
   description:
-    'Con base en México conocemos a fondo las regulaciones del SAT y la factura digital (CFDI y entorno fiscal). No nos cerramos al país: conectamos equipos y proyectos en otras regiones cuando el reto lo pide.',
+    'A: regulación local (p. ej. México / SAT). B: mismo pipeline de confianza para equipos en otras regiones cuando el reto lo pide.',
 } as const;
 
 /** Animated Beam — cadena fiel a la matriz de conexiones (sin aristas falsas). */
 export const animatedBeam = {
   sectionTitle: 'Flujo de integración',
-  sectionDescription: 'De tu repo al despliegue, en una cadena.',
+  sectionDescription: 'A: push manual. B: cadena repetible.',
   /** Texto bajo el diagrama (sección sin título). */
-  tagline: 'Build, test, deploy. Un flujo versionado y trazable.',
+  tagline: 'Build · test · deploy — mismo orden, cada vez.',
   pipelineSteps: 'COMMIT · BUILD · DEPLOY',
   integrationEdgeLabels: [
     'Push',
@@ -1043,7 +1392,7 @@ export const CLOUDCRAFT_DEMO_VIEW_BASE = `https://app.cloudcraft.co/view/${CLOUD
 /** Arquitectura — mínimo: título + diagrama exportado / enlace Cloudcraft. */
 export const architectureLive = {
   sectionTitle: 'Arquitectura AWS',
-  sectionDescription: '',
+  sectionDescription: 'A: caja negra. B: diagrama compartible (Cloudcraft) para auditoría.',
   ctaOpen: 'Abrir en Cloudcraft',
   ctaOpenDemo: 'Abrir diagrama',
   iframeTitle: 'Arquitectura AWS (Cloudcraft)',
@@ -1059,7 +1408,7 @@ export const architectureLive = {
 export const why = {
   sectionTitle: 'Por qué UnClic',
   oneTeamOnePlatform: '',
-  sectionDescription: 'Código, deploy y arquitectura en un solo lugar.',
+  sectionDescription: 'A: silos de herramientas. B: un hilo Git → pipeline → deploy.',
   problems: {
     title: 'Fricción habitual',
     items: [] as const,
@@ -1067,19 +1416,19 @@ export const why = {
   benefitPillars: [
     {
       title: 'Decisiones claras',
-      description: 'Mismo pipeline versionado para técnico y producto.',
+      description: 'A: reuniones sin artefacto. B: commit con evidencia.',
     },
     {
       title: 'Menos retrabajo',
-      description: 'Deploy predecible = menos horas perdidas.',
+      description: 'A: deploys “a mano”. B: mismo pipeline cada vez.',
     },
     {
       title: 'Equipo alineado',
-      description: 'Dev y ops comparten el mismo flujo.',
+      description: 'A: doc desactualizada. B: repo como fuente de verdad.',
     },
     {
       title: 'Negocio cubierto',
-      description: 'Rollback y trazabilidad cuando escala el tráfico.',
+      description: 'A: miedo al pico. B: rollback con tag conocido.',
     },
   ] as ReadonlyArray<{ title: string; description: string }>,
   solutions: { title: '', items: [] as const },
@@ -1090,28 +1439,28 @@ export const why = {
  */
 export const features = {
   sectionTitle: 'Cómo trabajamos',
-  sectionDescription: 'Cuatro entradas. Misma filosofía enterprise.',
+  sectionDescription: 'Cuatro palancas del A al B. Una línea cada una.',
   solutionsLead: '',
   items: [
     {
       title: 'Asesoría & pipeline',
       because: '',
-      description: 'Jenkinsfile en Git · Jenkins · Gitea · webhooks.',
+      description: 'B: Jenkinsfile en Git; webhooks; menos sorpresas en build.',
     },
     {
       title: 'Registry & deploy',
       because: '',
-      description: 'Docker/OCI · EC2/Nginx · rollback por tag.',
+      description: 'B: imagen versionada; rollback con tag; infra acordada.',
     },
     {
       title: 'Demos',
       because: '',
-      description: 'Hub público: Jenkins, registry, app operativa.',
+      description: 'B: ver el hub antes de firmar largo plazo.',
     },
     {
       title: 'Arquitectura viva',
       because: '',
-      description: 'Cloudcraft · multi-región · una fuente de verdad.',
+      description: 'B: diagrama compartible (auditoría) sin PowerPoint eterno.',
     },
   ],
 } as const;
@@ -1119,7 +1468,7 @@ export const features = {
 /** Demos — acceso por correo; sin exponer credenciales en la landing. */
 export const demos = {
   sectionTitle: 'Demos',
-  sectionDescription: 'Solicita acceso con tu correo; te enviamos el enlace y lo que necesites para entrar.',
+  sectionDescription: 'A: promesas en PDF. B: ver Jenkins, registry y app con correo verificado.',
   cardCta: 'Abrir demo',
   cardLockedCta: 'Iniciar sesión',
   cardSoon: 'Próximamente',
@@ -1148,7 +1497,7 @@ export const demoAccess = {
   eyebrow: '· demos',
   title: 'Solicitar acceso',
   lead:
-    'Déjanos tu correo: te compartimos el acceso para que entres enseguida. Lo demás es opcional; entre más contexto nos des, mejor podemos acompañarte.',
+    'Paso mínimo: correo → enlace. Opcional: contexto para afinar el B que buscas.',
   optionalHint: 'Opcional — nos ayuda a priorizar',
   emailLabel: 'Correo electrónico',
   emailPlaceholder: 'tu@empresa.com',
@@ -1176,23 +1525,32 @@ export const demoAccess = {
 /** Página /login — estilo mínimo tipo Sequoia (correo → demo restringida o completa). */
 export const loginPage = {
   title: 'Login',
+  /** Con API + contraseña (portal enterprise). */
+  titlePortal: 'Portal UnClic',
+  subtitlePortal: 'Correo verificado y contraseña (JWT de sesión).',
   tabPos: 'Invitado',
   tabPosHint: 'Solo app',
   tabFull: 'Hub demo',
   tabFullHint: 'App + Jenkins + Gitea',
   emailLabel: 'Correo',
   emailPlaceholder: 'correo@empresa.com',
+  passwordLabel: 'Contraseña',
+  passwordPlaceholder: 'Tu contraseña',
+  signIn: 'Iniciar sesión',
+  noAccount: '¿Sin cuenta?',
+  createAccount: 'Crear cuenta',
+  portalHubLink: 'Ir al hub del portal',
   continue: 'Continuar',
   termsLine: 'Al continuar aceptas nuestros',
   termsLink: 'Términos y condiciones',
   firstTime: '¿Primera vez?',
-  firstTimeLink: 'Solicitar acceso',
+  firstTimeLink: 'Crear cuenta',
   footerAbout: 'Por qué UnClic',
   footerContact: 'Contacto',
   footerPrivacy: 'Privacidad',
   footerTerms: 'Términos',
   scopePosNote:
-    'Estás en modo invitado: acceso a la app de recursos y finanzas. Jenkins y Gitea requieren el hub completo (elige «Hub demo» al iniciar sesión o solicita acceso).',
+    'Invitado: app recursos/finanzas. Hub Jenkins/Gitea: elige «Hub demo» al entrar o crea cuenta en /portal/registro.',
   allowlistDenied:
     'Este correo no está autorizado para demos en este sitio. Usa el correo que te compartimos o escríbenos.',
 } as const;
@@ -1200,22 +1558,22 @@ export const loginPage = {
 /** Precios — claro y escalable; keyword para SEO. */
 export const pricing = {
   sectionTitle: 'Precios',
-  sectionDescription: 'Suscripción o por sprint. Descuentos por volumen.',
+  sectionDescription: 'A: incertidumbre de coste. B: suscripción o sprint con alcance en papel.',
 } as const;
 
 /** Galería — una línea; keyword para SEO. */
 export const gallery = {
   sectionTitle: 'Galería',
-  sectionDescription: 'Entornos reales.',
+  sectionDescription: 'A: promesa abstracta. B: equipos con el mismo hilo Git → deploy.',
   imageAlts: [
-    'Entorno de trabajo con pipeline as code y CI/CD',
-    'Equipo colaborando en integración y despliegue continuo',
-    'Reunión de planificación de despliegues',
-    'Oficina y flujo de desarrollo con pipelines versionados',
-    'Startup con pipeline as code',
-    'Workspace con Jenkins, Gitea y registro de imágenes',
-    'Colaboración en equipo DevOps',
-    'Desarrollo y despliegue automatizado con rollback seguro',
+    'Pipeline en pantalla: código y CI',
+    'Equipo alineado en integración',
+    'Plan de despliegue concreto',
+    'Repo + flujo de trabajo',
+    'Equipo pequeño, mismo pipeline',
+    'Jenkins, Gitea, registry en contexto',
+    'DevOps y negocio en la misma mesa',
+    'Deploy con rollback conocido',
   ] as const,
 } as const;
 
@@ -1223,28 +1581,28 @@ export const gallery = {
 export const video = {
   sectionTitle: 'Vídeo',
   sectionDescription:
-    'Commit → deploy. Muestra de archivo MP4 pública; sustituye por tu render OSS o hosting propio.',
+    'A: leer el PDF. B: ver commit → build → deploy. (MP4 de ejemplo; sustituye por tu render.)',
   cardLabel: 'Vídeo de demostración',
   videoLabel: 'UnClic: commit, build, registry y deploy',
   fallbackText: 'Tu navegador no soporta la reproducción de vídeo.',
   /** Pie opcional bajo el reproductor (OSS). */
   ossMediaFootnote:
-    'Vídeo de ejemplo (open movie Big Buck Bunny). Generación propia: modelos abiertos + ffmpeg en tu infra.',
+    'Ejemplo de archivo abierto (Big Buck Bunny). Producción propia: ffmpeg + tu hosting.',
 } as const;
 
 /** Audio. */
 export const audio = {
   sectionTitle: 'Audio',
   sectionDescription:
-    'Intro Pipeline as Code. Interfaz tipo agente (Orb + ondas + reproductor), alineada con patrones tipo ElevenLabs UI OSS — motor de audio/TTS open source cuando conectes tu API.',
+    'A: solo texto. B: escuchar el “hilo” del pipeline (demo; sin API de pago en la demo).',
   tracksLabel: 'Pistas disponibles',
-  controlsDescription: 'Reproductor con progreso, velocidad y volumen.',
+  controlsDescription: 'Reproducción simple: velocidad y volumen.',
   /** Pie del Orb: sin cuota ElevenLabs; medios reproducibles y stack OSS. */
   ossMediaCaption:
-    'Sin API de ElevenLabs: demos reproducibles (SoundHelix / ficheros locales) y stack sugerido Whisper · Piper · Coqui · ffmpeg.',
+    'Sin ElevenLabs: audio local (p. ej. SoundHelix). STT/TTS: ver docs oficiales de Whisper, Piper, Coqui.',
   /** Detalle para pie o documentación. */
   ossMediaStackLine:
-    'Para voz en tiempo real: faster-whisper o whisper.cpp (STT) + Piper o Coqui (TTS). Vídeo: pipeline self-hosted + modelos abiertos (p. ej. SVD/AnimateDiff) según tu GPU.',
+    'Pista: STT/TTS self-hosted ahorra coste por minuto; calidad depende del modelo y del micrófono.',
   trackTitles: [
     'Introducción a Pipeline as Code',
     'Pipeline as Code y beneficios',
@@ -1257,7 +1615,7 @@ export const audio = {
 export const ossVoice = {
   panelTitle: 'Voz OSS: STT, TTS y WebSocket',
   panelDescription:
-    'Grabas en el navegador → tu servicio STT (p. ej. Whisper). Escribes texto → tu TTS (p. ej. Piper). WebSocket opcional para eventos en tiempo real.',
+    'A: SaaS por minuto. B: Whisper/Piper en tu red (variables en .env — ver docs de cada proyecto).',
   needEnvHint:
     'Activa las URLs en .env.local: NEXT_PUBLIC_OSS_STT_URL, NEXT_PUBLIC_OSS_TTS_URL (pueden ser el mismo origen) y opcional NEXT_PUBLIC_OSS_VOICE_WS_URL.',
   record: 'Grabar',
@@ -1283,10 +1641,30 @@ export const ossVoice = {
   errorRecorder: 'MediaRecorder no está soportado aquí.',
 } as const;
 
+/** LLM local con Ollama (texto). Imagen tipo Stable Diffusion: ver doc Ollama vs CompVis/diffusers. */
+export const ollamaLocal = {
+  panelTitle: 'Ollama — chat local (LLM)',
+  panelDescription:
+    'A: API cloud por token. B: modelo local (ollama pull) — datos en tu perímetro; revisa CORS en docs Ollama.',
+  needEnvHint:
+    'Define NEXT_PUBLIC_OLLAMA_URL (ej. http://127.0.0.1:11434) y opcional NEXT_PUBLIC_OLLAMA_MODEL. En el host Ollama configura OLLAMA_ORIGINS para http://localhost:3002.',
+  modelLinePrefix: 'Modelo:',
+  welcomeMessage:
+    'Hola. Soy un asistente local vía Ollama. Pregunta por pipelines, integración o buenas prácticas — las respuestas dependen del modelo que tengas cargado.',
+  systemPrompt:
+    'Eres un asistente técnico breve y claro. Contexto: consultoría UnClic, integración, POS, Jenkins, Docker, CI/CD, open source. Responde en español salvo que pidan otro idioma.',
+  inputPlaceholder: 'Escribe tu mensaje…',
+  inputDisabledPlaceholder: 'Configura NEXT_PUBLIC_OLLAMA_URL para habilitar el chat.',
+  thinking: 'Generando…',
+  errorPrefix: 'No se pudo completar la petición:',
+  footnoteSd:
+    'Stable Diffusion «clásico» (CompVis, diffusers, checkpoints .ckpt) suele ir aparte (GPU, ComfyUI, etc.). Ollama también publica modelos de imagen en su biblioteca cuando aplique; no es el mismo binario que el repo CompVis/stable-diffusion.',
+} as const;
+
 /** Matrix display — animación tipo display retro (Pipeline as Code / CI/CD). */
 export const matrixDisplay = {
   sectionTitle: 'Pipeline as Code',
-  sectionDescription: 'Build · test · deploy.',
+  sectionDescription: 'A: pasos opacos. B: mismo orden cada vez.',
   /** Línea bajo el display (ej. "Commit → Build → Deploy"). */
   tagline: 'Commit · Build · Deploy',
 } as const;
@@ -1294,22 +1672,22 @@ export const matrixDisplay = {
 /** Orb. */
 export const orb = {
   sectionTitle: 'Flujo 3D',
-  sectionDescription: 'Datos en movimiento.',
+  sectionDescription: 'Metáfora visual: del commit al usuario.',
   loadingLabel: 'Cargando…',
 } as const;
 
 /** CTA final — "Ready to ship?" + opcional estilo Sequoia "Let's get more out of...". */
 export const cta = {
-  headlineAlt: 'Más valor en cada release',
-  sectionTitle: 'Un partner, un pipeline',
-  sectionDescription: 'Propuesta clara si encaja.',
-  onePartner: 'Jenkins · Gitea · arquitectura visible.',
-  ctaPrimary: 'Comenzar',
-  ctaSecondary: 'Contactar',
-  buttonLabel: 'Comenzar',
+  headlineAlt: '¿Siguiente paso hacia el B?',
+  sectionTitle: 'Cierra la brecha con contexto',
+  sectionDescription: 'Un solo registro: correo, verificación y contraseña. Demos y siguientes pasos dentro del portal.',
+  onePartner: 'Mismo criterio en demo, repo y reunión.',
+  ctaPrimary: 'Crear cuenta',
+  ctaSecondary: 'Ya tengo cuenta',
+  buttonLabel: 'Crear cuenta',
 } as const;
 
-/** Página /signup o bloque Signup (Shadcn Blocks: Signup10, etc.). */
+/** Página /signup — copy para `SignupMarketingSection` (Card + Input + Button, shadcn/ui). */
 export const signupPage = {
   title: 'Crear cuenta',
   signUpWithGoogle: 'Continuar con Google',
@@ -1325,10 +1703,10 @@ export const signupPage = {
   logoAlt: 'UnClic',
 } as const;
 
-/** Card de login (Border Beam) — estilo Magic UI demo; usado en CTA y home. */
+/** Card de login (demo UI shadcn) — CTA y home. */
 export const loginCard = {
   title: 'Iniciar sesión',
-  description: 'Accede a demos y recursos con tu correo.',
+  description: 'A: visitante. B: correo verificado → demos y portal.',
   emailLabel: 'Correo',
   emailPlaceholder: 'correo@empresa.com',
   passwordLabel: 'Contraseña',
@@ -1356,8 +1734,10 @@ export const nav = {
   video: 'Vídeo',
   audio: 'Audio',
   clienteIdeal: 'Para quién es',
-  contact: 'Contacto',
+  budgetOss: 'Presupuesto OSS',
+  contact: 'Cuenta',
   login: 'Iniciar sesión',
+  portalDemos: 'Portal demos',
   openMenu: 'Abrir menú',
   sheetTitle: 'Navegación',
   closeMenu: 'Cerrar menú',
@@ -1371,8 +1751,8 @@ export const nav = {
   groupResources: 'Insights',
   groupConnect: 'Conectar',
   company: 'Empresa',
-  /** CTA principal del header (mismo que hero.ctaPrimary para consistencia). */
-  ctaPrimary: 'Comenzar',
+  /** CTA principal del header (alineado a hero.ctaPrimary). */
+  ctaPrimary: 'Crear cuenta',
   /** Compatibilidad footer antiguo */
   groupExplore: 'Soluciones',
   groupLearn: 'Capacidades',
@@ -1381,41 +1761,51 @@ export const nav = {
 /** FAQ — título de sección (Shadcn Blocks: Faq). */
 export const faq = {
   sectionTitle: 'Preguntas frecuentes',
+  sectionDescription: 'A: dudas sueltas. B: respuestas cortas antes de escribirnos.',
 } as const;
 
-/** Desplegables header — rutas tipo Sequoia (Solutions / Capabilities / Insights). */
+/**
+ * Mega-menú — jerarquía tipo agencia (servicios / stack / explorar).
+ * Cada ítem enlaza a página ancla o hub existente.
+ */
 export const navDropdowns = [
   {
     id: 'solutions',
     labelKey: 'groupSolutions' as const,
     items: [
-      { key: 'hubDemos' as const, href: '/soluciones' },
-      { key: 'features' as const, href: '/soluciones#features' },
-      { key: 'demos' as const, href: '/soluciones#demos' },
-      { key: 'pricing' as const, href: '/soluciones#pricing' },
+      { key: 'budgetOss' as const, href: routes.presupuestoOss },
+      { key: 'hubDemos' as const, href: routes.solucionesHub },
+      { key: 'features' as const, href: routes.solucionesFeatures },
+      { key: 'demos' as const, href: routes.solucionesDemos },
+      { key: 'portalDemos' as const, href: routes.portal },
+      { key: 'pricing' as const, href: routes.solucionesPricing },
     ],
   },
   {
     id: 'capabilities',
     labelKey: 'groupCapabilities' as const,
     items: [
-      { key: 'ossAtlas' as const, href: '/integraciones' },
-      { key: 'stack' as const, href: '/capacidades#stack' },
-      { key: 'flow' as const, href: '/capacidades#flow' },
-      { key: 'flowDiagrams' as const, href: '/capacidades#flow-diagrams' },
-      { key: 'architectureLive' as const, href: '/capacidades#architecture-live' },
-      { key: 'howItWorks' as const, href: '/capacidades#how-it-works' },
+      { key: 'ossAtlas' as const, href: routes.integracionesAtlas },
+      { key: 'stack' as const, href: routes.capacidadesStack },
+      { key: 'flow' as const, href: routes.capacidadesFlow },
+      { key: 'flowDiagrams' as const, href: routes.capacidadesFlowDiagrams },
+      { key: 'architectureLive' as const, href: routes.capacidadesArchitectureLive },
+      { key: 'howItWorks' as const, href: routes.capacidadesHowItWorks },
+      { key: 'why' as const, href: routes.capacidadesWhy },
     ],
   },
   {
     id: 'resources',
     labelKey: 'groupResources' as const,
     items: [
-      { key: 'gallery' as const, href: '/insights#gallery' },
-      { key: 'video' as const, href: '/insights#video' },
-      { key: 'audio' as const, href: '/insights#audio' },
-      { key: 'globe' as const, href: '/insights#globe' },
-      { key: 'clienteIdeal' as const, href: '/insights#cliente-ideal' },
+      { key: 'company' as const, href: routes.empresa },
+      { key: 'gallery' as const, href: routes.insightsGallery },
+      { key: 'video' as const, href: routes.insightsVideo },
+      { key: 'audio' as const, href: routes.insightsAudio },
+      { key: 'globe' as const, href: routes.insightsGlobe },
+      { key: 'clienteIdeal' as const, href: routes.insightsClienteIdeal },
+      { key: 'contact' as const, href: routes.publicSignup },
+      { key: 'login' as const, href: routes.login },
     ],
   },
 ] as const;
@@ -1426,41 +1816,46 @@ export const navDropdowns = [
  */
 export const footerNav = {
   solutions: {
-    title: 'Soluciones',
+    title: 'Servicios',
     items: [
-      { label: 'Asesoría & pipeline', href: '/soluciones#features' },
-      { label: 'Retail & operación crítica', href: '/insights#cliente-ideal' },
-      { label: 'Despliegue & acompañamiento', href: '/capacidades#how-it-works' },
-      { label: 'Hub & plataforma documentada', href: '/soluciones' },
+      { label: 'Presupuesto OSS (API)', href: routes.presupuestoWizard },
+      { label: 'Hub soluciones & precios', href: routes.solucionesHub },
+      { label: 'Plataforma & pipeline', href: routes.solucionesFeatures },
+      { label: 'Demos detalladas', href: routes.solucionesDemos },
+      { label: 'Portal (acceso)', href: routes.portal },
+      { label: 'Cómo empezamos', href: routes.capacidadesHowItWorks },
     ] as const,
   },
   capabilities: {
-    title: 'Capacidades',
+    title: 'Stack OSS',
     items: [
-      { label: 'Atlas integraciones OSS', href: '/integraciones' },
-      { label: 'Pipeline as Code', href: '/capacidades#why' },
-      { label: 'Jenkins & Gitea', href: '/soluciones#demos' },
-      { label: 'Docker & registry', href: '/soluciones' },
-      { label: 'Infra AWS & flujos', href: '/capacidades#flow-diagrams' },
-      { label: 'Arquitectura en vivo', href: '/capacidades#architecture-live' },
+      { label: 'Atlas integraciones', href: routes.integracionesAtlas },
+      { label: 'Stack técnico', href: routes.capacidadesStack },
+      { label: 'Flujo integración', href: routes.capacidadesFlow },
+      { label: 'Diagramas demo / prod', href: routes.capacidadesFlowDiagrams },
+      { label: 'Arquitectura en vivo', href: routes.capacidadesArchitectureLive },
+      { label: 'Por qué UnClic', href: routes.capacidadesWhy },
     ] as const,
   },
   learn: {
-    title: 'Aprender',
+    title: 'Explorar',
     items: [
-      { label: 'Galería', href: '/insights#gallery' },
-      { label: 'Vídeo', href: '/insights#video' },
-      { label: 'Audio', href: '/insights#audio' },
-      { label: 'Presencia global', href: '/insights#globe' },
-      { label: 'Para quién es', href: '/insights#cliente-ideal' },
+      { label: 'Empresa', href: routes.empresa },
+      { label: 'Galería', href: routes.insightsGallery },
+      { label: 'Vídeo', href: routes.insightsVideo },
+      { label: 'Audio', href: routes.insightsAudio },
+      { label: 'Presencia global', href: routes.insightsGlobe },
+      { label: 'Cliente ideal', href: routes.insightsClienteIdeal },
+      { label: 'Iniciar sesión', href: routes.login },
     ] as const,
   },
   connect: {
     title: 'Conectar',
     items: [
-      { label: 'Empresa', href: '/empresa' },
-      { label: 'Contacto', href: '/contacto' },
-      { label: 'Acceso demo', href: '/demo' },
+      { label: 'Crear cuenta', href: routes.publicSignup },
+      { label: 'Iniciar sesión', href: routes.login },
+      { label: 'Portal', href: routes.portal },
+      { label: 'Presupuesto OSS', href: routes.presupuestoWizard },
     ] as const,
   },
 } as const;
@@ -1469,22 +1864,23 @@ export const footerNav = {
 export const navGroups = {
   explore: navDropdowns[0].items,
   learn: [...navDropdowns[1].items, ...navDropdowns[2].items],
-  connect: [{ key: 'contact' as const, href: '#contacto' }],
+  connect: [{ key: 'contact' as const, href: routes.contactForm }],
 } as const;
 
 /** Carrusel "Lo que suena" / Social trending 1 (tarjetas con vídeo + enlace). */
 export const socialTrendingCarousel = {
   kicker: 'Destacado',
   sectionTitle: 'Recientes',
+  sectionDescription: 'A: solo claims. B: clip + enlace al hub cuando aplique.',
   prevLabel: 'Anterior',
   nextLabel: 'Siguiente',
 } as const;
 
 /** Footer — "Optimized and crafted for Laravel, by Laravel" style. */
 export const footer = {
-  tagline: 'Pipeline as Code · demos vivas · arquitectura clara.',
-  brandDescription: 'Jenkins · Gitea · registry · FastFlow. Español.',
-  builtWith: 'Jenkins, Docker, Kubernetes y Terraform.',
+  tagline: 'A→B con stack abierto: menos sorpresas en deploy, más evidencia en Git.',
+  brandDescription: 'Jenkins · Gitea · Docker · AWS · FastFlow. Hablamos español; documentación alineada al repo.',
+  builtWith: 'Pista de stack: Jenkins, Docker, K8s, Terraform.',
   linksTitle: 'Enlaces',
   productTitle: 'Producto',
   exploreTitle: 'Explorar',
@@ -1492,28 +1888,32 @@ export const footer = {
   socialEnvHint:
     'LinkedIn y GitHub: define NEXT_PUBLIC_LINKEDIN_URL y NEXT_PUBLIC_GITHUB_URL en .env.local y vuelve a hacer build.',
   copyright: 'UnClic. Imágenes: Unsplash. Todos los derechos reservados.',
+  /** Atribución Icons8 (iconos Liquid Glass en secciones de marketing). */
+  icons8AttributionLabel: 'Iconos Liquid Glass:',
+  icons8AttributionHref: 'https://icons8.com/liquid-glass',
+  icons8AttributionVendor: 'Icons8',
 } as const;
 
 /** Cliente ideal — positivo y escaneable. */
 export const clienteIdeal = {
-  title: 'Ideal si',
+  title: 'Encaja si',
   items: [
-    'Alto volumen de ventas · deploy sin parar operación',
+    'A: picos de ventas · B: deploy sin apagar tienda',
     'Retail / cadena / ecommerce multicanal',
     'Un URL para demos + doc (auditores, partners)',
-    'Alcance por escrito · sprints',
+    'Quieres alcance por escrito y sprints',
     'Git + pipeline; Workspace; SAT en roadmap',
   ] as const,
 } as const;
 
-/** Cómo funciona — "Get started under 60 seconds" style, 3 pasos; long-tail SEO. */
+/** Cómo funciona — 3 pasos A→B. */
 export const howItWorks = {
   sectionTitle: 'Cómo empezar',
-  sectionDescription: 'Tres pasos.',
+  sectionDescription: 'Tres pasos. Sin perder el foco.',
   steps: [
-    { step: 1, title: 'Hablamos', description: 'Stack y objetivo. Sin compromiso.' },
-    { step: 2, title: 'Demo', description: 'Jenkins + registry + app.' },
-    { step: 3, title: 'Propuesta', description: 'Alcance · plazos · precio.' },
+    { step: 1, title: 'Hablamos', description: 'A y B en una frase. Sin compromiso.' },
+    { step: 2, title: 'Demo', description: 'Ver el B antes de firmar largo.' },
+    { step: 3, title: 'Propuesta', description: 'Alcance · plazos · precio — por escrito.' },
   ] as const,
 } as const;
 
@@ -1531,13 +1931,23 @@ export const sectionIds = [
   'flow-diagrams',
   'architecture-live',
   'how-it-works',
+  'matrix-display',
   'globe',
   'demos',
   'pricing',
   'gallery',
   'video',
   'audio',
+  'social-trending-carousel',
   'cliente-ideal',
   'faq',
   'contacto',
+  'oss-atlas',
+  'presupuesto-wizard',
+  'presupuesto-api',
+  'empresa-hero',
+  'demo-access-form',
+  'signup-form',
+  'terminos',
+  'datos',
 ] as const;
