@@ -4,6 +4,9 @@ import { z } from 'zod';
 import { createTransport, getSmtpConfigFromEnv } from './smtp.js';
 import { sendLeadNotifications } from './mail.js';
 import { fetchPingHealth } from './adapters/ping-adapter.js';
+import { registerOssAssessmentRoutes } from './oss-assessment/register.js';
+import { registerAuthRoutes } from './auth/routes.js';
+import { runAuthBootstrap } from './auth/bootstrap.js';
 
 const leadBodySchema = z.object({
   email: z.string().email().max(320),
@@ -46,9 +49,19 @@ export function createApp() {
         'GET /health',
         'GET /v1/orchestration/health',
         'POST /v1/leads/email',
+        'GET /v1/oss-assessment/schema',
+        'POST /v1/oss-assessment/estimate',
+        'POST /v1/auth/register',
+        'POST /v1/auth/login',
+        'GET /v1/auth/verify-email?token=',
+        'GET /v1/auth/me',
       ],
     })
   );
+
+  registerOssAssessmentRoutes(app);
+  registerAuthRoutes(app);
+  runAuthBootstrap();
 
   /** Agregación de salud: API + microservicio ping (si `PING_SERVICE_URL` está definida). */
   app.get('/v1/orchestration/health', async (c) => {
