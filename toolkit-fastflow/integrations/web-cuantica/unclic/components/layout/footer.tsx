@@ -4,7 +4,10 @@ import Link from 'next/link';
 import { Github, Mail, Linkedin } from 'lucide-react';
 import { UnClicLogo } from '@/components/ui/unclic-logo';
 import { Separator } from '@/components/ui/separator';
+import { Button } from '@/components/ui/button';
+import { BlockContainer } from '@/components/blocks';
 import { site, footer as footerCopy, footerNav } from '@/lib/copy';
+import { routes } from '@/lib/routes';
 import { cn } from '@/lib/utils';
 
 /** Footer con estructura tipo Shadcn Blocks Footer1 (logo + tagline, separadores, grid por secciones). Nuestro copy desde lib/copy. */
@@ -26,9 +29,9 @@ export function Footer() {
       className={cn('border-t border-border bg-muted/30 py-24 pb-16')}
       role="contentinfo"
     >
-      <div className="container">
+      <BlockContainer>
         <div className="flex flex-col justify-between gap-6 md:flex-row md:items-center">
-          <Link href="/" className="flex items-center gap-2 font-medium" aria-label={site.name}>
+          <Link href={routes.home} className="flex items-center gap-2 font-medium" aria-label={site.name}>
             <UnClicLogo size={28} />
             <span className="text-xl text-foreground">{site.name}</span>
           </Link>
@@ -40,7 +43,7 @@ export function Footer() {
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {sections.map((section) => (
             <div key={section.title}>
-              <h3 className="mb-4 font-bold text-foreground">{section.title}</h3>
+              <h3 className="mb-4 text-sm font-semibold text-foreground">{section.title}</h3>
               <ul className="space-y-3 text-sm text-muted-foreground">
                 {section.items.map(({ label, href }) => (
                   <li key={label}>
@@ -56,7 +59,7 @@ export function Footer() {
             </div>
           ))}
           <div>
-            <h3 className="mb-4 font-bold text-foreground">
+            <h3 className="mb-4 text-sm font-semibold text-foreground">
               {footerNav.connect.title}
             </h3>
             <ul className="space-y-3 text-sm text-muted-foreground">
@@ -74,36 +77,26 @@ export function Footer() {
             <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               {footerCopy.socialTitle}
             </p>
-            <div className="mt-2 flex gap-2">
+            <div className="mt-2 flex gap-1">
               {githubValid ? (
-                <a
-                  href={githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted-foreground transition-colors hover:text-foreground"
-                  aria-label="GitHub"
-                >
-                  <Github className="size-5" />
-                </a>
+                <Button variant="ghost" size="icon" asChild aria-label="GitHub">
+                  <a href={githubUrl} target="_blank" rel="noopener noreferrer">
+                    <Github className="size-5" />
+                  </a>
+                </Button>
               ) : null}
               {linkedInValid ? (
-                <a
-                  href={linkedInUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted-foreground transition-colors hover:text-foreground"
-                  aria-label="LinkedIn"
-                >
-                  <Linkedin className="size-5" />
-                </a>
+                <Button variant="ghost" size="icon" asChild aria-label="LinkedIn">
+                  <a href={linkedInUrl} target="_blank" rel="noopener noreferrer">
+                    <Linkedin className="size-5" />
+                  </a>
+                </Button>
               ) : null}
-              <Link
-                href="/contacto"
-                className="text-muted-foreground transition-colors hover:text-foreground"
-                aria-label="Email"
-              >
-                <Mail className="size-5" />
-              </Link>
+              <Button variant="ghost" size="icon" asChild aria-label="Crear cuenta">
+                <Link href={routes.publicSignup}>
+                  <Mail className="size-5" />
+                </Link>
+              </Button>
             </div>
             {!githubValid && !linkedInValid ? (
               <p className="mt-2 text-xs text-muted-foreground">
@@ -119,7 +112,18 @@ export function Footer() {
         <p className="mt-1 text-sm text-muted-foreground">
           © {currentYear} {footerCopy.copyright}
         </p>
-      </div>
+        <p className="mt-3 text-xs text-muted-foreground">
+          {footerCopy.icons8AttributionLabel}{' '}
+          <a
+            href={footerCopy.icons8AttributionHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline-offset-2 hover:text-foreground hover:underline"
+          >
+            {footerCopy.icons8AttributionVendor}
+          </a>
+        </p>
+      </BlockContainer>
     </footer>
   );
 }

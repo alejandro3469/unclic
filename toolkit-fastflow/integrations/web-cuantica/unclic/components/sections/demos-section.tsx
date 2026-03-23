@@ -18,6 +18,7 @@ import { DEMO_LINKS } from '@/lib/demos';
 import { simpleIconUrl } from '@/lib/logo-urls';
 import { demos } from '@/lib/copy';
 import { useDemoInfraAccess } from '@/lib/hooks/use-demo-infra-access';
+import { routes } from '@/lib/routes';
 
 const ICON_MAP = {
   workflow: Workflow,
@@ -34,10 +35,10 @@ export function DemosSection() {
   return (
     <section id="demos" className="py-16 md:py-24" aria-labelledby="demos-heading">
       <BlockContainer>
-        <h2 id="demos-heading" className="text-2xl font-semibold tracking-tight sm:text-3xl md:text-4xl">
+        <h2 id="demos-heading" className="text-type-section-title">
           {demos.sectionTitle}
         </h2>
-        <p className="mt-2 text-muted-foreground">
+        <p className="text-type-lead mt-2 max-w-2xl">
           {demos.sectionDescription}
         </p>
 
@@ -76,7 +77,7 @@ export function DemosSection() {
                     </Button>
                   ) : locked ? (
                     <Button asChild variant="outline" size="sm" className="mt-4">
-                      <Link href="/login">{demos.cardLockedCta}</Link>
+                      <Link href={routes.login}>{demos.cardLockedCta}</Link>
                     </Button>
                   ) : isActive ? (
                     <Button asChild variant="outline" size="sm" className="mt-4">
@@ -104,8 +105,8 @@ export function DemosSection() {
           </CardHeader>
           <CardContent>
             <p className="text-sm text-muted-foreground">{demos.userCardDescription}</p>
-            <Button asChild size="sm" className="mt-4">
-              <Link href="/demo/access">{demos.userCardCta}</Link>
+            <Button asChild size="sm" variant="outline" className="mt-4">
+              <Link href={routes.publicSignup}>{demos.userCardCta}</Link>
             </Button>
           </CardContent>
         </Card>

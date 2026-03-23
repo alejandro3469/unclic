@@ -12,7 +12,9 @@ import {
 } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
+import { BlockContainer } from '@/components/blocks';
 import { flowDemo } from '@/lib/copy';
+import { routes } from '@/lib/routes';
 
 /**
  * Ejemplo mínimo del flujo: pieza shadcn (`Progress`) + copy centralizado (`flowDemo`).
@@ -20,16 +22,12 @@ import { flowDemo } from '@/lib/copy';
  */
 export function FlowDemoSection() {
   return (
-    <section
-      className="container max-w-2xl py-16 md:py-24"
-      aria-labelledby="flow-demo-title"
-    >
+    <section className="py-16 md:py-24" aria-labelledby="flow-demo-title">
+      <BlockContainer className="max-w-2xl">
       <Card>
         <CardHeader className="space-y-2">
-          <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-            {flowDemo.kicker}
-          </p>
-          <CardTitle id="flow-demo-title" className="text-2xl tracking-tight">
+          <p className="text-type-eyebrow tracking-widest">{flowDemo.kicker}</p>
+          <CardTitle id="flow-demo-title" className="text-type-section-title">
             {flowDemo.title}
           </CardTitle>
           <CardDescription className="text-base">{flowDemo.lead}</CardDescription>
@@ -57,10 +55,11 @@ export function FlowDemoSection() {
           </div>
           <p className="text-sm text-muted-foreground">{flowDemo.footnote}</p>
           <Button asChild variant="outline" size="sm">
-            <Link href="/">← Volver al inicio</Link>
+            <Link href={routes.home}>← Volver al inicio</Link>
           </Button>
         </CardContent>
       </Card>
+      </BlockContainer>
     </section>
   );
 }

@@ -3,9 +3,10 @@
 import { features } from '@/lib/copy';
 import { SectionBlock } from '@/components/sections/section-block';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Layers, Zap, Box, LayoutDashboard } from 'lucide-react';
+import { LiquidGlassIcon } from '@/components/ui/liquid-glass-icon';
+import { LG } from '@/lib/icons8-liquid-glass';
 
-const ICONS = [Layers, Zap, Box, LayoutDashboard] as const;
+const FEATURE_SLUGS = [LG.layers, LG.lightning, LG.box, LG.dashboard] as const;
 
 const CARD_TONE = [
   'bg-gradient-to-br from-rose-50/90 to-background dark:from-rose-950/25',
@@ -24,14 +25,14 @@ export function FeaturesSection() {
     >
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {features.items.map(({ title, description }, index) => {
-          const Icon = ICONS[index] ?? Box;
+          const slug = FEATURE_SLUGS[index] ?? LG.box;
           return (
             <Card
               key={title}
               className={`overflow-hidden border-border/50 shadow-sm ${CARD_TONE[index % CARD_TONE.length]}`}
             >
               <CardHeader className="pb-2">
-                <Icon className="size-9 text-primary" aria-hidden />
+                <LiquidGlassIcon slug={slug} size={40} alt="" className="mb-1" />
                 <h3 className="text-lg font-semibold">{title}</h3>
               </CardHeader>
               <CardContent>

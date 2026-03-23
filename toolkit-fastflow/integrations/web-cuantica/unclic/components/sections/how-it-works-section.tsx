@@ -3,9 +3,10 @@
 import { BlockContainer } from '@/components/blocks';
 import { howItWorks } from '@/lib/copy';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { MessageCircle, PlayCircle, FileCheck } from 'lucide-react';
+import { LiquidGlassIcon } from '@/components/ui/liquid-glass-icon';
+import { LG } from '@/lib/icons8-liquid-glass';
 
-const STEP_ICONS = [MessageCircle, PlayCircle, FileCheck] as const;
+const STEP_SLUGS = [LG.chat, LG.playCircled, LG.approval] as const;
 
 export function HowItWorksSection() {
   return (
@@ -15,19 +16,16 @@ export function HowItWorksSection() {
       aria-labelledby="how-it-works-heading"
     >
       <BlockContainer>
-        <h2
-          id="how-it-works-heading"
-          className="text-2xl font-semibold tracking-tight sm:text-3xl md:text-4xl"
-        >
+        <h2 id="how-it-works-heading" className="text-type-section-title">
           {howItWorks.sectionTitle}
         </h2>
-        <p className="mt-2 max-w-2xl text-muted-foreground">
+        <p className="text-type-lead mt-2 max-w-2xl">
           {howItWorks.sectionDescription}
         </p>
 
         <div className="mt-10 grid gap-6 sm:grid-cols-3">
           {howItWorks.steps.map(({ step, title, description }) => {
-            const Icon = STEP_ICONS[step - 1];
+            const slug = STEP_SLUGS[step - 1] ?? LG.ok;
             return (
               <Card key={step} className="flex flex-col">
                 <CardHeader className="pb-2">
@@ -38,8 +36,8 @@ export function HowItWorksSection() {
                     >
                       {step}
                     </span>
-                    <Icon className="size-6 text-muted-foreground" aria-hidden />
-                    <h3 className="text-lg font-semibold tracking-tight">{title}</h3>
+                    <LiquidGlassIcon slug={slug} size={32} alt="" className="shrink-0 opacity-90" />
+                    <h3 className="text-type-card-title">{title}</h3>
                   </div>
                 </CardHeader>
                 <CardContent>

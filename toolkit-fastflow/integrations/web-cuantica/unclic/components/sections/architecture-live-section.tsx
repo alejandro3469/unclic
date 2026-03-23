@@ -8,6 +8,7 @@ import { architectureLive as copy, CLOUDCRAFT_DEMO_VIEW_BASE } from '@/lib/copy'
 import { ExternalLink } from 'lucide-react';
 import { isDemoAllowlistMode } from '@/lib/demo-access-policy';
 import { useDemoInfraAccess } from '@/lib/hooks/use-demo-infra-access';
+import { routes } from '@/lib/routes';
 
 const embedUrl = process.env.NEXT_PUBLIC_CLOUDCRAFT_EMBED_URL ?? '';
 const viewUrl = process.env.NEXT_PUBLIC_CLOUDCRAFT_VIEW_URL ?? '';
@@ -50,7 +51,7 @@ export function ArchitectureLiveSection() {
           <p className="text-center text-sm text-muted-foreground">{copy.lockedLead}</p>
           <div className="flex justify-center">
             <Button asChild size="lg">
-              <Link href="/login">{copy.lockedCta}</Link>
+              <Link href={routes.login}>{copy.lockedCta}</Link>
             </Button>
           </div>
         </div>

@@ -25,6 +25,7 @@ import { hubItemNeedsDemoGate } from '@/lib/hub-item-gate';
 import { simpleIconUrl } from '@/lib/logo-urls';
 import { hubDemos } from '@/lib/copy';
 import { useDemoInfraAccess } from '@/lib/hooks/use-demo-infra-access';
+import { routes } from '@/lib/routes';
 
 const ICON_MAP = {
   workflow: Workflow,
@@ -52,7 +53,8 @@ function HubCard({
   const Icon = ICON_MAP[item.iconId as keyof typeof ICON_MAP] ?? Layers;
   const logoUrl = item.simpleIconsSlug ? simpleIconUrl(item.simpleIconsSlug) : null;
   const isHash = !item.href || item.href === '#';
-  const active = !isHash || item.href === '/contacto';
+  const isSignup = Boolean(item.href?.startsWith('/portal/registro'));
+  const active = !isHash || isSignup;
   const gated = hubItemNeedsDemoGate(item);
   const showLocked = ready && gated && !canAccessInfra;
 
@@ -99,7 +101,7 @@ function HubCard({
               {hubDemos.lockedExternalHint}
             </p>
             <Button asChild variant="outline" size="sm" className="w-full sm:w-auto">
-              <Link href="/login">{hubDemos.lockedExternalCta}</Link>
+              <Link href={routes.login}>{hubDemos.lockedExternalCta}</Link>
             </Button>
           </div>
         ) : active && !isHash ? (
@@ -112,7 +114,7 @@ function HubCard({
               {item.external ? hubDemos.ctaExternal : hubDemos.ctaInternal}
             </Link>
           </Button>
-        ) : item.href === '/contacto' ? (
+        ) : isSignup ? (
           <Button asChild variant="outline" size="sm" className="mt-4 w-full sm:w-auto">
             <Link href={item.href}>{hubDemos.ctaRoadmapContact}</Link>
           </Button>
@@ -141,21 +143,18 @@ export function HubDemosSection() {
           <Badge variant="outline" className="mb-4">
             {hubDemos.kicker}
           </Badge>
-          <h2
-            id="hub-demos-heading"
-            className="text-2xl font-semibold tracking-tight sm:text-3xl md:text-4xl"
-          >
+          <h2 id="hub-demos-heading" className="text-type-section-title">
             {hubDemos.sectionTitle}
           </h2>
-          <p className="mt-3 text-muted-foreground md:text-lg">{hubDemos.sectionLead}</p>
-          <p className="mt-2 text-sm text-muted-foreground">{hubDemos.sectionSub}</p>
+          <p className="text-type-lead mt-3">{hubDemos.sectionLead}</p>
+          <p className="text-type-body-sm mt-2">{hubDemos.sectionSub}</p>
         </div>
 
         <div className="mt-14 space-y-16">
           {categories.map((cat) => (
             <div key={cat.id}>
               <div className="mb-2 flex flex-col gap-1 border-l-4 border-primary pl-4 md:flex-row md:items-end md:justify-between">
-                <h3 className="text-xl font-semibold tracking-tight">{cat.title}</h3>
+                <h3 className="text-type-card-title">{cat.title}</h3>
                 {cat.enterpriseNote && (
                   <p className="max-w-xl text-sm text-muted-foreground md:text-right">{cat.enterpriseNote}</p>
                 )}

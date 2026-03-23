@@ -1,5 +1,6 @@
 'use client';
 
+import { getOllamaBaseUrl } from '@/lib/ollama-config';
 import {
   getOssSttUrl,
   getOssTtsUrl,
@@ -15,13 +16,15 @@ export function OssMediaEnvHint() {
   const tts = getOssTtsUrl();
   const video = getOssVideoJobUrl();
   const ws = getOssVoiceWsUrl();
-  if (!stt && !tts && !video && !ws) return null;
+  const ollama = getOllamaBaseUrl();
+  if (!stt && !tts && !video && !ws && !ollama) return null;
 
   const chips: { key: string; label: string }[] = [];
   if (stt) chips.push({ key: 'stt', label: 'STT OSS enlazado' });
   if (tts) chips.push({ key: 'tts', label: 'TTS OSS enlazado' });
   if (video) chips.push({ key: 'video', label: 'Vídeo / jobs OSS' });
   if (ws) chips.push({ key: 'ws', label: 'WebSocket voz' });
+  if (ollama) chips.push({ key: 'ollama', label: 'Ollama (LLM local)' });
 
   return (
     <div className="mt-3 flex flex-wrap justify-center gap-2 text-[11px] text-muted-foreground">

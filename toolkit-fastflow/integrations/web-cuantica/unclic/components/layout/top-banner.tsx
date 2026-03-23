@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { X } from 'lucide-react';
 import { BlockContainer } from '@/components/blocks';
 import { banner } from '@/lib/copy';
+import { routes } from '@/lib/routes';
 
 const BANNER_STORAGE_KEY = 'unclic-banner-dismissed';
 
@@ -42,7 +43,7 @@ export function TopBanner() {
     >
       <BlockContainer className="flex items-center justify-between gap-4 py-3">
         <Link
-          href="/soluciones"
+          href={routes.publicSignup}
           className="group flex-1 text-center text-sm font-medium transition-colors hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
         >
           {banner.message}

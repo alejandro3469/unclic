@@ -5,7 +5,6 @@ import { GALLERY_PLACEHOLDERS } from '@/lib/placeholders';
 import { BlockContainer } from '@/components/blocks';
 import { gallery } from '@/lib/copy';
 import { Card, CardContent } from '@/components/ui/card';
-import { PixelImage } from '@/components/ui/pixel-image';
 
 export function GallerySection() {
   return (
@@ -15,25 +14,12 @@ export function GallerySection() {
       aria-labelledby="gallery-heading"
     >
       <BlockContainer>
-        <h2
-          id="gallery-heading"
-          className="text-2xl font-semibold tracking-tight sm:text-3xl md:text-4xl"
-        >
+        <h2 id="gallery-heading" className="text-type-section-title">
           {gallery.sectionTitle}
         </h2>
-        <p className="mt-2 text-muted-foreground">
+        <p className="text-type-lead mt-2 max-w-2xl">
           {gallery.sectionDescription}
         </p>
-
-        <div className="mt-8 flex justify-center">
-          <PixelImage
-            src={GALLERY_PLACEHOLDERS[0]}
-            alt={gallery.imageAlts[0]}
-            customGrid={{ rows: 4, cols: 6 }}
-            grayscaleAnimation
-            className="rounded-xl"
-          />
-        </div>
 
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {GALLERY_PLACEHOLDERS.map((src, index) => (

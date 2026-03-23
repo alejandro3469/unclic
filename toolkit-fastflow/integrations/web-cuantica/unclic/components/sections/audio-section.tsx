@@ -1,8 +1,7 @@
 'use client';
 
-import { useCallback, useEffect, useRef } from 'react';
-import dynamic from 'next/dynamic';
-import { Headphones } from 'lucide-react';
+import { LiquidGlassIcon } from '@/components/ui/liquid-glass-icon';
+import { LG } from '@/lib/icons8-liquid-glass';
 import { BlockContainer } from '@/components/blocks';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import {
@@ -17,61 +16,28 @@ import {
 } from '@/components/ui/audio-player';
 import { AgentWaveformStrip } from '@/components/media/agent-waveform-strip';
 import { OssMediaEnvHint } from '@/components/media/oss-media-env-hint';
+import { OllamaChatPanel } from '@/components/media/ollama-chat-panel';
 import { OssVoicePanel } from '@/components/media/oss-voice-panel';
 import { AUDIO_TRACKS } from '@/lib/audio-samples';
 import { audio } from '@/lib/copy';
-
-const Orb = dynamic(
-  () => import('@/components/ui/orb').then((m) => ({ default: m.Orb })),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="aspect-square w-full min-h-[200px] rounded-full bg-muted/50 flex items-center justify-center text-muted-foreground text-sm">
-        Cargando…
-      </div>
-    ),
-  }
-);
-
-/** Ref se actualiza cada frame cuando hay reproducción; el Orb lo lee en getOutputVolume. */
-function usePlaybackVolumeRef(isPlaying: boolean) {
-  const ref = useRef(0.2);
-  useEffect(() => {
-    if (!isPlaying) {
-      ref.current = 0.2;
-      return;
-    }
-    let raf = 0;
-    const tick = () => {
-      const t = Date.now() / 200;
-      ref.current = Math.min(1, 0.5 + 0.35 * Math.sin(t));
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [isPlaying]);
-  return ref;
-}
+import { cn } from '@/lib/utils';
 
 function AudioSectionContent() {
   const player = useAudioPlayer();
-  const outputVolumeRef = usePlaybackVolumeRef(player.isPlaying);
-
-  const getOutputVolume = useCallback(() => outputVolumeRef.current, [outputVolumeRef]);
 
   return (
     <div className="mt-8 space-y-8">
       <div className="grid gap-8 lg:grid-cols-[minmax(0,320px)_1fr]">
-      {/* Orb: reacciona al audio en reproducción (volumen simulado desde estado del reproductor). */}
+      {/* Indicador visual: gradiente + pulso cuando suena (sin WebGL). */}
       <Card className="flex flex-col items-center justify-center overflow-hidden p-6">
         <div className="relative size-40 shrink-0 md:size-52">
           <div className="bg-muted relative h-full w-full rounded-full p-1 shadow-[inset_0_2px_8px_rgba(0,0,0,0.1)] dark:shadow-[inset_0_2px_8px_rgba(0,0,0,0.3)]">
             <div className="bg-background h-full w-full overflow-hidden rounded-full">
-              <Orb
-                className="h-full w-full min-h-0"
-                volumeMode="manual"
-                getOutputVolume={getOutputVolume}
-                colors={['#CADCFC', '#A0B9D1']}
+              <div
+                className={cn(
+                  'h-full w-full rounded-full bg-gradient-to-br from-sky-200/90 to-primary/45 dark:from-sky-900/50 dark:to-primary/35',
+                  player.isPlaying && 'animate-pulse'
+                )}
               />
             </div>
           </div>
@@ -88,7 +54,7 @@ function AudioSectionContent() {
         <Card>
           <CardHeader>
             <div className="flex items-center gap-2 text-sm font-medium">
-              <Headphones className="size-4" aria-hidden />
+              <LiquidGlassIcon slug={LG.headphones} size={20} alt="" className="shrink-0" />
               {audio.tracksLabel} ({AUDIO_TRACKS.length})
             </div>
           </CardHeader>
@@ -131,6 +97,7 @@ function AudioSectionContent() {
       </div>
       </div>
       <OssVoicePanel />
+      <OllamaChatPanel />
     </div>
   );
 }
@@ -143,10 +110,10 @@ export function AudioSection() {
       aria-labelledby="audio-heading"
     >
       <BlockContainer>
-        <h2 id="audio-heading" className="text-2xl font-semibold tracking-tight sm:text-3xl md:text-4xl">
+        <h2 id="audio-heading" className="text-type-section-title">
           {audio.sectionTitle}
         </h2>
-        <p className="mt-2 text-muted-foreground">
+        <p className="text-type-lead mt-2 max-w-3xl">
           {audio.sectionDescription}
         </p>
         <AgentWaveformStrip />

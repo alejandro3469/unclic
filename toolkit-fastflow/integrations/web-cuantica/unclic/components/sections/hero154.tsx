@@ -1,15 +1,14 @@
 'use client';
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Clock, Send } from 'lucide-react';
-import { Controller, useForm } from 'react-hook-form';
-import { z } from 'zod';
+import Link from 'next/link';
 
+import { BlockContainer } from '@/components/blocks';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Button } from '@/components/ui/button';
-import { Field, FieldError, FieldLabel } from '@/components/ui/field';
-import { Input } from '@/components/ui/input';
+import { LiquidGlassIcon } from '@/components/ui/liquid-glass-icon';
 import { hero } from '@/lib/copy';
+import { routes } from '@/lib/routes';
+import { LG } from '@/lib/icons8-liquid-glass';
 import { cn } from '@/lib/utils';
 
 /** Dos líneas tipo “badges” bajo el form: primeros pilares de `hero.heroFeatures`. */
@@ -18,63 +17,6 @@ const trustFromHero = () => {
   const b = hero.heroFeatures[1]?.title ?? '';
   return { line1: a, line2: b };
 };
-
-const formSchema = z.object({
-  email: z.string().email('Correo no válido'),
-});
-
-type FormValues = z.infer<typeof formSchema>;
-
-function HeroForm() {
-  const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
-    defaultValues: { email: '' },
-  });
-
-  function onSubmit(values: FormValues) {
-    // Conecta aquí a Formspree, API o `/contacto?email=…`
-    if (typeof window !== 'undefined') {
-      console.log('[hero154 lead]', values);
-    }
-  }
-
-  return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
-      <div className="flex w-full flex-col items-start justify-center gap-2 sm:flex-row">
-        <Controller
-          control={form.control}
-          name="email"
-          render={({ field, fieldState }) => (
-            <Field className="w-full" data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor={field.name} className="sr-only">
-                Email
-              </FieldLabel>
-              <Input
-                {...field}
-                type="email"
-                id={field.name}
-                aria-invalid={fieldState.invalid}
-                placeholder={hero.leadEmailPlaceholder}
-                className="h-12 w-full rounded-lg px-3 py-2 text-center text-sm leading-loose"
-              />
-              {fieldState.invalid ? (
-                <FieldError errors={[fieldState.error]} />
-              ) : null}
-            </Field>
-          )}
-        />
-        <div className="w-full shrink-0 sm:w-fit">
-          <Button
-            type="submit"
-            className="h-fit w-full rounded-lg px-4 py-2.5 text-sm font-medium leading-loose sm:w-fit"
-          >
-            {hero.ctaPrimary}
-          </Button>
-        </div>
-      </div>
-    </form>
-  );
-}
 
 interface Hero154Props {
   className?: string;
@@ -94,37 +36,44 @@ export function Hero154({ className }: Hero154Props) {
         className
       )}
     >
-      <div className="container">
+      <BlockContainer>
         <div className="flex w-full flex-col items-center justify-center gap-16">
           <div className="flex flex-col justify-center gap-12">
             <div className="flex w-full max-w-[32.5rem] flex-col gap-6">
               {hero.heroEyebrow ? (
-                <p className="text-center text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-                  {hero.heroEyebrow}
-                </p>
+                <p className="text-type-eyebrow text-center tracking-[0.2em]">{hero.heroEyebrow}</p>
               ) : null}
               <h1
                 id="hero-headline"
-                className="text-center text-4xl font-medium tracking-tighter text-foreground md:text-5xl"
+                className="text-type-page-title text-center font-medium tracking-tighter text-foreground"
               >
-                {hero.headline}
+                <span className="block">{hero.headline}</span>
+                {hero.headlineAccent ? (
+                  <span className="mt-2 block text-gradient-impact">{hero.headlineAccent}</span>
+                ) : null}
               </h1>
-              <p className="text-center text-base text-muted-foreground">
-                {hero.subtitle}
-              </p>
-              <div className="mx-auto w-full max-w-[25.625rem]">
-                <HeroForm />
+              <p className="text-type-lead text-center">{hero.subtitle}</p>
+              <div className="mx-auto flex w-full max-w-[25.625rem] flex-col items-center gap-3">
+                <Button asChild size="lg" className="h-auto rounded-full px-8 py-4 text-base font-semibold">
+                  <Link href={routes.publicSignup} className="gap-2">
+                    {hero.ctaPrimary}
+                    <LiquidGlassIcon slug={LG.externalLink} size={22} alt="" className="shrink-0" />
+                  </Link>
+                </Button>
+                <p className="text-center text-xs text-muted-foreground">
+                  Mismo registro en todo el sitio: correo, verificación y contraseña.
+                </p>
               </div>
             </div>
             <div className="flex items-center justify-center gap-8">
               <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4 stroke-foreground" aria-hidden />
+                <LiquidGlassIcon slug={LG.clock} size={18} alt="" />
                 <div className="text-xs font-medium text-muted-foreground">
                   {line1}
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <Send className="h-4 w-4 stroke-foreground" aria-hidden />
+                <LiquidGlassIcon slug={LG.paperPlane} size={18} alt="" />
                 <div className="text-xs font-medium text-muted-foreground">
                   {line2}
                 </div>
@@ -164,7 +113,7 @@ export function Hero154({ className }: Hero154Props) {
             </div>
           </div>
         </div>
-      </div>
+      </BlockContainer>
     </section>
   );
 }

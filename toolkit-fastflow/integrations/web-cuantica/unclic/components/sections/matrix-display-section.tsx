@@ -1,13 +1,23 @@
 'use client';
 
 import { BlockContainer } from '@/components/blocks';
-import { Matrix, wave } from '@/components/ui/matrix';
 import { matrixDisplay } from '@/lib/copy';
 import { cn } from '@/lib/utils';
 
-/** Tamaño de cada celda del display (px). */
-const CELL_SIZE = 12;
-const CELL_GAP = 3;
+const COLS = 7;
+/** Patrón estático tipo “onda” (sin animación por frame). */
+const WAVE_PATTERN = [
+  [0, 0, 1, 1, 1, 0, 0],
+  [0, 1, 1, 1, 1, 1, 0],
+  [1, 1, 1, 1, 1, 1, 1],
+  [1, 1, 1, 1, 1, 1, 1],
+  [1, 1, 1, 1, 1, 1, 1],
+  [0, 1, 1, 1, 1, 1, 0],
+  [0, 0, 1, 1, 1, 0, 0],
+] as const satisfies readonly (readonly (0 | 1)[])[];
+
+const CELL = 12;
+const GAP = 3;
 
 export function MatrixDisplaySection() {
   return (
@@ -17,42 +27,43 @@ export function MatrixDisplaySection() {
       aria-labelledby="matrix-display-heading"
     >
       <BlockContainer>
-        <h2
-          id="matrix-display-heading"
-          className="sr-only"
-        >
+        <h2 id="matrix-display-heading" className="sr-only">
           {matrixDisplay.sectionTitle}
         </h2>
-        <p className="text-center text-sm text-muted-foreground mb-2">
+        <p className="mb-2 text-center text-sm text-muted-foreground">
           {matrixDisplay.sectionDescription}
         </p>
 
         <div
           className={cn(
-            'flex flex-col items-center justify-center gap-6',
-            'rounded-xl border border-border bg-muted/30 px-6 py-8',
-            'min-h-[180px]'
+            'flex min-h-[180px] flex-col items-center justify-center gap-6 rounded-xl border border-border bg-muted/30 px-6 py-8'
           )}
         >
           <div
-            className="flex items-center justify-center text-primary"
+            className="grid w-fit"
+            style={{
+              gridTemplateColumns: `repeat(${COLS}, ${CELL}px)`,
+              gap: GAP,
+            }}
             aria-hidden
           >
-            <Matrix
-              rows={7}
-              cols={7}
-              frames={wave}
-              fps={10}
-              autoplay
-              loop
-              size={CELL_SIZE}
-              gap={CELL_GAP}
-              palette={{
-                on: 'hsl(var(--primary))',
-                off: 'hsl(var(--muted-foreground) / 0.35)',
-              }}
-              brightness={1}
-            />
+            {WAVE_PATTERN.flatMap((row, r) =>
+              row.map((cell, c) => {
+                const on = Boolean(cell);
+                return (
+                  <div
+                    key={`${r}-${c}`}
+                    className={cn(
+                      'rounded-sm',
+                      on
+                        ? 'bg-primary shadow-[0_0_6px_hsl(var(--primary)/0.45)]'
+                        : 'bg-muted-foreground/25'
+                    )}
+                    style={{ width: CELL, height: CELL }}
+                  />
+                );
+              })
+            )}
           </div>
           <p
             className="font-mono text-xs uppercase tracking-widest text-muted-foreground"

@@ -2,7 +2,8 @@
 
 import { BlockContainer } from '@/components/blocks';
 import { clienteIdeal } from '@/lib/copy';
-import { CheckCircle2 } from 'lucide-react';
+import { LiquidGlassIcon } from '@/components/ui/liquid-glass-icon';
+import { LG } from '@/lib/icons8-liquid-glass';
 
 export function ClienteIdealSection() {
   return (
@@ -12,10 +13,7 @@ export function ClienteIdealSection() {
       aria-labelledby="cliente-ideal-heading"
     >
       <BlockContainer>
-        <h2
-          id="cliente-ideal-heading"
-          className="text-2xl font-semibold tracking-tight sm:text-3xl md:text-4xl"
-        >
+        <h2 id="cliente-ideal-heading" className="text-type-section-title">
           {clienteIdeal.title}
         </h2>
         <ul className="mt-6 space-y-4">
@@ -24,10 +22,9 @@ export function ClienteIdealSection() {
               key={item}
               className="flex gap-3 text-muted-foreground"
             >
-              <CheckCircle2
-                className="mt-0.5 size-5 shrink-0 text-green-600 dark:text-green-500"
-                aria-hidden
-              />
+              <span className="mt-0.5 shrink-0" aria-hidden>
+                <LiquidGlassIcon slug={LG.checked} size={22} alt="" />
+              </span>
               <span>{item}</span>
             </li>
           ))}

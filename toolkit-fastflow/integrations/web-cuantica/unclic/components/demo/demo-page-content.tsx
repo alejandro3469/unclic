@@ -8,6 +8,7 @@ import { BlockContainer } from '@/components/blocks';
 import { DEMO_LINKS } from '@/lib/demos';
 import { demos, loginPage, nav } from '@/lib/copy';
 import { DEMO_SCOPE_KEY } from '@/components/demo/demo-gate';
+import { routes } from '@/lib/routes';
 
 export function DemoPageContent() {
   const jenkins = DEMO_LINKS.find((d) => d.id === 'jenkins');
@@ -27,13 +28,13 @@ export function DemoPageContent() {
       <header className="border-b border-border bg-background">
         <BlockContainer className="flex h-14 items-center justify-between">
           <Button variant="ghost" size="sm" asChild>
-            <Link href="/" className="gap-2" aria-label={nav.home}>
+            <Link href={routes.home} className="gap-2" aria-label={nav.home}>
               <ArrowLeft className="size-4" aria-hidden />
               {nav.backToHome}
             </Link>
           </Button>
           <Button variant="ghost" size="sm" asChild>
-            <Link href="/login">Cambiar sesión</Link>
+            <Link href={routes.login}>Cambiar sesión</Link>
           </Button>
         </BlockContainer>
       </header>
@@ -41,7 +42,7 @@ export function DemoPageContent() {
       <main id="main-content" className="flex-1 py-12 md:py-16">
         <BlockContainer className="space-y-10">
           <div>
-            <h1 className="font-serif text-2xl font-semibold tracking-tight sm:text-3xl">
+            <h1 className="text-type-section-title font-semibold">
               Demo Pipeline as Code
             </h1>
             <p className="mt-2 text-muted-foreground">
@@ -53,7 +54,7 @@ export function DemoPageContent() {
             {posOnly ? (
               <p className="mt-3 rounded-lg border border-amber-500/25 bg-amber-500/5 px-4 py-3 text-sm text-amber-950 dark:text-amber-100/90">
                 {loginPage.scopePosNote}{' '}
-                <Link href="/login" className="font-semibold text-primary underline-offset-2 hover:underline">
+                <Link href={routes.login} className="font-semibold text-primary underline-offset-2 hover:underline">
                   Hub demo
                 </Link>
                 .
@@ -80,7 +81,7 @@ export function DemoPageContent() {
                   <Lock className="size-5 text-muted-foreground" aria-hidden />
                   <span className="text-sm text-muted-foreground">Jenkins — modo Hub demo</span>
                   <Button asChild variant="outline" size="sm">
-                    <Link href="/login">Iniciar sesión</Link>
+                    <Link href={routes.login}>Iniciar sesión</Link>
                   </Button>
                 </div>
               ) : (
@@ -97,7 +98,7 @@ export function DemoPageContent() {
                   <Lock className="size-5 text-muted-foreground" aria-hidden />
                   <span className="text-sm text-muted-foreground">Gitea — modo Hub demo</span>
                   <Button asChild variant="outline" size="sm">
-                    <Link href="/login">Iniciar sesión</Link>
+                    <Link href={routes.login}>Iniciar sesión</Link>
                   </Button>
                 </div>
               ) : (

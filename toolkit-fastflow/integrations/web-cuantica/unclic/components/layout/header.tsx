@@ -2,7 +2,7 @@
 
 import { Fragment, useState } from 'react';
 import Link from 'next/link';
-import { Menu, Mail, Search, X, Linkedin, Github, ChevronDown } from 'lucide-react';
+import { Menu, Search, X, Linkedin, Github, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Sheet,
@@ -21,7 +21,12 @@ import { BlockContainer } from '@/components/blocks';
 import { UnClicLogo } from '@/components/ui/unclic-logo';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
-import { nav, navDropdowns, site } from '@/lib/copy';
+import { nav, navDropdowns } from '@/lib/copy';
+import { routes } from '@/lib/routes';
+
+/** Misma barra que ui.shadcn.com / Blocks: borde + fondo semitransparente + blur (token `glass-subtle`). */
+const HEADER_BAR =
+  'sticky top-0 z-50 w-full border-b border-border/80 glass-subtle';
 
 const menuLinkStyle =
   'uppercase text-xs font-semibold px-3 py-2 text-muted-foreground transition-colors hover:text-foreground';
@@ -37,9 +42,9 @@ export function Header() {
 
   if (isMobile === undefined) {
     return (
-      <header className="sticky top-0 z-50 w-full border-b border-border/80 glass-subtle">
+      <header className={HEADER_BAR}>
         <BlockContainer className="flex min-h-[4.375rem] items-center justify-between">
-          <Link href="/" className="flex items-center font-medium" aria-label={nav.home}>
+          <Link href={routes.home} className="flex items-center font-medium" aria-label={nav.home}>
             <UnClicLogo size={32} />
           </Link>
         </BlockContainer>
@@ -75,9 +80,9 @@ export function Header() {
     <div className="w-full">
       {isMobile ? (
         <Fragment>
-          <nav className="sticky top-0 z-50 min-h-14 border-b border-border/80 bg-background/95 backdrop-blur-md">
-            <div className="flex h-full items-center gap-2 px-3 sm:px-4">
-              <Link href="/" className="flex items-center gap-2" aria-label={nav.home}>
+          <nav className={cn(HEADER_BAR, 'min-h-14')}>
+            <BlockContainer className="flex min-h-14 items-center gap-2 py-1">
+              <Link href={routes.home} className="flex items-center gap-2" aria-label={nav.home}>
                 <UnClicLogo size={32} />
               </Link>
               <div className="ml-auto flex items-center gap-0.5">
@@ -98,11 +103,8 @@ export function Header() {
                 <Button variant="ghost" size="icon" aria-label="Buscar">
                   <Search className="size-5" />
                 </Button>
-                <Button asChild size="sm" variant="ghost" className="hidden sm:inline-flex text-xs">
-                  <Link href="/login">{nav.login}</Link>
-                </Button>
                 <Button asChild size="sm" variant="default" className="hidden sm:inline-flex">
-                  <Link href="/demo/access">{nav.ctaPrimary}</Link>
+                  <Link href={routes.publicSignup}>{nav.ctaPrimary}</Link>
                 </Button>
                 <Button
                   variant="ghost"
@@ -113,7 +115,7 @@ export function Header() {
                   <Menu className="size-5" />
                 </Button>
               </div>
-            </div>
+            </BlockContainer>
           </nav>
           <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
             <SheetContent
@@ -139,7 +141,7 @@ export function Header() {
                     {nav.groupConnect}
                   </span>
                   <Link
-                    href="/empresa"
+                    href={routes.empresa}
                     onClick={() => setSheetOpen(false)}
                     className={cn(
                       'flex w-full border-b border-border py-4 px-2 text-sm font-semibold',
@@ -149,7 +151,7 @@ export function Header() {
                     {nav.company}
                   </Link>
                   <Link
-                    href="/contacto"
+                    href={routes.publicSignup}
                     onClick={() => setSheetOpen(false)}
                     className={cn(
                       'flex w-full border-b border-border py-4 px-2 text-sm font-semibold',
@@ -158,30 +160,30 @@ export function Header() {
                   >
                     {nav.contact}
                   </Link>
-                  <Link
-                    href="/login"
-                    onClick={() => setSheetOpen(false)}
-                    className="mt-4 flex w-full items-center justify-center rounded-md border border-border py-3 text-sm font-semibold"
-                  >
-                    {nav.login}
-                  </Link>
-                  <Link
-                    href="/demo/access"
-                    onClick={() => setSheetOpen(false)}
-                    className="mt-2 flex w-full items-center justify-center rounded-md bg-primary py-3 text-sm font-semibold text-primary-foreground"
-                  >
-                    {nav.ctaPrimary}
-                  </Link>
+                  <p className="mt-4 px-2 text-xs text-muted-foreground">
+                    <Link href={routes.login} onClick={() => setSheetOpen(false)} className="font-medium text-foreground underline-offset-4 hover:underline">
+                      {nav.login}
+                    </Link>
+                    {' · '}
+                    <Link href={routes.portal} onClick={() => setSheetOpen(false)} className="font-medium text-foreground underline-offset-4 hover:underline">
+                      {nav.portalDemos}
+                    </Link>
+                  </p>
+                  <Button asChild variant="default" className="mt-4 w-full">
+                    <Link href={routes.publicSignup} onClick={() => setSheetOpen(false)}>
+                      {nav.ctaPrimary}
+                    </Link>
+                  </Button>
                 </div>
               </div>
             </SheetContent>
           </Sheet>
         </Fragment>
       ) : (
-        <header className="sticky top-0 z-50 w-full border-b border-border/80 glass-subtle">
+        <header className={HEADER_BAR}>
           <nav aria-label="Navegación principal">
             <BlockContainer className="flex min-h-[4.375rem] flex-wrap items-center gap-x-1 gap-y-2 py-2 md:flex-nowrap">
-            <Link href="/" className="mr-2 flex shrink-0 items-center font-medium" aria-label={nav.home}>
+            <Link href={routes.home} className="mr-2 flex shrink-0 items-center font-medium" aria-label={nav.home}>
               <UnClicLogo size={32} className="shrink-0" />
             </Link>
             <div className="flex flex-1 flex-wrap items-center gap-0 lg:gap-1">
@@ -205,10 +207,10 @@ export function Header() {
                   </DropdownMenuContent>
                 </DropdownMenu>
               ))}
-              <Link href="/empresa" className={menuLinkStyle}>
+              <Link href={routes.empresa} className={menuLinkStyle}>
                 {nav.company}
               </Link>
-              <Link href="/contacto" className={menuLinkStyle}>
+              <Link href={routes.publicSignup} className={menuLinkStyle}>
                 {nav.contact}
               </Link>
             </div>
@@ -230,17 +232,19 @@ export function Header() {
               <Button variant="ghost" size="icon" aria-label="Buscar">
                 <Search className="size-5" />
               </Button>
-              <Button asChild variant="ghost" size="sm" className="hidden lg:inline-flex">
-                <Link href="/contacto" className="gap-1.5 text-xs uppercase">
-                  <Mail className="size-3.5" aria-hidden />
-                  {nav.contact}
+              <span className="ml-1 hidden items-center gap-2 lg:inline-flex">
+                <Link href={routes.login} className="text-xs font-semibold uppercase text-muted-foreground transition-colors hover:text-foreground">
+                  {nav.login}
                 </Link>
-              </Button>
-              <Button asChild size="sm" variant="ghost" className="ml-1 text-xs uppercase">
-                <Link href="/login">{nav.login}</Link>
-              </Button>
+                <span className="text-muted-foreground/40" aria-hidden>
+                  |
+                </span>
+                <Link href={routes.portal} className="text-xs font-semibold uppercase text-muted-foreground transition-colors hover:text-foreground">
+                  {nav.portalDemos}
+                </Link>
+              </span>
               <Button asChild size="sm" variant="default" className="ml-1">
-                <Link href="/demo/access">{nav.ctaPrimary}</Link>
+                <Link href={routes.publicSignup}>{nav.ctaPrimary}</Link>
               </Button>
             </div>
             </BlockContainer>

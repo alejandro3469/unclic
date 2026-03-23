@@ -1,5 +1,6 @@
 import { Banknote, Repeat, ShoppingBag, ShoppingCart } from "lucide-react";
 
+import { BlockContainer } from "@/components/blocks";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -16,7 +17,7 @@ const Hero125 = ({ className }: Hero125Props) => {
         className,
       )}
     >
-      <div className="relative container">
+      <BlockContainer className="relative">
         <img
           src="https://deifkwefumgah.cloudfront.net/shadcnblocks/block/patterns/circles.svg"
           alt=""
@@ -28,10 +29,10 @@ const Hero125 = ({ className }: Hero125Props) => {
               <ShoppingCart className="h-6 w-6 fill-primary stroke-primary" />
               <p className="text-lg font-semibold">Returns</p>
             </div>
-            <h1 className="text-5xl leading-tight! font-semibold xl:text-6xl">
+            <h1 className="text-type-hero leading-tight! font-semibold">
               Go beyond managing returns, take control and perfect them.
             </h1>
-            <p className="text-2xl leading-snug text-muted-foreground">
+            <p className="text-type-lead max-w-prose">
               Create tailored return policies that boost retention and keep your
               customers thrilled.
             </p>
@@ -76,7 +77,7 @@ const Hero125 = ({ className }: Hero125Props) => {
             </div>
           </div>
         </div>
-      </div>
+      </BlockContainer>
     </section>
   );
 };

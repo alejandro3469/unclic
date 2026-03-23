@@ -22,6 +22,7 @@ import {
 } from '@/components/ui/carousel';
 import { BlockContainer } from '@/components/blocks';
 import { socialTrendingCarousel } from '@/lib/copy';
+import { routes } from '@/lib/routes';
 import {
   GALLERY_PLACEHOLDERS,
   PLACEHOLDER_VIDEO_URL,
@@ -47,60 +48,60 @@ const POSTS: Post[] = [
     name: 'UnClic Demos',
     userAvatar: GALLERY_PLACEHOLDERS[0],
     username: '@unclic-demos',
-    profileLink: '/soluciones#demos',
+    profileLink: routes.solucionesDemos,
     video: PLACEHOLDER_VIDEO_URL,
     product: {
       image: GALLERY_PLACEHOLDERS[0],
       name: 'Demos en vivo',
-      href: '/soluciones#demos',
+      href: routes.solucionesDemos,
     },
   },
   {
     name: 'Pipeline as Code',
     userAvatar: GALLERY_PLACEHOLDERS[1],
     username: '@unclic-pipeline',
-    profileLink: '/capacidades#flow',
+    profileLink: routes.capacidadesFlow,
     video: PLACEHOLDER_VIDEO_URL,
     product: {
       image: GALLERY_PLACEHOLDERS[2],
       name: 'Flujo CI/CD',
-      href: '/capacidades#flow',
+      href: routes.capacidadesFlow,
     },
   },
   {
     name: 'UnClic Precios',
     userAvatar: GALLERY_PLACEHOLDERS[2],
     username: '@unclic-precios',
-    profileLink: '/soluciones#pricing',
+    profileLink: routes.solucionesPricing,
     video: PLACEHOLDER_VIDEO_URL,
     product: {
       image: GALLERY_PLACEHOLDERS[3],
       name: 'Precios',
-      href: '/soluciones#pricing',
+      href: routes.solucionesPricing,
     },
   },
   {
     name: 'UnClic Contacto',
     userAvatar: GALLERY_PLACEHOLDERS[3],
     username: '@unclic',
-    profileLink: '/contacto',
+    profileLink: routes.publicSignup,
     video: PLACEHOLDER_VIDEO_URL,
     product: {
       image: GALLERY_PLACEHOLDERS[4],
-      name: 'Contacto',
-      href: '/contacto',
+      name: 'Crear cuenta',
+      href: routes.publicSignup,
     },
   },
   {
     name: 'UnClic Galería',
     userAvatar: GALLERY_PLACEHOLDERS[4],
     username: '@unclic-galeria',
-    profileLink: '/insights#gallery',
+    profileLink: routes.insightsGallery,
     video: PLACEHOLDER_VIDEO_URL,
     product: {
       image: GALLERY_PLACEHOLDERS[5],
       name: 'Galería',
-      href: '/insights#gallery',
+      href: routes.insightsGallery,
     },
   },
 ];
@@ -222,16 +223,19 @@ export function SocialTrendingCarouselSection() {
     >
       <BlockContainer>
         {socialTrendingCarousel.kicker ? (
-          <p className="mb-2 text-center text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+          <p className="text-type-eyebrow-accent mb-2 text-center tracking-[0.2em]">
             {socialTrendingCarousel.kicker}
           </p>
         ) : null}
         <h2
           id="social-trending-carousel-heading"
-          className="mb-8 text-center font-serif text-2xl font-medium leading-snug md:text-3xl"
+          className="text-type-section-title mx-auto mb-2 max-w-3xl text-center font-medium leading-snug"
         >
           {socialTrendingCarousel.sectionTitle}
         </h2>
+        <p className="text-type-body-sm mx-auto mb-8 max-w-2xl text-center md:text-base">
+          {socialTrendingCarousel.sectionDescription}
+        </p>
         <Carousel
           opts={{ align: 'start' }}
           className="[&>div]:overflow-visible"

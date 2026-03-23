@@ -13,13 +13,10 @@ export function VideoSection() {
       aria-labelledby="video-heading"
     >
       <BlockContainer>
-        <h2
-          id="video-heading"
-          className="text-2xl font-semibold tracking-tight sm:text-3xl md:text-4xl"
-        >
+        <h2 id="video-heading" className="text-type-section-title">
           {video.sectionTitle}
         </h2>
-        <p className="mt-2 text-muted-foreground">
+        <p className="text-type-lead mt-2 max-w-2xl">
           {video.sectionDescription}
         </p>
 

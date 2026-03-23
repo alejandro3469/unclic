@@ -1,5 +1,6 @@
 "use client";
 import clsx from "clsx";
+import Image from "next/image";
 import {
   ChevronLeft,
   ChevronRight,
@@ -13,12 +14,6 @@ import {
   X,
 } from "lucide-react";
 import { type CSSProperties, Fragment, useState } from "react";
-
-import {
-  Logo,
-  LogoImage,
-  LogoTextDesktop,
-} from "@/components/shadcnblocks/logo";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -132,6 +127,7 @@ interface MenuLinksProps {
 
 interface MobileNavProps {
   menu: MenuItemType[];
+  home: HomeLink;
   socialLinks?: SocialLink[];
   helpfulLinks?: HelpfullLink[];
   contactInfo?: ContactInfoItem[];
@@ -361,6 +357,7 @@ const EcommerceNavbar1 = ({
         <div className="md:hidden">
           <MobileNav
             menu={menu}
+            home={home}
             helpfulLinks={helpfulLinks}
             socialLinks={socialLinks}
             contactInfo={contactInfo}
@@ -374,16 +371,21 @@ const EcommerceNavbar1 = ({
           <NavigationMenuList asChild className="h-fit min-h-17.5 px-7.5">
             <div className="flex items-center gap-6">
               <div>
-                <Logo url={home.href}>
-                  <LogoImage
+                <a
+                  href={home.href}
+                  className="flex max-h-8 items-center gap-2"
+                >
+                  <Image
                     src={home.logo.src}
                     alt={home.logo.alt}
+                    width={32}
+                    height={32}
                     className="size-8 dark:invert"
                   />
-                  <LogoTextDesktop className="font-medium text-foreground">
+                  <span className="hidden text-lg font-semibold tracking-tighter text-foreground md:flex md:font-medium">
                     Shadcnblocks.com
-                  </LogoTextDesktop>
-                </Logo>
+                  </span>
+                </a>
               </div>
               <div className="flex items-center gap-1">
                 {menu.map((item, index) => (
@@ -571,6 +573,7 @@ const CountrySelector = ({ className }: { className?: string }) => {
 
 const MobileNav = ({
   menu,
+  home,
   socialLinks,
   helpfulLinks,
   contactInfo,
@@ -625,13 +628,15 @@ const MobileNav = ({
     <Fragment>
       <nav className="h-15 border-b bg-background">
         <div className="flex h-full items-center gap-4 px-4">
-          <Logo url="https://shadcnblocks.com">
-            <LogoImage
-              src="https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/shadcnblockscom-icon.svg"
-              alt="Shadcnblocks.com"
+          <a href={home.href} className="flex max-h-8 items-center gap-2">
+            <Image
+              src={home.logo.src}
+              alt={home.logo.alt}
+              width={32}
+              height={32}
               className="size-8 dark:invert"
             />
-          </Logo>
+          </a>
           <div className="ml-auto flex items-center gap-2">
             <SecondaryNav />
             <Button onClick={handleSheet} size="icon" variant="ghost">

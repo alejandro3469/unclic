@@ -34,7 +34,8 @@ export function OssAtlasInteractiveSection() {
 
   return (
     <section
-      className="border-b border-border py-16 md:py-24"
+      id="oss-atlas"
+      className="scroll-mt-24 border-b border-border py-16 md:py-24"
       aria-labelledby="oss-atlas-filter-heading"
     >
       <BlockContainer>
