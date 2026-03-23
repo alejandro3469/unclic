@@ -3,88 +3,100 @@
 @tailwind utilities;
 
 /*
- * Nord theme — Arctic, north-bluish palette.
- * Polar Night (nord0–3), Snow Storm (nord4–6), Frost (nord7–10), Aurora (nord11–15).
- * Typography: Roboto + Space Mono (Google Fonts pairing).
- * Enterprise: section spacing, content width, typography scale, card radius.
- * Structure base: sequoia.com (eyebrow → H1 → lead → metrics → CTA; nav/footer hierarchy).
+ * Tema semántico alineado a shadcn **Nova + Inter** (ui.shadcn.com):
+ * variables --background, --foreground, --primary, --chart-1…5, etc.
+ * Paleta **Nord** (--nord0–15) se mantiene para utilidades Tailwind `nord/*` y secciones marca.
+ * Tipografía: **Inter** (cuerpo + títulos); **Space Mono** (`font-mono`); **Ubuntu** solo logo.
  */
 @layer base {
   :root {
-    /* Nord palette (hex reference) — nord0 #2E3440 … nord15 #B48EAD */
-    --nord0: 220 16% 22%;   /* Polar Night */
+    /* Nord — referencia decorativa / utilidades bg-nord-* (opcional) */
+    --nord0: 220 16% 22%;
     --nord1: 218 19% 27%;
     --nord2: 218 20% 33%;
     --nord3: 218 17% 40%;
-    --nord4: 218 27% 88%;   /* Snow Storm */
+    --nord4: 218 27% 88%;
     --nord5: 218 27% 92%;
     --nord6: 218 27% 96%;
-    --nord7: 178 25% 65%;   /* Frost */
+    --nord7: 178 25% 65%;
     --nord8: 193 43% 65%;
     --nord9: 213 32% 63%;
     --nord10: 213 33% 52%;
-    --nord11: 354 42% 56%;  /* Aurora */
+    --nord11: 354 42% 56%;
     --nord12: 14 51% 63%;
     --nord13: 40 71% 73%;
     --nord14: 92 28% 63%;
     --nord15: 311 20% 60%;
 
-    --font-sans: var(--font-roboto), ui-sans-serif, system-ui, sans-serif;
-    --font-serif: var(--font-space-mono), ui-monospace, monospace;
+    --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+    --font-serif: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 
-    /* Light theme: Snow Storm bg, Polar Night text, Frost primary */
-    --background: var(--nord6);
-    --foreground: var(--nord0);
-    --card: var(--nord6);
-    --card-foreground: var(--nord0);
-    --primary: var(--nord10);
-    --primary-foreground: var(--nord6);
-    --muted: var(--nord5);
-    --muted-foreground: var(--nord3);
-    --border: var(--nord4);
-    --input: var(--nord4);
-    --ring: var(--nord10);
+    /* Light — zinc / shadcn default (compatible Blocks + charts) */
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 5.9% 10%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+
     --radius: 0.5rem;
-    --radius-card: 1.5rem;   /* 24px — enterprise card style */
-    --accent: var(--nord8);
-    --accent-foreground: var(--nord0);
-    /* Shadcn Blocks compatibility */
-    --popover: var(--nord6);
-    --popover-foreground: var(--nord0);
-    --secondary: var(--nord5);
-    --secondary-foreground: var(--nord0);
-    --destructive: var(--nord11);
-    --destructive-foreground: var(--nord6);
+    --radius-card: 0.75rem;
 
-    /* Enterprise layout */
-    --content-max: 72rem;      /* 1152px, align with max-w-6xl */
-    --content-wide: 80rem;     /* 1280px */
-    --section-padding-y: 4rem; /* 64px base */
+    /* Acento impacto — armonizado con chart / primary */
+    --impact-from: 240 5.9% 10%;
+    --impact-mid: 220 70% 48%;
+    --impact-to: 197 55% 42%;
+
+    --content-max: 72rem;
+    --content-wide: 80rem;
+    --section-padding-y: 4rem;
     --section-padding-y-md: 5rem;
     --section-padding-y-lg: 6rem;
   }
 
   .dark {
-    /* Dark theme: Polar Night bg, Snow Storm text, Frost primary */
-    --background: var(--nord0);
-    --foreground: var(--nord4);
-    --card: var(--nord1);
-    --card-foreground: var(--nord4);
-    --primary: var(--nord8);
-    --primary-foreground: var(--nord0);
-    --muted: var(--nord1);
-    --muted-foreground: var(--nord4);
-    --border: var(--nord2);
-    --input: var(--nord2);
-    --ring: var(--nord8);
-    --accent: var(--nord2);
-    --accent-foreground: var(--nord4);
-    --popover: var(--nord1);
-    --popover-foreground: var(--nord4);
-    --secondary: var(--nord2);
-    --secondary-foreground: var(--nord4);
-    --destructive: var(--nord11);
-    --destructive-foreground: var(--nord4);
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
   }
 }
 
@@ -92,37 +104,33 @@
   * {
     @apply border-border;
   }
+  /* Cuerpo: 16px fijo (WCAG / Material baseline); sin salto en md para evitar mezcla con títulos. */
   body {
     @apply bg-background font-sans text-foreground antialiased;
     font-size: 1rem;
     line-height: 1.6;
-    letter-spacing: 0.01em;
+    letter-spacing: -0.011em;
   }
-  /* Enterprise body text — slightly larger for readability (Sequoia-style ~19px) */
-  @media (min-width: 768px) {
-    body {
-      font-size: 1.1875rem; /* 19px */
-    }
-  }
-  /* Space Mono for headings — pairing with Roboto body */
-  h1, h2, h3 {
-    @apply font-serif;
+  /* Títulos: Inter + peso (patrón shadcn / Nova) */
+  h1,
+  h2,
+  h3 {
+    @apply font-sans tracking-tight text-foreground;
   }
   h1 {
-    font-weight: 300;
-    letter-spacing: -0.02em;
-    line-height: 1.15;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
   }
   h2 {
-    font-weight: 700;
-    letter-spacing: -0.015em;
-    line-height: 1.2;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
   }
   h3 {
     font-weight: 600;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.015em;
   }
-  /* h4–h6 stay sans (Roboto) unless overridden */
 }
 
 @keyframes unclic-agent-wavebar {
@@ -153,17 +161,14 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Hash links: leave space for sticky header so target is not hidden */
 [id] {
   scroll-margin-top: 5.5rem;
 }
 
-/* Contenedor estándar del sitio */
 .site-container {
   @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
 }
 
-/* Enterprise section padding — consistent vertical rhythm */
 @layer utilities {
   .section-padding {
     padding-top: var(--section-padding-y);
@@ -181,11 +186,86 @@ html {
       padding-bottom: var(--section-padding-y-lg);
     }
   }
-  /* Glass / backdrop for nav and cards */
   .glass-subtle {
     @apply bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/70;
   }
   .animate-unclic-agent-wavebar {
     animation: unclic-agent-wavebar 0.9s ease-in-out infinite alternate;
+  }
+
+  .text-gradient-impact {
+    background-image: linear-gradient(
+      120deg,
+      hsl(var(--impact-from)) 0%,
+      hsl(var(--impact-mid)) 45%,
+      hsl(var(--impact-to)) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .btn-impact {
+    border: none;
+    background-image: linear-gradient(
+      125deg,
+      hsl(var(--impact-from)) 0%,
+      hsl(var(--impact-mid)) 48%,
+      hsl(var(--impact-to)) 100%
+    );
+    color: hsl(var(--primary-foreground));
+    box-shadow: 0 4px 24px -4px hsl(var(--primary) / 0.35);
+  }
+  .btn-impact:hover {
+    filter: brightness(1.06);
+    color: hsl(var(--primary-foreground));
+  }
+
+  .bg-section-manifesto {
+    background: linear-gradient(
+      180deg,
+      hsl(240 10% 8%) 0%,
+      hsl(240 8% 12%) 50%,
+      hsl(240 10% 8%) 100%
+    );
+    color: hsl(0 0% 92%);
+  }
+
+  /**
+   * Escala tipográfica UNCLIC (Inter única; sin serif decorativa).
+   * Referencia: escala modular ~1.25 (12–14–16–18–20–24–30–36); hero con tope ~56px (evita 7xl/8xl).
+   */
+  .text-type-hero {
+    font-size: clamp(2rem, 4vw + 0.85rem, 3.5rem);
+    line-height: 1.1;
+    letter-spacing: -0.032em;
+  }
+  .text-type-page-title {
+    font-size: clamp(1.75rem, 2.2vw + 1rem, 2.5rem);
+    line-height: 1.15;
+    letter-spacing: -0.028em;
+  }
+  .text-type-section-title {
+    @apply text-2xl font-semibold tracking-tight text-foreground md:text-3xl;
+    line-height: 1.22;
+  }
+  .text-type-card-title {
+    @apply text-lg font-semibold tracking-tight text-foreground md:text-xl;
+    line-height: 1.3;
+  }
+  .text-type-lead {
+    @apply max-w-prose text-base leading-relaxed text-muted-foreground md:text-lg;
+  }
+  .text-type-body-sm {
+    @apply text-sm leading-relaxed text-muted-foreground;
+  }
+  .text-type-eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground;
+  }
+  .text-type-eyebrow-accent {
+    @apply text-xs font-semibold uppercase tracking-[0.14em] text-primary;
+  }
+  .text-type-stat {
+    @apply text-2xl font-bold tracking-tight text-gradient-impact md:text-3xl;
   }
 }

@@ -24,20 +24,13 @@ export function BlockSectionHeader({
   return (
     <div className={cn('space-y-4 text-center', className)}>
       {eyebrow ? (
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
-          {eyebrow}
-        </p>
+        <p className="text-type-eyebrow-accent tracking-[0.2em]">{eyebrow}</p>
       ) : null}
-      <Title
-        id={titleId}
-        className="text-display-sm font-bold tracking-tight text-foreground sm:text-display-md md:text-display-lg"
-      >
+      <Title id={titleId} className="text-type-section-title font-bold">
         {title}
       </Title>
       {description ? (
-        <p className="mx-auto max-w-2xl text-body-lg text-muted-foreground">
-          {description}
-        </p>
+        <p className="text-type-lead mx-auto max-w-2xl text-center">{description}</p>
       ) : null}
     </div>
   );
@@ -62,22 +55,11 @@ export function BlockSectionHeaderLeft({
   const Title = titleAs;
   return (
     <div className={cn('space-y-2', className)}>
-      {eyebrow ? (
-        <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-          {eyebrow}
-        </p>
-      ) : null}
-      <Title
-        id={titleId}
-        className="text-display-sm font-semibold tracking-tight text-foreground sm:text-display-md md:text-display-lg"
-      >
+      {eyebrow ? <p className="text-type-eyebrow tracking-wider">{eyebrow}</p> : null}
+      <Title id={titleId} className="text-type-section-title">
         {title}
       </Title>
-      {description ? (
-        <p className="max-w-3xl text-body-lg text-muted-foreground">
-          {description}
-        </p>
-      ) : null}
+      {description ? <p className="text-type-lead max-w-3xl">{description}</p> : null}
     </div>
   );
 }

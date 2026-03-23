@@ -1,6 +1,6 @@
 import type { Config } from 'tailwindcss';
 
-/** Nord theme — Arctic, north-bluish palette (Polar Night, Snow Storm, Frost, Aurora). */
+/** Semántica tipo shadcn Nova + zinc; paleta `nord` sigue en tokens para utilidades legacy. */
 const config: Config = {
   darkMode: ['class'],
   content: [
@@ -8,12 +8,29 @@ const config: Config = {
     './components/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    /** Alineado a `BlockContainer`: mismo padding horizontal y tope 72rem en todos los breakpoints. */
+    container: {
+      center: true,
+      padding: {
+        DEFAULT: '1rem',
+        sm: '1.5rem',
+        lg: '2rem',
+      },
+      screens: {
+        sm: '72rem',
+        md: '72rem',
+        lg: '72rem',
+        xl: '72rem',
+        '2xl': '72rem',
+      },
+    },
     extend: {
       fontFamily: {
-        sans: ['var(--font-roboto)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        serif: ['var(--font-space-mono)', 'ui-serif', 'monospace'],
+        sans: ['var(--font-inter)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        /** Display / títulos: mismo Inter que body (patrón ui.shadcn.com Nova). */
+        serif: ['var(--font-inter)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
         mono: ['var(--font-space-mono)', 'ui-monospace', 'monospace'],
-        roboto: ['var(--font-roboto)', 'ui-sans-serif', 'sans-serif'],
+        inter: ['var(--font-inter)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
         'space-mono': ['var(--font-space-mono)', 'ui-monospace', 'monospace'],
         ubuntu: ['var(--font-ubuntu)', 'ui-sans-serif', 'sans-serif'],
       },
@@ -48,6 +65,13 @@ const config: Config = {
         destructive: {
           DEFAULT: 'hsl(var(--destructive))',
           foreground: 'hsl(var(--destructive-foreground))',
+        },
+        chart: {
+          1: 'hsl(var(--chart-1))',
+          2: 'hsl(var(--chart-2))',
+          3: 'hsl(var(--chart-3))',
+          4: 'hsl(var(--chart-4))',
+          5: 'hsl(var(--chart-5))',
         },
         /* Nord palette — use as bg-nord-7, text-nord-10, border-nord-3, etc. */
         nord: {
