@@ -2,8 +2,11 @@
 
 **Propósito:** una sola fuente para **qué ya está integrado en el repo**, **qué está en curso** y **pasos sin ambigüedad** por etapa (E0–E5). Así reduces *guesswork* al implementar y sabes **qué puedes mencionar en CV/portafolio** solo cuando el ítem pase a **Hecho**.
 
+> **Alcance:** plan y evidencias para **UnClic** (implementación en `toolkit-fastflow/integrations/web-cuantica/unclic`; deploy vía repo **nucleic**). No es documentación “para George” ni handoff genérico. Ver [ALCANCE-REPO-UNClic-Y-NUCLEIC.md](ALCANCE-REPO-UNClic-Y-NUCLEIC.md).
+
 **Documentos relacionados**
 
+- Alcance repo + nucleic: [ALCANCE-REPO-UNClic-Y-NUCLEIC.md](ALCANCE-REPO-UNClic-Y-NUCLEIC.md)  
 - **Mapa único** (capas + micros + módulos + adaptadores): [MAPA-STACK-OSS-UNIFICADO-CAPAS-MICROS-ADAPTADORES.md](MAPA-STACK-OSS-UNIFICADO-CAPAS-MICROS-ADAPTADORES.md)  
 - **Comunicaciones + arquitectura alto/medio/bajo por componente:** [COMUNICACIONES-Y-ARQUITECTURA-POR-COMPONENTE-NIVELES.md](COMUNICACIONES-Y-ARQUITECTURA-POR-COMPONENTE-NIVELES.md)  
 - **Guías de implementación + ejemplos copiables (prod):** [implementacion/README.md](implementacion/README.md)  
@@ -41,6 +44,7 @@
 | Leads correo (dev Next) | L13 | **Hecho** | `app/api/lead-email/route.ts` | — |
 | Leads correo (prod estática) | L13 | **Hecho** | `services/api` + `NEXT_PUBLIC_UNCLIC_API_URL` + [LEADS-CORREO-GMAIL-SMTP.md](LEADS-CORREO-GMAIL-SMTP.md) | Desplegar API en VPS/Docker con env en prod |
 | Microservicio API | L5 | **Hecho** | `services/api/`, `openapi/openapi.yaml` | Añadir endpoint Stripe cuando exista spec |
+| **Portal `/portal` + login + JWT + demos protegidas** | L10 / L17 | **Hecho** | `services/api/src/auth/*`, `components/demo/demo-gate.tsx`, [PORTAL-AUTH-JWT-EMAIL.md](PORTAL-AUTH-JWT-EMAIL.md) | En prod: `AUTH_JWT_SECRET`, `PORTAL_PUBLIC_URL`, SMTP; alinear `NEXT_PUBLIC_PORTAL_AUTH_REQUIRED` con política de demos |
 | Microservicio ping + orquestación | L5 | **Hecho** | `services/ping/`, `GET /v1/orchestration/health` | — |
 | Docker Compose local | L5 | **Hecho** | `docker-compose.yml` | Ejecutar `docker compose up` en máquina con Docker |
 | Pruebas automatizadas servicios | L2 | **Hecho** | `npm run test:services`, Jenkins `Test API` + ping | — |
@@ -49,6 +53,10 @@
 | Gmail SMTP variables | L13 | **En curso** | `.env.example` | Copiar a `.env.local` / servidor y probar POST lead |
 | CORS producción | L9 | **En curso** | `CORS_ORIGINS` en API | Fijar dominio real `https://unclic.consulting` en env del API |
 | Stripe webhook → API | L14 | **Pendiente** | — | Crear `POST /v1/webhooks/stripe` + firma + test key |
+| **Polar** (billing SaaS, usage/IA, MoR, Next adapter) | L14 + L19 (eventos) | **Alternativa / Pendiente** | [polar.sh](https://polar.sh) · [PAGOS-BILLING-ALTERNATIVAS-POLAR-LAGO-HYPERSWITCH-PISMO-UNClic.md](PAGOS-BILLING-ALTERNATIVAS-POLAR-LAGO-HYPERSWITCH-PISMO-UNClic.md) | PoC si producto = API/SaaS con consumo; **L15 MX** sigue Facturapi |
+| **Lago** (billing + metering OSS/cloud; conectores Stripe…) | L14 | **Alternativa / Pendiente** | [getlago.com](https://www.getlago.com) · [GitHub](https://github.com/getlago/lago) · doc anterior | PoC si planes híbridos o self-host; PSP sigue siendo rail externo |
+| **Hyperswitch** (orquestación pagos OSS, multi-PSP) | L14 | **Alternativa / Pendiente** | [hyperswitch.io](https://hyperswitch.io) · doc anterior | Solo si multi-PSP/routing justifica ops; no antes de Stripe base |
+| **Pismo** (card issuing / BaaS) | L14 (nicho) | **Referencia** | [pismo.io](https://pismo.io) · doc anterior | Cliente fintech; no default UnClic web |
 | Facturapi client test | L15 | **Pendiente** | — | Variable `FACTURAPI_API_KEY` + llamada desde API a borrador |
 | Coolify deploy UnClic | L5 | **Pendiente** | Doc [coolify.io/docs](https://coolify.io/docs) | Crear servidor Coolify + app Git + env + dominio |
 | Gitea + Jenkins (toolkit) | L1–L2 | **Hecho fuera** | Toolkit FastFlow / demos | Enlazar en CV solo si URL pública estable |
@@ -64,6 +72,8 @@
 | **Criterio dev: nube vs owned** (37signals) | Infra / ops | **Referencia personal** | [REWORK — Leaving the Cloud](https://37signals.com/podcast/leaving-the-cloud) · [post DHH](https://world.hey.com/dhh/why-we-re-leaving-the-cloud-654b47e0) · [implementacion/12-37signals-REWORK-LEAVING-CLOUD-DESARROLLADOR.md](implementacion/12-37signals-REWORK-LEAVING-CLOUD-DESARROLLADOR.md) | No sustituye decisión por cliente; brújula: mito ops, lock-in, TCO, cuándo sí nube; contrastar con doc 11 |
 | **Grist** (hoja relacional self-host) | L6 / datos internos | **Pendiente** | [support.getgrist.com/install/grist-on-docker](https://support.getgrist.com/install/grist-on-docker/) · [implementacion/13-GRIST-HOJA-RELACIONAL-SELF-HOST.md](implementacion/13-GRIST-HOJA-RELACIONAL-SELF-HOST.md) | PoC cliente que necesite CSV→app sin ERP; TLS + auth + backup; tutorial [lawrence.video/grist](https://lawrence.video/grist) |
 | **Curación duplicados + 4 planes integración** | Estrategia | **Referencia** | [CURACION-DUPLICADOS-Y-ELECCION-UNClic.md](CURACION-DUPLICADOS-Y-ELECCION-UNClic.md) · [PLANES-CURADOS-CUATRO-ARQUETIPOS-INTEGRACION.md](PLANES-CURADOS-CUATRO-ARQUETIPOS-INTEGRACION.md) | Elegir OSS cuando hay solape; arquetipos: UnClic, suite trabajo, plataforma dev, negocio on-prem |
+| **Appwrite** (BaaS OSS: Auth, Databases, Storage, Functions, Realtime, Messaging, Sites) | L6+L10+ (ver nota) | **Pendiente / alternativa** | [appwrite.io](https://appwrite.io/) · [APPWRITE-BAAS-REFERENCIA-UNClic.md](APPWRITE-BAAS-REFERENCIA-UNClic.md) | PoC solo si cliente/MVP lo pide; no sustituye pipeline FastFlow/Jenkins sin alcance explícito; evaluar cloud vs self-host + backup + compliance |
+| **WorkOS** (SaaS: Enterprise SSO SAML/OIDC, Directory Sync/SCIM, AuthKit, Admin Portal, MFA, etc.) | L10 | **Pendiente / alternativa (pago)** | [workos.com](https://workos.com/) · [pricing](https://workos.com/pricing) · [WORKOS-ENTERPRISE-SSO-REFERENCIA-UNClic.md](WORKOS-ENTERPRISE-SSO-REFERENCIA-UNClic.md) | Solo si RFP/cliente exige SSO/SCIM y TCO lo valida; contrastar con Keycloak self-host; PoC: callback → JWT interno compatible con portal/demos |
 | **NetAlertX** (descubrimiento LAN) | L12 | **Pendiente** | [docs.netalertx.com](https://docs.netalertx.com/) · [implementacion/14-NETALERTX-RED-DESCOBERTA-MONITOR.md](implementacion/14-NETALERTX-RED-DESCOBERTA-MONITOR.md) | Planes 1–4 (opc. en 1); vídeo [Lawrence](https://www.youtube.com/watch?v=R3b5cxLZMpo); solo redes propias; no exponer UI a Internet |
 | **RustDesk** (acceso remoto self-host) | L10 (nota) | **Pendiente** | [rustdesk.com/docs](https://rustdesk.com/docs/en/) · [implementacion/15-RUSTDESK-REMOTO-SELF-HOST.md](implementacion/15-RUSTDESK-REMOTO-SELF-HOST.md) | Planes 1–4; vídeo [Lawrence](https://www.youtube.com/watch?v=FIEcTNjFZNA); firewall/VPN; claves servidor; no confundir con IdP |
 | Dapr | Orquestación | **Pendiente** | [docs.dapr.io](https://docs.dapr.io/) | Opcional E4+; no requerido para Stripe simple |
@@ -71,13 +81,14 @@
 | OpenTofu / Terraform recurso real | L18 | **Pendiente** | [infra/tofu/README.md](../infra/tofu/README.md) | Añadir `main.tf` mínimo EC2 + outputs (no commitear secrets) |
 | Prometheus + Grafana | L12 | **Pendiente** | Doc oficial | Compose sidecar o stack monitoring en VPS |
 | **Capa L19 — IA / ML / agentes (ver PLAN-STACK §L19)** | L19 | **Pendiente** | [PLAN-STACK-OSS-CAPAS-ETAPAS-E-INTEGRACION.md](PLAN-STACK-OSS-CAPAS-ETAPAS-E-INTEGRACION.md) | Elegir 1–2 piezas por cliente; no bloquea retail/POS |
-| Ollama (inferencia local / VPS) | L19 | **Pendiente** | [ollama.com](https://ollama.com/) | `docker run` o binario; API interna; **no** exponer sin auth |
+| Ollama (inferencia local / VPS) | L19 | **Pendiente** (lab documentado) | [ollama.com](https://ollama.com/) · [16-L19-OLLAMA-DOCKER-Y-PROMPTFOO.md](implementacion/16-L19-OLLAMA-DOCKER-Y-PROMPTFOO.md) | Integrar en producto solo vía proxy API; compose ejemplo en [16-DOCKER-COMPOSE-L19-OLLAMA.example.yml](implementacion/16-DOCKER-COMPOSE-L19-OLLAMA.example.yml) |
 | Docker Model Runner (DMR) | L19 | **Pendiente** | [docs.docker.com/ai/model-runner](https://docs.docker.com/ai/model-runner/) | Habilitar en Docker Desktop o `docker-model-plugin` en Linux; `docker model pull`; API solo red privada |
 | MLflow (tracking experimentos) | L19 | **Pendiente** | [mlflow.org/docs](https://mlflow.org/docs/latest/index.html) | Servidor + artefactos; separar de DB transaccional L6 |
 | n8n (workflows / agentes low-code) | L19 | **Pendiente** | [docs.n8n.io](https://docs.n8n.io/) | Self-host; webhooks hacia tu API u inferencia local (Ollama o DMR) |
 | LangGraph (agentes en código) | L19 | **Pendiente** | [LangGraph docs](https://langchain-ai.github.io/langgraph/) | Worker Python aparte o servicio interno |
 | PyTorch / TensorFlow / Keras (entrenamiento) | L19 | **Pendiente** | Doc oficial cada uno | Solo si el cliente tiene caso de ML propio; no default UnClic web |
 | Hexabot / Stable Studio / GPT4All | L19 | **Pendiente** | Ver enlaces en PLAN-STACK L19 | Evaluar licencia y mantenimiento antes de comprometer a cliente |
+| **Fireship 7** (Agency Agents, PromptFoo, MiroFish, NanoChat, Impeccable, Heretic, OpenViking) | L19 | **Referencia** | [L19-FIRESHIP-7-HERRAMIENTAS-IA-OSS-SELF-HOST-Y-INTERACCION.md](L19-FIRESHIP-7-HERRAMIENTAS-IA-OSS-SELF-HOST-Y-INTERACCION.md) | PoC por herramienta; no bloquea retail; MiroFish/OpenViking detrás de red privada + auth; Heretic solo investigación con cumplimiento legal |
 
 **Regla CV:** en portafolio/CV solo **Hecho** o **En curso** con **URL o repo público verificable**. Lo **Pendiente** no se vende como entregado.
 
@@ -234,6 +245,8 @@ Cada etapa incluye: **objetivo**, **prerrequisitos**, **pasos numerados**, **com
 | 7 | Mattermost (opcional) | Comunicación equipo |
 | 8 | **L19 IA:** Ollama **o** Docker Model Runner + n8n **o** LangGraph (elegir según cliente) | Demos “agentes” sin bloquear core retail |
 | 9 | UI audio/vídeo tipo agente + panel STT/TTS/WS + stub `services/oss-voice` (sustituir por Whisper/Piper) | [UI-OSS-MEDIA-ELEVENLABS-STYLE.md](UI-OSS-MEDIA-ELEVENLABS-STYLE.md) · `npm run dev:oss-voice` |
+| 10 | Ollama: chat local + compose lab L19 + PromptFoo; imagen SD aparte o catálogo Ollama | [OLLAMA-UNClic-LLM-E-IMAGEN.md](OLLAMA-UNClic-LLM-E-IMAGEN.md) · [implementacion/16-L19-OLLAMA-DOCKER-Y-PROMPTFOO.md](implementacion/16-L19-OLLAMA-DOCKER-Y-PROMPTFOO.md) |
+| 11 | **ESLint / lint en CI** sin wizard interactivo (`eslint.config`, flat config) | `npm run lint` reproducible en Jenkins/GitHub Actions |
 
 ---
 

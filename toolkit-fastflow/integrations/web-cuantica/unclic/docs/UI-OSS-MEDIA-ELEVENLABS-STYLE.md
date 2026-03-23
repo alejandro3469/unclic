@@ -56,6 +56,13 @@ NEXT_PUBLIC_OSS_VOICE_WS_URL=ws://127.0.0.1:3005/ws/voice
 
 La sección audio muestra chips si estas variables existen (`OssMediaEnvHint`).
 
+### Ollama (LLM local)
+
+- `NEXT_PUBLIC_OLLAMA_URL` — base `http://127.0.0.1:11434`
+- `NEXT_PUBLIC_OLLAMA_MODEL` — ej. `llama3.2` (tras `ollama pull` en el servidor)
+
+Panel de chat: `OllamaChatPanel`. Detalle CORS, Docker e imagen (Stable Diffusion vs catálogo Ollama): [OLLAMA-UNClic-LLM-E-IMAGEN.md](OLLAMA-UNClic-LLM-E-IMAGEN.md).
+
 Pistas del reproductor:
 
 - Remoto por defecto: **SoundHelix** (LGPL).

@@ -12,7 +12,7 @@ UnClic **no** está asociado a Sequoia. Tomamos **sequoia.com como base** de jer
 - **Navegación:** Solutions / Capabilities / Insights = Soluciones / Capacidades / Insights (dropdowns); Company = Empresa; CTA principal = Comenzar; Log In = Iniciar sesión.
 - **Footer:** Cuatro columnas: SOLUTIONS, CAPABILITIES, LEARN, CONNECT (mapeado en `footerNav`).
 - **Tono:** Enterprise, limpio, un CTA principal por sección. Bloques de Shadcn Blocks se rellenan con nuestro copy siguiendo esta jerarquía.
-- **Tema visual:** UnClic usa paleta Nord y tipografía propia; la *estructura* de secciones y el orden nav/footer siguen a Sequoia.
+- **Tema visual:** UnClic usa tokens tipo shadcn (Nova/Inter + zinc) y Nord opcional; la *estructura* de secciones y el orden nav/footer siguen a Sequoia.
 
 ---
 

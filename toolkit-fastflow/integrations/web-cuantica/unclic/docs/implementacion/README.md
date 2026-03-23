@@ -34,6 +34,7 @@
 | 13 | [13-GRIST-HOJA-RELACIONAL-SELF-HOST.md](13-GRIST-HOJA-RELACIONAL-SELF-HOST.md) | Grist: doc Docker oficial + tutorial Lawrence Systems (auth, permisos, API, widgets); checklist prod; enlace Vates 2025. |
 | 14 | [14-NETALERTX-RED-DESCOBERTA-MONITOR.md](14-NETALERTX-RED-DESCOBERTA-MONITOR.md) | NetAlertX: descubrimiento LAN, Docker, plugins (UniFi, Nmap), alertas; vídeo + foro Lawrence; encaje planes 1–4. |
 | 15 | [15-RUSTDESK-REMOTO-SELF-HOST.md](15-RUSTDESK-REMOTO-SELF-HOST.md) | RustDesk: remoto OSS self-host vs TeamViewer/AnyDesk; Docker, seguridad, clientes; Lawrence Systems + doc oficial; planes 1–4. |
+| 16 | [16-L19-OLLAMA-DOCKER-Y-PROMPTFOO.md](16-L19-OLLAMA-DOCKER-Y-PROMPTFOO.md) | **L19 laboratorio:** Ollama vía [16-DOCKER-COMPOSE-L19-OLLAMA.example.yml](16-DOCKER-COMPOSE-L19-OLLAMA.example.yml); eval **PromptFoo** (contenedor perfil `eval` o `npx` en host); OpenViking+LiteLLM→Ollama; fusión con compose principal. |
 
 ---
 
@@ -44,6 +45,7 @@
 | [ejemplos/stripe-webhook.app-snippet.example.ts](ejemplos/stripe-webhook.app-snippet.example.ts) | Pegar rutas en `createApp()` o módulo aparte; requiere `stripe` en `package.json`. |
 | [ejemplos/amqp-publish-snippet.example.ts](ejemplos/amqp-publish-snippet.example.ts) | Publicar evento tras webhook; requiere `amqplib`. |
 | [ejemplos/llm-proxy-snippet.example.ts](ejemplos/llm-proxy-snippet.example.ts) | Proxy mínimo a Ollama/DMR con allowlist de modelo. |
+| [ejemplos/promptfooconfig.l19-ollama.example.yaml](ejemplos/promptfooconfig.l19-ollama.example.yaml) | **PromptFoo** contra Ollama (`ollama:chat:llama3.2:1b`); usar con [16-L19-OLLAMA-DOCKER-Y-PROMPTFOO.md](16-L19-OLLAMA-DOCKER-Y-PROMPTFOO.md). |
 
 **Regla:** los `.example.ts` **no** se importan desde el build; son plantilla. Tras copiar, añade dependencias, tests y OpenAPI.
 

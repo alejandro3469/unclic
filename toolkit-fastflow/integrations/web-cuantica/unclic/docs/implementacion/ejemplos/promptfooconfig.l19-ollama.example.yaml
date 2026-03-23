@@ -1,0 +1,25 @@
+# Copia a tu repo de producto como promptfooconfig.yaml o referencia con -c.
+# Modelo: debe existir en Ollama (`ollama pull llama3.2:1b` o el tag que uses).
+# Variables de entorno: OLLAMA_BASE_URL (default http://localhost:11434) — ver doc PromptFoo Ollama provider.
+#
+# Doc: ../16-L19-OLLAMA-DOCKER-Y-PROMPTFOO.md
+
+description: 'UnClic L19 — smoke test Ollama + PromptFoo (ejemplo educativo)'
+
+prompts:
+  - 'Responde en una sola frase en español: ¿Cuál es la capital de {{pais}}?'
+
+providers:
+  - ollama:chat:llama3.2:1b
+
+tests:
+  - vars:
+      pais: Francia
+    assert:
+      - type: icontains
+        value: Paris
+  - vars:
+      pais: México
+    assert:
+      - type: icontains
+        value: México

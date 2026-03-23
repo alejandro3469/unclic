@@ -1,0 +1,58 @@
+# EJEMPLO — laboratorio L19 (Ollama + eval PromptFoo opcional).
+# NO fusiones ciegamente con docker-compose.yml raíz; copia servicios o usa -f solo para pruebas.
+#
+name: unclic-l19
+#
+# Prerrequisito: Docker Compose v2. Ejecuta desde esta carpeta para que el volumen ./ejemplos resuelva:
+#   cd docs/implementacion
+#   docker compose -f 16-DOCKER-COMPOSE-L19-OLLAMA.example.yml up -d ollama
+#   docker compose -f 16-DOCKER-COMPOSE-L19-OLLAMA.example.yml exec ollama ollama pull llama3.2:1b
+#   docker compose -f 16-DOCKER-COMPOSE-L19-OLLAMA.example.yml --profile eval run --rm promptfoo
+#
+# Seguridad: en VPS, NO publiques 11434 a 0.0.0.0 sin firewall/VPN. Opción:
+#   ports: !override no usar sección ports y solo acceder desde contenedor api en misma red Docker.
+#   O mapea solo loopback: "127.0.0.1:11434:11434"
+#
+# Doc paso a paso: 16-L19-OLLAMA-DOCKER-Y-PROMPTFOO.md
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: unclic-l19-ollama
+    volumes:
+      - unclic_ollama_data:/root/.ollama
+    ports:
+      # Cambia a 127.0.0.1:11434:11434 si solo quieres acceso desde el host local.
+      - '11434:11434'
+    # GPU (Linux + NVIDIA Container Toolkit). Doc: https://github.com/ollama/ollama/blob/main/docs/docker.md
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
+
+  # One-shot evaluación PromptFoo contra el servicio `ollama` en la misma red Compose.
+  # Requiere imagen ya descargada en el volumen de Ollama (ver pull arriba).
+  promptfoo:
+    image: node:22-bookworm-slim
+    profiles: [eval]
+    environment:
+      OLLAMA_BASE_URL: http://ollama:11434
+      # REQUEST_TIMEOUT_MS: '120000'
+    volumes:
+      - ./ejemplos:/work:ro
+    working_dir: /work
+    depends_on:
+      - ollama
+    entrypoint: ['npx', 'promptfoo@latest']
+    command:
+      - eval
+      - -c
+      - promptfooconfig.l19-ollama.example.yaml
+      - -j
+      - '1'
+
+volumes:
+  unclic_ollama_data:

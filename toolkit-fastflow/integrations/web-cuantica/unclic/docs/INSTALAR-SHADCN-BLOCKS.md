@@ -22,10 +22,10 @@ Nuestro contenido y nuestra UI son los que ya tenemos; los bloques que pagamos s
 
 En este proyecto ya está aplicado lo que indican los docs oficiales:
 
-- **components.json:** `style: "radix-vega"` (Vega = New York), `iconLibrary: "lucide"`, registro `@shadcnblocks` con URL y cabecera `Authorization: Bearer ${SHADCNBLOCKS_API_KEY}`.
+- **components.json:** `style: "radix-nova"`, `iconLibrary: "lucide"`, registro `@shadcnblocks` con URL y cabecera `Authorization: Bearer ${SHADCNBLOCKS_API_KEY}`.
 - **Tailwind:** plugin `@tailwindcss/typography` instalado y configurado en `tailwind.config.ts`.
-- **globals.css:** variables que usan los bloques (`--popover`, `--secondary`, `--destructive`, etc.) añadidas al tema Nord.
-- **Tailwind theme:** colores `popover`, `secondary`, `destructive` en `tailwind.config.ts` para clases como `bg-secondary`, `bg-destructive`.
+- **globals.css:** variables shadcn (`--background`, `--chart-1`…`--chart-5`, etc.) + paleta Nord opcional (`--nord0`…) para utilidades.
+- **Tailwind theme:** colores semánticos + `chart.1`…`chart.5` + `nord/*`.
 
 Solo falta que **tú ejecutes** en tu máquina los comandos de instalación (ver abajo). La CLI debe leer la API key del entorno.
 

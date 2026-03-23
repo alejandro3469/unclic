@@ -156,9 +156,13 @@ Para **MSP, hosting o empresa con rack propio** (no sustituye “un VPS con Dock
 
 | OSS | OSS | Pago / ya en uso |
 |-----|-----|------------------|
-| **Keycloak** — [keycloak.org/documentation](https://www.keycloak.org/documentation) | **Authelia** — [authelia.com](https://www.authelia.com/) | **Zitadel** — [zitadel.com/docs](https://zitadel.com/docs) | Auth0, Clerk, Google Identity |
+| **Keycloak** — [keycloak.org/documentation](https://www.keycloak.org/documentation) | **Authelia** — [authelia.com](https://www.authelia.com/) | **Zitadel** — [zitadel.com/docs](https://zitadel.com/docs) | Auth0, Clerk, **WorkOS** ([workos.com](https://workos.com/) · [pricing](https://workos.com/pricing)), Google Identity |
 
 **Acceso remoto (complemento L10 — soporte, no SSO):** **RustDesk** — escritorio remoto con **servidor propio** (hbbs/hbbr); analogía **TeamViewer / AnyDesk**. Doc [rustdesk.com/docs](https://rustdesk.com/docs/en/) · [Docker](https://rustdesk.com/docs/en/self-host/rustdesk-server-oss/docker/) · guía UnClic [implementacion/15-RUSTDESK-REMOTO-SELF-HOST.md](implementacion/15-RUSTDESK-REMOTO-SELF-HOST.md) · divulgación [Lawrence Systems](https://www.youtube.com/watch?v=FIEcTNjFZNA).
+
+**BaaS OSS integrado (cruza L6, L10, storage, funciones, realtime, mensajería, hosting de front — según producto):** **Appwrite** — [appwrite.io](https://appwrite.io/) · [docs](https://appwrite.io/docs). Alternativa curada a ensamblar IdP + DB + object storage + workers desde cero en **E1–E2**; cloud o self-host. **UnClic web + API Hono actual** no depende de Appwrite; usar solo con **decisión de proyecto** (ver duplicados con Keycloak/DB propia). Integración con flujos **IA / agentes** (p. ej. MCP, skills) como opción **L19**. Guía de criterios y mapeo de capas: **[APPWRITE-BAAS-REFERENCIA-UNClic.md](APPWRITE-BAAS-REFERENCIA-UNClic.md)**.
+
+**SaaS “enterprise-ready” (SSO + directorios + bloques de producto — no OSS):** **WorkOS** — [workos.com](https://workos.com/) · [docs](https://workos.com/docs) · [pricing](https://workos.com/pricing). APIs/SDK para **Enterprise SSO** (SAML/OIDC frente a Okta, Entra ID, Google Workspace, etc.), **Directory Sync** (SCIM, HRIS), **User Management**, **AuthKit** (UI con Radix), magic link, MFA, **Admin Portal** alojado para que IT del cliente configure conexiones, audit logs, etc. Encaja cuando el **comprador exige SSO o SCIM** y el equipo quiere **integrar en semanas** en lugar de implementar SAML a mano. **No sustituye** filosofía OSS-first del sitio UnClic; es **pago**, contrato y cumplimiento dependen de WorkOS. Criterios y relación con portal JWT actual: **[WORKOS-ENTERPRISE-SSO-REFERENCIA-UNClic.md](WORKOS-ENTERPRISE-SSO-REFERENCIA-UNClic.md)**.
 
 ### L11 — Secretos
 
@@ -194,6 +198,12 @@ Complementa **Uptime Kuma** (HTTP/servicio) y **Netdata** (métricas host): NetA
 | OSS / self-hosted | Realidad | Pago / ya en uso |
 |-------------------|----------|------------------|
 | No hay “Stripe open source”; hay **integración** | Tu backend llama API | **Stripe** — [stripe.com/docs](https://stripe.com/docs) |
+| **Orquestación pagos OSS** | Multi-PSP, vault, routing, reconciliación | **Hyperswitch** — [hyperswitch.io](https://hyperswitch.io) · [GitHub](https://github.com/juspay/hyperswitch) |
+| **Motor billing OSS** (medición, planes, facturación lógica) | Se conecta a Stripe/Adyen/GoCardless… | **Lago** — [getlago.com](https://www.getlago.com) · [GitHub](https://github.com/getlago/lago) · [docs](https://getlago.com/docs) |
+| **Billing SaaS “IA + uso + MoR”** (checkout, eventos, adaptadores Next) | SaaS; precios en sitio | **Polar** — [polar.sh](https://polar.sh) · [docs](https://docs.polar.sh) |
+| **BaaS / issuing** (tarjetas, core) | No sustituye checkout típico landing | **Pismo** — [pismo.io](https://pismo.io) |
+
+**Criterios y combinaciones (Stripe vs Lago vs Polar vs Hyperswitch):** **[PAGOS-BILLING-ALTERNATIVAS-POLAR-LAGO-HYPERSWITCH-PISMO-UNClic.md](PAGOS-BILLING-ALTERNATIVAS-POLAR-LAGO-HYPERSWITCH-PISMO-UNClic.md)**.
 
 ### L15 — Facturación fiscal México (CFDI)
 
@@ -308,6 +318,8 @@ Herramientas que aparecen con frecuencia en **guías para startups IA** (dev.to,
 **Ollama vs Docker Model Runner:** no son excluyentes; a veces conviene **uno u otro** por política del cliente (solo Docker vs binario Ollama), por GPU (vLLM en DMR en Linux según doc) o por integración con **SDK abierto** desde Python en el mismo tutorial. En arquitectura UnClic ambos son **L19** detrás de red privada + adaptador en API.
 
 **Regla UnClic:** L19 **después** de tener API estable, CORS y observabilidad básica; los datos personales o fiscales no deben pasar por un LLM sin **evaluación de riesgo** explícita.
+
+**Curación vídeo / agentes (Fireship, 2026):** siete proyectos (Agency Agents, PromptFoo, MiroFish, NanoChat, Impeccable, Heretic, OpenViking) con **plan granular**: instalación (Docker / pip / npm / solo archivos), hosting, modos de interacción (CLI, HTTP, IDE, proxy API) y DoD por herramienta → **[L19-FIRESHIP-7-HERRAMIENTAS-IA-OSS-SELF-HOST-Y-INTERACCION.md](L19-FIRESHIP-7-HERRAMIENTAS-IA-OSS-SELF-HOST-Y-INTERACCION.md)**.
 
 ---
 

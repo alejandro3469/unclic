@@ -88,7 +88,11 @@
 
 | Función | Candidatos | **Elección UnClic** | Por qué |
 |---------|------------|---------------------|---------|
-| Pagos | Stripe, Whop, otros | **Stripe** (primero en matriz) | Adaptador en diseño; webhooks a API. |
+| Pagos (PSP directo) | Stripe, Whop, otros | **Stripe** (primero en matriz) | Adaptador en diseño; webhooks a API. |
+| Billing SaaS + uso IA + MoR (SaaS) | **Polar**, Stripe Billing, otros | **Polar** como **alternativa** si prioridad = usage/events + checkout Next + MoR | Ver [PAGOS-BILLING-ALTERNATIVAS-POLAR-LAGO-HYPERSWITCH-PISMO-UNClic.md](PAGOS-BILLING-ALTERNATIVAS-POLAR-LAGO-HYPERSWITCH-PISMO-UNClic.md); no sustituye **Facturapi** L15 MX salvo integración explícita. |
+| Motor billing + metering (OSS / híbrido) | **Lago**, homegrown | **Lago** como **alternativa** si planes híbridos o self-host | Se apoya en Stripe/Adyen/etc. como cobro; L19 puede enviar eventos de uso. |
+| Orquestación multi-PSP (OSS) | **Hyperswitch** | **Hyperswitch** como **alternativa** E4+ / cliente multi-país | Más ops y compliance; no es el primer paso del sitio UnClic. |
+| BaaS / emisión tarjetas | **Pismo**, otros | **No default** UnClic | Nicho fintech; ver misma guía de alternativas. |
 | CFDI / PAC MX | Facturapi, ERP module | **Facturapi** + sync **ERPNext** cuando aplique | Legalidad y PAC; no reinventar timbrado. |
 
 ---

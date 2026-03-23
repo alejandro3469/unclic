@@ -18,7 +18,7 @@ Para que cada ítem, texto y componente del sitio sea mantenible y consistente (
 ## Tokens del tema
 
 - Usa las clases del tema para colores y bordes: `bg-background`, `text-foreground`, `border-border`, `bg-primary`, `text-primary-foreground`, `text-muted-foreground`, `bg-muted`, etc.
-- Evita colores fijos (hex o rgb) salvo en gradientes o casos muy puntuales; así el sitio respeta light/dark y el tema Nord.
+- Evita colores fijos (hex o rgb) salvo en gradientes o casos muy puntuales; así el sitio respeta light/dark y los tokens semánticos (zinc/Nova). La paleta **Nord** (`bg-nord-*`) es opcional para acentos.
 
 ## Resumen
 
